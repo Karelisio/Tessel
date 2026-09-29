@@ -7,6 +7,7 @@ import { t } from '@/i18n/text';
 import { useNav } from '@/store/nav';
 import { useSettings, type Quality, type Settings } from '@/store/settings';
 import { spring } from '@/theme/motion/tokens';
+import { UpdateRow } from '@/update/UpdateRow';
 import { Button, Card, ListRow, Screen, SectionHeader, Segmented, Sheet, Slider, Switch } from '@/ui/kit';
 import { IconInfo, IconReplay } from './profile/icons';
 import { ThemePicker } from './profile/ThemePicker';
@@ -263,6 +264,7 @@ export default function SettingsScreen() {
       </Group>
 
       <Group title={tr(t('Mises à jour', 'Updates'))} index={6}>
+        <UpdateRow />
         <Toggle
           k="autoUpdateCheck"
           label={tr(t('Vérifier automatiquement', 'Check automatically'))}
