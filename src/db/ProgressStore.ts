@@ -34,7 +34,13 @@ export interface ProjectMeta {
   updatedAt: number;
   completedAt: number | null;
   thumbnail: string | null;
+  /** Compteurs de la partie en cours (succès secrets). */
+  undos: number;
+  errors: number;
+  tools: number;
 }
+
+export type ProjectCounter = 'undos' | 'errors' | 'tools';
 
 export interface LoadedProject {
   meta: ProjectMeta;
@@ -61,10 +67,13 @@ interface ProjectRow {
   updated_at: number;
   completed_at: number | null;
   thumbnail: string | null;
+  undos: number;
+  errors: number;
+  tools: number;
 }
 
 const META_COLUMNS =
-  'id, artwork_id, source, mode, title, category, width, height, colors, filled, total, time_ms, created_at, updated_at, completed_at, thumbnail';
+  'id, artwork_id, source, mode, title, category, width, height, colors, filled, total, time_ms, created_at, updated_at, completed_at, thumbnail, undos, errors, tools';
 
 function toMeta(r: ProjectRow): ProjectMeta {
   return {
@@ -84,6 +93,9 @@ function toMeta(r: ProjectRow): ProjectMeta {
     updatedAt: r.updated_at,
     completedAt: r.completed_at,
     thumbnail: r.thumbnail,
+    undos: r.undos,
+    errors: r.errors,
+    tools: r.tools,
   };
 }
 
@@ -248,10 +260,24 @@ export class ProgressStore {
       await this.db.run('DELETE FROM journal WHERE project_id = ?', [id]);
       await this.db.run(
         `UPDATE projects SET snapshot = NULL, snapshot_seq = 0, next_seq = 1, filled = 0, time_ms = 0,
-         completed_at = NULL, updated_at = ? WHERE id = ?`,
+         undos = 0, errors = 0, tools = 0, completed_at = NULL, updated_at = ? WHERE id = ?`,
         [this.now(), id],
       );
     });
+  }
+
+  /** Incrémente un compteur de la partie (annulations, erreurs, outils). */
+  async bump(id: string, counter: ProjectCounter, by = 1): Promise<void> {
+    await this.db.run(`UPDATE projects SET ${counter} = ${counter} + ? WHERE id = ?`, [by, id]);
+  }
+
+  /** Modes dans lesquels cette œuvre a déjà été terminée. */
+  async completedModes(artworkId: string): Promise<ModeId[]> {
+    const rows = await this.db.query<{ mode: ModeId }>(
+      'SELECT DISTINCT mode FROM projects WHERE artwork_id = ? AND completed_at IS NOT NULL',
+      [artworkId],
+    );
+    return rows.map((r) => r.mode);
   }
 
   async setThumbnail(id: string, thumbnail: string): Promise<void> {

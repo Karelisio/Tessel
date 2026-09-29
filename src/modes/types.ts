@@ -3,6 +3,8 @@ import type { FrameStyle } from '@/fx/finaleTimeline';
 
 export type ModeId = 'pixel' | 'diamond' | 'crossstitch' | 'mosaic';
 
+export const MODE_IDS: readonly ModeId[] = ['pixel', 'diamond', 'crossstitch', 'mosaic'];
+
 /** Type de retour haptique (mappé sur les primitives Android quand disponibles). */
 export type HapticKind = 'tick-light' | 'tick' | 'click' | 'double-tick';
 

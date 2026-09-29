@@ -72,14 +72,17 @@ Le moteur vit hors de React (classes TS + bus d'événements). React reçoit au 
 ## Progression
 
 - XP : 1/case × taille (×1 à ×1,6) ; ×1,5 sur les 3 premières œuvres d'un nouveau mode ; fin d'œuvre +15 % des cases +50.
-- Coût du niveau n→n+1 : `150 + 60·n^1.25` (≈ niv 10 à J3, 30 à 1 mois, 50 à 3 mois, 75 à 7 mois, 100 à 14 mois pour ~2 000 XP/jour).
+- Coût du niveau n→n+1 : `800 + 330·n`, calibré par `scripts/sim/progression.ts` (joueur régulier ~20 min/jour,
+  ~4 000 XP/jour) : niv 4 au 1er jour, 10 à J3, 50 vers J80, 75 vers J210, 100 vers J400 (test de non-régression).
 - Déblocages : Pixel, import photo, création dès le début ; Diamant niv 2, Point de croix niv 6, Mosaïque niv 10 ;
   catégories/cadres/textures/palettes/murs/ambiances/musiques jusqu'au niv 80 (≥ 1 récompense par niveau, testé) ;
   au-delà : outils + cosmétique tous les 5 niveaux. Thèmes et accessibilité jamais verrouillés.
 - Outils (départ 3 loupes, 2 pots, 1 baguette) : niveaux, quêtes, coffres, séries, collections.
 - Quêtes : 3/jour + 3/semaine, seed date + état joueur, 1 remplacement gratuit par jour.
 - Série : jour validé à 30 cases ; jokers auto (1 au départ, +1 tous les 7 jours, max 3) ; paliers 3/7/14/30/60/100/200/365.
-- 150 succès (~110 à paliers, ~25 découverte, ~15 secrets). ~20 collections + 6 événements annuels.
+- 150 succès (110 à paliers, 25 découvertes, 15 secrets). ~20 collections + 6 événements annuels.
+- Module `src/meta` : logique pure testée (niveaux, déblocages, série, quêtes, succès, coffres, secrets)
+  + `MetaService` (état en mémoire, notifications, écriture groupée en base via `MetaStore`).
 
 ## Contenu & conversion
 

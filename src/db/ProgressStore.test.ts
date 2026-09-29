@@ -78,12 +78,18 @@ describe('ProgressStore', () => {
       grid: sunsetLake(48, 48, 1),
     });
     await store.append(id, [{ op: Op.Place, index: 1 }], 1, 0);
+    await store.bump(id, 'undos');
+    await store.bump(id, 'tools', 2);
+    expect((await store.get(id))?.tools).toBe(2);
     await store.complete(id);
     expect(await store.findActive('a', 'pixel')).toBeUndefined();
+    expect(await store.completedModes('a')).toEqual(['pixel']);
     await store.reset(id);
     const loaded = await store.load(id);
     expect(loaded.history).toEqual([]);
     expect(loaded.meta.completedAt).toBeNull();
+    expect([loaded.meta.undos, loaded.meta.errors, loaded.meta.tools]).toEqual([0, 0, 0]);
+    expect(await store.completedModes('a')).toEqual([]);
   });
 
   it('replay ignore les index hors grille et les doublons', () => {
