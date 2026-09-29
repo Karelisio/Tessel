@@ -2,14 +2,19 @@ import { MotionConfig } from 'framer-motion';
 import { useEffect } from 'react';
 import { listenIncomingShares } from '@/create/incoming';
 import { useApplySettings } from '@/app/useApplySettings';
+import { useAudio } from '@/app/useAudio';
+import { listenNotifications } from '@/app/notifications';
 import { getServices } from '@/app/services';
+import { DebugMenu } from '@/debug/DebugMenu';
 import { useNav } from '@/store/nav';
 import { useSettings } from '@/store/settings';
 import { ImportSheet, type ImportResult } from '@/ui/import/ImportSheet';
+import { SharedImportSheet } from '@/ui/screens/create/SharedImportSheet';
 import { Toasts } from '@/ui/meta/Toasts';
 import { Onboarding } from '@/ui/shell/Onboarding';
 import { Shell } from '@/ui/shell/Shell';
 import { Splash } from '@/ui/shell/Splash';
+import { UpdateSheet } from '@/update/UpdateSheet';
 import { usePlayStore } from '@/store/play';
 import { useMetaStore } from '@/store/meta';
 import { PlayScreen } from './play/PlayScreen';
@@ -31,6 +36,8 @@ if (import.meta.env.DEV)
 export function App() {
   useApplySettings();
   useEffect(listenIncomingShares, []);
+  useEffect(listenNotifications, []);
+  useAudio();
   const reduced = useSettings((s) => s.reducedMotion);
   const locale = useSettings((s) => s.locale);
   const importing = useNav((s) => s.importing);
@@ -52,7 +59,10 @@ export function App() {
           }}
           onConfirm={confirmImport}
         />
+        <SharedImportSheet />
         <Toasts />
+        <UpdateSheet />
+        <DebugMenu />
         <Onboarding />
         <Splash />
       </div>

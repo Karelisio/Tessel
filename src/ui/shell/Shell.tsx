@@ -1,13 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { lazy, Suspense, type ComponentType } from 'react';
-import { tr } from '@/i18n/locale';
-import { t } from '@/i18n/text';
 import { useMetaStore } from '@/store/meta';
 import { useNav, type SubPage, type TabId } from '@/store/nav';
 import { duration } from '@/theme/motion/tokens';
-import { IconCreate } from '@/ui/kit/icons';
 import { Skeleton } from '@/ui/kit';
-import { PlaceholderScreen } from '@/ui/screens/Placeholder';
 import { LivingBackground } from './LivingBackground';
 import { TabBar } from './TabBar';
 import './shell.css';
@@ -16,6 +12,7 @@ const LibraryScreen = lazy(() => import('@/ui/screens/LibraryScreen'));
 const DailyScreen = lazy(() => import('@/ui/screens/DailyScreen'));
 const ProfileScreen = lazy(() => import('@/ui/screens/ProfileScreen'));
 const GalleryScreen = lazy(() => import('@/ui/screens/GalleryScreen'));
+const CreateScreen = lazy(() => import('@/ui/screens/CreateScreen'));
 const SUBPAGES: Record<SubPage, ComponentType> = {
   achievements: lazy(() => import('@/ui/screens/AchievementsScreen')),
   collections: lazy(() => import('@/ui/screens/CollectionsScreen')),
@@ -35,13 +32,7 @@ function TabPage({ tab }: { tab: TabId }) {
     case 'gallery':
       return <GalleryScreen />;
     case 'create':
-      return (
-        <PlaceholderScreen
-          title={tr(t('Créer', 'Create'))}
-          icon={<IconCreate size={36} />}
-          text={tr(t('L’atelier de pixel art arrive bientôt.', 'The pixel art studio is coming soon.'))}
-        />
-      );
+      return <CreateScreen />;
   }
 }
 
