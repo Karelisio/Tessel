@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { CreationStore } from '@/create/CreationStore';
 import { loadLibrary } from '@/content/library';
 import type { LibraryIndex } from '@/content/library/types';
 import { openDatabase } from '@/db';
@@ -10,6 +11,7 @@ import { useMetaStore } from '@/store/meta';
 export interface Services {
   db: DbDriver;
   store: ProgressStore;
+  creations: CreationStore;
   meta: MetaService;
   library: LibraryIndex | null;
 }
@@ -27,7 +29,7 @@ export function getServices(): Promise<Services> {
       console.error('Bibliothèque indisponible', e);
       return null;
     });
-    const s = { db, store, meta, library };
+    const s = { db, store, creations: new CreationStore(db), meta, library };
     useServices.setState({ services: s });
     return s;
   })();

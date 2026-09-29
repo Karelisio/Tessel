@@ -80,3 +80,21 @@ serveur de dev sur http://localhost:5173). Données de test dans la console du n
   débloqués : `meta.unlocked('frame')`. Changer le cadre d'une œuvre : `store.setFrame(id, key)` puis
   `useDataVersion.getState().bump()`.
 - Revoir la création : `useNav.getState().open(refForProject(project, index), { timelapse: true, origin })`.
+
+## Créer (`src/create/`)
+
+- `Editor` (`Editor.ts`) : modèle pur de l'éditeur. `begin(x, y)` / `move(x, y)` / `end()` en coordonnées de
+  case ; `tool` (`pencil`, `eraser`, `bucket`, `eyedropper`), `setSymmetry('none' | 'x' | 'y' | 'xy')`,
+  `setBrush(1–3)`, `setColor(i)`, `undo()`/`redo()` (`canUndo`/`canRedo`), calques (`addLayer`, `removeLayer`,
+  `moveLayer`, `mergeDown`, `toggleVisible`, `renameLayer`, `setActive`, `clearLayer` ; 4 au plus), palette
+  (`applyPalette(colors)`, `setPaletteColor`, `addColor`). `on(listener)` prévient à chaque changement
+  (`cells`, `layers`, `palette`, `state`) : redessiner dans le listener, pas à chaque rendu React.
+- Document (`document.ts`) : `createDoc(w, h, palette)`, `CANVAS_SIZES`, `flatten(doc)` (0 = vide, k = palette[k-1]),
+  `toGrid(doc)` (œuvre jouable), `fromGrid(grid)`, `paintedCount`.
+- Palettes : `PALETTES` / `paletteColors(key)` (`palettes.ts`), débloquées : `meta.unlocked('palette')`.
+- Créations enregistrées : `getServices().creations` (`list`, `get`, `save(id | null, title, doc)`, `rename`,
+  `remove`, `duplicate`).
+- Jouer : `useNav.getState().open(creationRef(title, doc), { mode })` ; œuvre reçue : `sharedRef(shared)`.
+- Partage (`format.ts`) : `encodeTessel` / `decodeTessel` (fichier `.tessel`, `fileName(title, 'tessel')` et
+  `shareFile`/`saveToDevice` de `src/render/exports.ts`), `qrMatrix(shared)` (null si trop grande pour un QR) +
+  `drawQr(matrix, px)`, `scanQr(imageData)` (image caméra ou photo) → œuvre ou null.
