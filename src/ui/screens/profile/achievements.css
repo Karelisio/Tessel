@@ -1,0 +1,258 @@
+.ach-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+}
+
+.ach-summary__pct {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ach-summary__text {
+  display: grid;
+  gap: 2px;
+}
+
+.ach-summary__text strong {
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ach-summary__text span {
+  font-weight: 700;
+}
+
+.ach-summary__text small {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.ach-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 4px 16px;
+  scrollbar-width: none;
+}
+
+.ach-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.ach-filters .kit-chip {
+  min-height: 44px;
+  padding: 8px 16px;
+  background: var(--surface-2);
+}
+
+.ach-group {
+  display: grid;
+  gap: 12px;
+  padding: 14px 14px 10px;
+}
+
+.ach-group__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 8px;
+}
+
+.ach-group__head .pf-bar {
+  grid-column: 1 / 3;
+  height: 6px;
+}
+
+.ach-group__icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.ach-group__icon[data-complete='true'] {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.ach-group__title {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ach-group__title strong {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.ach-group__title small {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.ach-group__next {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+  background: var(--surface-3);
+}
+
+.ach-group__next b {
+  color: var(--on-surface);
+  font-weight: 800;
+}
+
+.ach-group__count {
+  flex: none;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-surface);
+}
+
+.ach-medals {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0 4px;
+  display: grid;
+  gap: 10px 4px;
+}
+
+.ach-medals[data-layout='tiers'] {
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+}
+
+.ach-medals[data-layout='grid'] {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.ach-medal {
+  width: 100%;
+  min-height: 44px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 8px 2px 2px;
+}
+
+.ach-medal__label {
+  max-width: 100%;
+  font-size: 11.5px;
+  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
+  color: var(--on-surface-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+.ach-medal__label[data-secret='true'] {
+  letter-spacing: 0.1em;
+}
+
+/* --- Détail dans la feuille ------------------------------------------------------------------- */
+
+.ach-sheet {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 6px 4px 8px;
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 12px);
+  text-align: center;
+}
+
+.ach-sheet__medal {
+  padding: 14px 0 18px;
+}
+
+.ach-sheet__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.ach-sheet__desc {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--on-surface-muted);
+}
+
+.ach-sheet__earned {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.ach-sheet__progress {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ach-sheet__rewards {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  margin-top: 12px;
+}
+
+.ach-sheet__rewards ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ach-sheet__rewards li {
+  padding: 7px 12px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.ach-sheet__rewards li[data-earned='true'] {
+  opacity: 0.7;
+}
