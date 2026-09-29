@@ -45,6 +45,8 @@ interface SettingsPanelProps {
   output: Output | null;
   mode: ModeId;
   onMode: (mode: ModeId) => void;
+  /** Modes débloqués ; tous par défaut. */
+  modes?: readonly ModeId[] | undefined;
 }
 
 /** Panneau défilant des réglages de conversion et du mode de jeu. */
@@ -56,6 +58,7 @@ export function SettingsPanel({
   output,
   mode,
   onMode,
+  modes,
 }: SettingsPanelProps) {
   const transition = useSpringTransition('gentle');
 
@@ -217,7 +220,7 @@ export function SettingsPanel({
             variant="chips"
             layoutId="imp-mode"
             label="Mode de jeu"
-            options={MODES}
+            options={modes ? MODES.filter((m) => modes.includes(m.id)) : MODES}
             value={mode}
             onChange={onMode}
           />

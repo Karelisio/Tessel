@@ -41,7 +41,11 @@ export class AutoSaver {
   private lastCompact: number;
   private timer: unknown = null;
   private chain: Promise<void> = Promise.resolve();
+  /** Une écriture attend déjà dans la file : elle prendra les nouvelles poses. */
+  private queued = false;
   private disposed = false;
+  /** Temps de jeu actif compté (pauses de plus de `idleMs` exclues), pour la méta-progression. */
+  onActiveTime: ((ms: number) => void) | null = null;
   onError: ((e: unknown) => void) | null = null;
 
   constructor(
@@ -62,7 +66,10 @@ export class AutoSaver {
     if (this.disposed) return;
     const now = this.opts.now();
     const gap = now - this.lastOpAt;
-    if (gap > 0 && gap < this.opts.idleMs) this.timeMs += gap;
+    if (gap > 0 && gap < this.opts.idleMs) {
+      this.timeMs += gap;
+      this.onActiveTime?.(gap);
+    }
     this.lastOpAt = now;
     this.buffer.push({ op, index });
     this.filledDelta += op === Op.Place ? 1 : -1;
@@ -76,20 +83,26 @@ export class AutoSaver {
     }
   }
 
-  /** Écrit le lot en attente (les écritures sont sérialisées). */
+  /**
+   * Écrit le lot en attente (les écritures sont sérialisées). Pendant une rafale (pot de peinture,
+   * baguette), une seule écriture attend derrière celle en cours et emporte tout ce qui s'est accumulé.
+   */
   flush(): Promise<void> {
     if (this.timer !== null) {
       this.opts.clearTimer(this.timer);
       this.timer = null;
     }
-    const ops = this.buffer;
-    const delta = this.filledDelta;
-    const time = this.timeMs;
-    this.buffer = [];
-    this.filledDelta = 0;
-    this.timeMs = 0;
-    const compactDue = this.opts.now() - this.lastCompact >= this.opts.compactEveryMs;
+    if (this.queued) return this.chain;
+    this.queued = true;
     this.chain = this.chain.then(async () => {
+      this.queued = false;
+      const ops = this.buffer;
+      const delta = this.filledDelta;
+      const time = this.timeMs;
+      this.buffer = [];
+      this.filledDelta = 0;
+      this.timeMs = 0;
+      const compactDue = this.opts.now() - this.lastCompact >= this.opts.compactEveryMs;
       try {
         await this.store.append(this.projectId, ops, delta, time);
         if (compactDue) {

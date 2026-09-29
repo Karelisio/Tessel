@@ -26,6 +26,8 @@ export interface ImportResult {
 interface ImportSheetProps {
   open: boolean;
   initialMode: ModeId;
+  /** Modes proposés (débloqués) ; tous par défaut. */
+  modes?: readonly ModeId[];
   /** Photo déjà choisie : l'édition s'ouvre dessus sans passer par le sélecteur (outils de test). */
   initialPhoto?: Blob | null;
   onClose: () => void;
@@ -68,7 +70,13 @@ export function ImportSheet({ open, ...sheet }: ImportSheetProps) {
 }
 
 /** Coque animée : entrée par le bas (ressort de la charte), ou simple fondu si « Réduire les animations ». */
-function Sheet({ initialMode, initialPhoto = null, onClose, onConfirm }: Omit<ImportSheetProps, 'open'>) {
+function Sheet({
+  initialMode,
+  modes,
+  initialPhoto = null,
+  onClose,
+  onConfirm,
+}: Omit<ImportSheetProps, 'open'>) {
   // lue à chaque ouverture : la préférence du système est respectée sans redémarrer l'application
   const reduced = useReducedMotion();
   return (
@@ -86,6 +94,7 @@ function Sheet({ initialMode, initialPhoto = null, onClose, onConfirm }: Omit<Im
       <MotionConfig reducedMotion="user">
         <SheetBody
           initialMode={initialMode}
+          modes={modes}
           initialPhoto={initialPhoto}
           onClose={onClose}
           onConfirm={onConfirm}
@@ -97,13 +106,14 @@ function Sheet({ initialMode, initialPhoto = null, onClose, onConfirm }: Omit<Im
 
 interface SheetBodyProps {
   initialMode: ModeId;
+  modes: readonly ModeId[] | undefined;
   initialPhoto: Blob | null;
   onClose: () => void;
   onConfirm: (result: ImportResult) => void;
 }
 
 /** Tout l'état de l'import vit ici : il disparaît (client, URL d'objet) quand la feuille est refermée. */
-function SheetBody({ initialMode, initialPhoto, onClose, onConfirm }: SheetBodyProps) {
+function SheetBody({ initialMode, modes, initialPhoto, onClose, onConfirm }: SheetBodyProps) {
   const body = useRef<HTMLDivElement>(null);
   // photo : blob choisi → photo décodée (client de conversion + URL d'affichage)
   const [source, setSource] = useState<Blob | null>(initialPhoto);
@@ -332,6 +342,7 @@ function SheetBody({ initialMode, initialPhoto, onClose, onConfirm }: SheetBodyP
             </div>
             {photo && (
               <SettingsPanel
+                modes={modes}
                 settings={settings}
                 onChange={(patch) => {
                   setSettings((s) => ({ ...s, ...patch }));

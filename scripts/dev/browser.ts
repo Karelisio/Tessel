@@ -21,6 +21,7 @@ export async function openPage(
     deviceScaleFactor: 2,
     hasTouch: true,
     isMobile: true,
+    locale: 'fr-FR',
   });
   page.on('console', (m) => {
     if (m.type() === 'error' || m.type() === 'warning') console.log(`[${m.type()}]`, m.text().slice(0, 2000));

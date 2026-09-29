@@ -261,6 +261,13 @@ export class GridRenderer {
     this.pendingFill.push({ index, at: time + this.mode.placeDuration / 1000 });
   }
 
+  /** Animations de pose en cours (le pool en compte ANIM_CAPACITY). */
+  activeAnimations(time: number): number {
+    let n = 0;
+    for (let q = 0; q < ANIM_CAPACITY; q++) if ((this.animEnds[q] ?? -1) > time) n++;
+    return n;
+  }
+
   animateShake(index: number, time: number): void {
     this.startAnim(index, AnimKind.Shake, time);
   }

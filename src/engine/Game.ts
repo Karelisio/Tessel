@@ -5,8 +5,9 @@ import { PlaceResult, Progress, type Bitset } from '@/content/progress';
 import { Op } from '@/db/codecs';
 import { FINALE, FRAME_RATIO } from '@/fx/finaleTimeline';
 import type { ParticleFx } from '@/fx/Particles';
+import type { ToolId } from '@/meta/rewards';
 import type { ModeDefinition } from '@/modes/types';
-import type { Camera } from './Camera';
+import { READABLE_CELL_PX, type Camera } from './Camera';
 import { FeedbackBus, type FeedbackEvent } from './feedback';
 import type { GestureHandlers } from './Gestures';
 import { CellState, type GridRenderer } from './GridRenderer';
@@ -24,6 +25,8 @@ export interface GameSnapshot {
   readonly selected: number;
   readonly left: number;
   readonly total: number;
+  /** Outil armé (pot de peinture). */
+  readonly armed: 'bucket' | null;
 }
 
 export type GamePhase = 'playing' | 'finale' | 'finished' | 'timelapse';
@@ -37,6 +40,22 @@ interface Scheduled {
   at: number;
   run: () => void;
 }
+
+/** Pose en vague déclenchée par un outil (pot, baguette) : les cases apparaissent par distance. */
+interface Reveal {
+  tool: ToolId;
+  color: number;
+  cells: number[];
+  /** Distance de chaque case à l'origine, croissante. */
+  dist: Float32Array;
+  start: number;
+  duration: number;
+  done: number;
+  lastFx: number;
+}
+
+/** Au-delà, les cases d'une vague se posent sans animation individuelle (le pool reste disponible). */
+const REVEAL_ANIM_BUDGET = 360;
 
 function rgbToNumber([r, g, b]: Rgb): number {
   return (r << 16) | (g << 8) | b;
@@ -63,6 +82,12 @@ export class Game implements GestureHandlers {
   onOp: ((op: Op, index: number) => void) | null = null;
   /** La partie a été recommencée à zéro. */
   onRestart: (() => void) | null = null;
+  /** Un trait a été annulé (succès « sans retour »). */
+  onUndo: (() => void) | null = null;
+  /** Un outil vient de servir (`cells` = cases posées par l'outil). */
+  onToolUsed: ((tool: ToolId, cells: number) => void) | null = null;
+  /** Outil armé : le prochain tap l'applique (pot de peinture). */
+  armedTool: 'bucket' | null = null;
   private readonly phaseListeners = new Set<(phase: GamePhase) => void>();
 
   private mode: ModeDefinition;
@@ -81,6 +106,7 @@ export class Game implements GestureHandlers {
   private readonly history: number[] = [];
   private replay: { start: number; duration: number; done: number } | null = null;
   private lastReplaySound = -Infinity;
+  private reveal: Reveal | null = null;
 
   constructor(
     readonly grid: Grid,
@@ -157,6 +183,7 @@ export class Game implements GestureHandlers {
   tick(time: number): boolean {
     this.time = time;
     if (this.replay) this.stepReplay();
+    if (this.reveal) this.stepReveal();
     for (let i = this.scheduled.length - 1; i >= 0; i--) {
       const s = this.scheduled[i];
       if (s && s.at <= time) {
@@ -169,7 +196,7 @@ export class Game implements GestureHandlers {
       this.lastSnapshot = time;
       this.onSnapshot?.(this.snapshot());
     }
-    return this.scheduled.length > 0 || this.dirtySnapshot || this.replay !== null;
+    return this.scheduled.length > 0 || this.dirtySnapshot || this.replay !== null || this.reveal !== null;
   }
 
   snapshot(): GameSnapshot {
@@ -179,6 +206,7 @@ export class Game implements GestureHandlers {
       selected: this.selected,
       left: this.progress.left,
       total: this.progress.total,
+      armed: this.armedTool,
     };
   }
 
@@ -194,7 +222,7 @@ export class Game implements GestureHandlers {
   // --- Gestes -------------------------------------------------------------
 
   canPaintAt(sx: number, sy: number): boolean {
-    if (this.phaseValue !== 'playing') return false;
+    if (this.phaseValue !== 'playing' || this.armedTool !== null || this.reveal) return false;
     if (this.camera.scale < MIN_PAINT_CELL_PX) return false;
     const i = this.indexAt(sx, sy);
     return i >= 0 && this.progress.check(i, this.selected) === PlaceResult.Placed;
@@ -203,7 +231,11 @@ export class Game implements GestureHandlers {
   onTap(sx: number, sy: number): boolean {
     void this.audio.unlock();
     const i = this.indexAt(sx, sy);
-    if (i < 0) return false;
+    if (i < 0 || this.reveal) return false;
+    if (this.armedTool === 'bucket') {
+      this.useBucketAt(i);
+      return true;
+    }
     this.currentStroke = [];
     const placed = this.tryPlace(i, false, true);
     this.commitStroke();
@@ -258,9 +290,10 @@ export class Game implements GestureHandlers {
   // --- Annuler / rétablir ---------------------------------------------------
 
   undo(): void {
-    if (this.phaseValue !== 'playing') return;
+    if (this.phaseValue !== 'playing' || this.reveal) return;
     const stroke = this.undoStack.pop();
     if (!stroke) return;
+    this.onUndo?.();
     for (const i of stroke) {
       if (this.progress.unplace(i)) {
         this.renderer.setCell(i, CellState.Empty);
@@ -276,7 +309,7 @@ export class Game implements GestureHandlers {
   }
 
   redo(): void {
-    if (this.phaseValue !== 'playing') return;
+    if (this.phaseValue !== 'playing' || this.reveal) return;
     const stroke = this.redoStack.pop();
     if (!stroke) return;
     for (const i of stroke) {
@@ -312,6 +345,142 @@ export class Game implements GestureHandlers {
     return ok;
   }
 
+  // --- Outils ----------------------------------------------------------------
+
+  /** Arme (ou désarme) le pot de peinture : le prochain tap remplit la zone touchée. */
+  armBucket(on: boolean): void {
+    const next = on && this.phaseValue === 'playing' ? 'bucket' : null;
+    if (next === this.armedTool) return;
+    this.armedTool = next;
+    this.haptics.soft();
+    this.dirtySnapshot = true;
+    this.onChangeRequest?.();
+  }
+
+  /**
+   * Pot de peinture : remplit toute la zone contiguë (4-voisins) de la couleur de la case touchée,
+   * en vague depuis le doigt. Renvoie le nombre de cases posées (0 : rien à remplir).
+   */
+  fillRegionAt(index: number): number {
+    if (this.phaseValue !== 'playing' || this.reveal) return 0;
+    const color = this.grid.cells[index] ?? TRANSPARENT;
+    if (color === TRANSPARENT) return 0;
+    const { width, height } = this.grid;
+    const seen = new Uint8Array(this.grid.cells.length);
+    const queue = new Int32Array(this.grid.cells.length);
+    const depth = new Float32Array(this.grid.cells.length);
+    const cells: number[] = [];
+    const dist: number[] = [];
+    let head = 0;
+    let tail = 0;
+    queue[tail++] = index;
+    seen[index] = 1;
+    while (head < tail) {
+      const i = queue[head++] ?? 0;
+      const d = depth[i] ?? 0;
+      if (!this.progress.filled.get(i)) {
+        cells.push(i);
+        dist.push(d);
+      }
+      const x = i % width;
+      const y = (i - x) / width;
+      const visit = (j: number) => {
+        if (seen[j] || this.grid.cells[j] !== color) return;
+        seen[j] = 1;
+        depth[j] = d + 1;
+        queue[tail++] = j;
+      };
+      if (x > 0) visit(i - 1);
+      if (x < width - 1) visit(i + 1);
+      if (y > 0) visit(i - width);
+      if (y < height - 1) visit(i + width);
+    }
+    if (cells.length === 0) return 0;
+    if (color !== this.selected) this.selectColor(color);
+    this.startReveal('bucket', color, cells, Float32Array.from(dist));
+    return cells.length;
+  }
+
+  /** Baguette : termine la couleur sélectionnée (ou la suivante), en vague depuis le centre de la vue. */
+  useWand(): number {
+    if (this.phaseValue !== 'playing' || this.reveal) return 0;
+    const color =
+      (this.progress.remaining[this.selected] ?? 0) > 0
+        ? this.selected
+        : this.firstRemainingColor(this.selected);
+    if ((this.progress.remaining[color] ?? 0) === 0) return 0;
+    if (color !== this.selected) this.selectColor(color);
+    const [ox, oy] = this.viewCenterInGrid();
+    const { width } = this.grid;
+    const found: { i: number; d: number }[] = [];
+    for (let i = 0; i < this.grid.cells.length; i++) {
+      if (this.grid.cells[i] !== color || this.progress.filled.get(i)) continue;
+      const x = i % width;
+      const y = (i - x) / width;
+      found.push({ i, d: Math.hypot(x + 0.5 - ox, y + 0.5 - oy) });
+    }
+    found.sort((a, b) => a.d - b.d);
+    this.startReveal(
+      'wand',
+      color,
+      found.map((f) => f.i),
+      Float32Array.from(found, (f) => f.d),
+    );
+    this.onToolUsed?.('wand', found.length);
+    return found.length;
+  }
+
+  /**
+   * Loupe : vole jusqu'à la case restante la plus proche du centre de la vue (couleur sélectionnée,
+   * sinon la suivante) et la fait pulser. Renvoie false s'il ne reste rien à trouver.
+   */
+  useLoupe(): boolean {
+    if (this.phaseValue !== 'playing' || this.reveal) return false;
+    const color =
+      (this.progress.remaining[this.selected] ?? 0) > 0
+        ? this.selected
+        : this.firstRemainingColor(this.selected);
+    if ((this.progress.remaining[color] ?? 0) === 0) return false;
+    const [ox, oy] = this.viewCenterInGrid();
+    const { width } = this.grid;
+    let best = -1;
+    let bestD = Infinity;
+    for (let i = 0; i < this.grid.cells.length; i++) {
+      if (this.grid.cells[i] !== color || this.progress.filled.get(i)) continue;
+      const x = i % width;
+      const d = (x + 0.5 - ox) ** 2 + ((i - x) / width + 0.5 - oy) ** 2;
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    }
+    if (best < 0) return false;
+    if (color !== this.selected) this.selectColor(color);
+    const x = (best % width) + 0.5;
+    const y = Math.floor(best / width) + 0.5;
+    this.camera.flyTo(x, y, Math.max(this.camera.scale, READABLE_CELL_PX * 1.2));
+    this.audio.play('chime', { gain: 0.45, semitones: 7 });
+    this.haptics.soft();
+    const tint = lighten(this.grid.palette[color] ?? [255, 255, 255], 0.35);
+    // anneaux qui s'élargissent sur la case trouvée, une fois la caméra arrivée
+    for (let k = 0; k < 3; k++) {
+      this.schedule(0.45 + k * 0.28, () => {
+        this.particles.emitWorld(
+          { kind: 'glow', x, y, life: 0.8, size: 1.2, endSize: 7, alpha: 0.55, tint },
+          true,
+        );
+        this.haptics.pulse('tick-light', this.time * 1000);
+      });
+    }
+    this.onToolUsed?.('loupe', 0);
+    this.onChangeRequest?.();
+    return true;
+  }
+
+  get revealing(): boolean {
+    return this.reveal !== null;
+  }
+
   // --- Fin d'œuvre et timelapse ---------------------------------------------
 
   /** Échelle de la vue encadrée (œuvre + passe-partout + cadre, avec une marge). */
@@ -326,6 +495,8 @@ export class Game implements GestureHandlers {
    */
   startFinale(): void {
     if (this.phaseValue === 'finale') return;
+    this.armedTool = null;
+    this.dirtySnapshot = true;
     this.setPhase('finale');
     const t0 = this.time;
     const { width: w, height: h } = this.grid;
@@ -383,6 +554,8 @@ export class Game implements GestureHandlers {
   /** Recommence l'œuvre à zéro (démo, debug). */
   restart(): void {
     this.replay = null;
+    this.reveal = null;
+    this.armedTool = null;
     this.scheduled.length = 0;
     this.history.length = 0;
     this.undoStack.length = 0;
@@ -513,6 +686,101 @@ export class Game implements GestureHandlers {
   }
 
   // --- Interne --------------------------------------------------------------
+
+  private useBucketAt(i: number): void {
+    const n = this.fillRegionAt(i);
+    if (n > 0) {
+      this.armedTool = null;
+      this.dirtySnapshot = true;
+      this.onToolUsed?.('bucket', n);
+      this.onChangeRequest?.();
+      return;
+    }
+    // rien à remplir ici : le pot reste armé, petit refus
+    const x = i % this.grid.width;
+    const y = Math.floor(i / this.grid.width);
+    this.renderer.animateShake(i, this.time);
+    this.feedback.emit({ type: 'error', index: i, x, y, time: this.time });
+  }
+
+  /** Centre de la vue, ramené dans la grille (cases). */
+  private viewCenterInGrid(): [number, number] {
+    const [cx, cy] = this.camera.viewCenterCell();
+    return [Math.min(Math.max(cx, 0), this.grid.width), Math.min(Math.max(cy, 0), this.grid.height)];
+  }
+
+  private startReveal(tool: ToolId, color: number, cells: number[], dist: Float32Array): void {
+    this.commitStroke();
+    this.currentStroke = [];
+    const duration = this.options.reducedMotion
+      ? 0
+      : Math.min(1.4, 0.35 + 0.03 * Math.sqrt(cells.length) * 2);
+    this.reveal = { tool, color, cells, dist, start: this.time, duration, done: 0, lastFx: -Infinity };
+    this.audio.play(tool === 'wand' ? 'chime' : this.mode.sound, {
+      gain: 0.6,
+      semitones: tool === 'wand' ? 12 : 0,
+    });
+    this.haptics.pulse('click', this.time * 1000);
+    this.stepReveal();
+  }
+
+  private stepReveal(): void {
+    const r = this.reveal;
+    if (!r) return;
+    const t = r.duration > 0 ? Math.min(1, Math.max(0, (this.time - r.start) / r.duration)) : 1;
+    const eased = 1 - (1 - t) * (1 - t);
+    const maxD = r.dist[r.dist.length - 1] ?? 0;
+    const threshold = eased * maxD + 1e-6;
+    let budget = this.options.reducedMotion
+      ? 0
+      : REVEAL_ANIM_BUDGET - this.renderer.activeAnimations(this.time);
+    let k = r.done;
+    while (k < r.cells.length && (r.dist[k] ?? 0) <= threshold) {
+      const i = r.cells[k] ?? 0;
+      k++;
+      if (this.progress.place(i, r.color) !== PlaceResult.Placed) continue;
+      if (budget-- > 0) this.renderer.animatePlace(i, this.time);
+      else this.renderer.setCell(i, CellState.Filled);
+      this.currentStroke.push(i);
+      this.history.push(i);
+      this.onOp?.(Op.Place, i);
+    }
+    if (k > r.done) {
+      this.dirtySnapshot = true;
+      if (this.time - r.lastFx > 0.08) {
+        r.lastFx = this.time;
+        this.audio.play(this.mode.sound, { gain: 0.45, burst: true });
+        this.haptics.pulse('tick-light', this.time * 1000);
+        const last = r.cells[k - 1] ?? 0;
+        if (!this.options.reducedMotion)
+          this.placeParticles(
+            last % this.grid.width,
+            Math.floor(last / this.grid.width),
+            this.grid.palette[r.color] ?? [255, 255, 255],
+          );
+      }
+    }
+    r.done = k;
+    if (k < r.cells.length) return;
+    this.reveal = null;
+    this.commitStroke();
+    const last = r.cells[r.cells.length - 1] ?? 0;
+    const x = last % this.grid.width;
+    const y = Math.floor(last / this.grid.width);
+    if ((this.progress.remaining[r.color] ?? 0) === 0) {
+      this.feedback.emit({
+        type: 'colorComplete',
+        color: r.color,
+        x,
+        y,
+        mode: this.mode.id,
+        time: this.time,
+      });
+      if (this.progress.complete)
+        this.feedback.emit({ type: 'artworkComplete', mode: this.mode.id, time: this.time });
+    }
+    this.onChangeRequest?.();
+  }
 
   private visitCell(cx: number, cy: number): void {
     if (!this.progress.inBounds(cx, cy)) return;

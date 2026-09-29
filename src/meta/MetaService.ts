@@ -172,6 +172,12 @@ export class MetaService {
     return this.state.createdAt;
   }
 
+  /** Jour courant selon l'horloge de la méta-progression (date forcée en debug). */
+  get day(): DayKey {
+    this.rollover();
+    return this.today;
+  }
+
   /** Graine propre au joueur (quêtes, coffres). */
   get playerSeed(): number {
     return hashString(`tessel:${this.state.createdAt}`);
