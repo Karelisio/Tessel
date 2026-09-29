@@ -5,7 +5,7 @@ import { t } from '@/i18n/text';
 import { useMetaStore } from '@/store/meta';
 import { useNav, type SubPage, type TabId } from '@/store/nav';
 import { duration } from '@/theme/motion/tokens';
-import { IconCreate, IconGallery } from '@/ui/kit/icons';
+import { IconCreate } from '@/ui/kit/icons';
 import { Skeleton } from '@/ui/kit';
 import { PlaceholderScreen } from '@/ui/screens/Placeholder';
 import { LivingBackground } from './LivingBackground';
@@ -15,6 +15,7 @@ import './shell.css';
 const LibraryScreen = lazy(() => import('@/ui/screens/LibraryScreen'));
 const DailyScreen = lazy(() => import('@/ui/screens/DailyScreen'));
 const ProfileScreen = lazy(() => import('@/ui/screens/ProfileScreen'));
+const GalleryScreen = lazy(() => import('@/ui/screens/GalleryScreen'));
 const SUBPAGES: Record<SubPage, ComponentType> = {
   achievements: lazy(() => import('@/ui/screens/AchievementsScreen')),
   collections: lazy(() => import('@/ui/screens/CollectionsScreen')),
@@ -32,18 +33,7 @@ function TabPage({ tab }: { tab: TabId }) {
     case 'profile':
       return <ProfileScreen />;
     case 'gallery':
-      return (
-        <PlaceholderScreen
-          title={tr(t('Galerie', 'Gallery'))}
-          icon={<IconGallery size={36} />}
-          text={tr(
-            t(
-              'Tes œuvres terminées s’exposeront bientôt ici, dans leurs cadres.',
-              'Your finished artworks will soon hang here, framed.',
-            ),
-          )}
-        />
-      );
+      return <GalleryScreen />;
     case 'create':
       return (
         <PlaceholderScreen

@@ -1,0 +1,1054 @@
+/*
+ * Galerie : classes préfixées `gg-`. L'interface n'utilise que les jetons du thème ; seuls les murs, leurs
+ * ombres et la lumière qui les balaie (illustration) portent des couleurs propres.
+ */
+
+.gg-screen .screen__actions .kit-icon-btn {
+  position: relative;
+}
+
+.gg-dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tertiary);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+/* --- En-tête ------------------------------------------------------------------------------------ */
+
+.gg-head {
+  margin: -6px 0 14px;
+}
+
+.gg-count {
+  margin: 0 20px 10px;
+  min-height: 1.4em;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.gg-count span {
+  color: var(--primary);
+}
+
+.gg-chips {
+  display: flex;
+  gap: 8px;
+  padding: 2px 20px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.gg-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.gg-chips .kit-chip {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* zone tactile ≥ 44 px sans grossir la pastille */
+.gg-chips .kit-chip::after {
+  content: '';
+  position: absolute;
+  inset: -4px -2px;
+}
+
+.gg-chips--wrap {
+  flex-wrap: wrap;
+  overflow: visible;
+  padding: 2px 0 4px;
+}
+
+/* --- Le mur -------------------------------------------------------------------------------------- */
+
+.gg-wall {
+  --gg-ink: rgba(70, 50, 40, 0.55);
+  --gg-ink-soft: rgba(70, 50, 40, 0.28);
+  --gg-mat: rgba(255, 255, 255, 0.42);
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100dvh - 240px);
+  margin-bottom: calc(-1 * (var(--safe-bottom) + var(--tabbar-h) + 24px));
+  padding: 34px 14px calc(var(--safe-bottom) + var(--tabbar-h) + 60px);
+  border-radius: 30px 30px 0 0;
+  overflow: clip;
+}
+
+.gg-wall[data-dark='true'] {
+  --gg-ink: rgba(255, 255, 255, 0.74);
+  --gg-ink-soft: rgba(255, 255, 255, 0.34);
+  --gg-mat: rgba(255, 255, 255, 0.07);
+}
+
+/* ombre portée du plafond sur le haut du mur */
+.gg-wall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 16px 22px -16px rgba(30, 14, 4, 0.45);
+  pointer-events: none;
+}
+
+.gg-wall__bg,
+.gg-wall__tex {
+  position: absolute;
+  inset: 0;
+}
+
+.gg-wall__bg {
+  z-index: -1;
+}
+
+/* Lumière : deux calques collés au haut de l'écran (le mur défile dessous). */
+.gg-light {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100dvh;
+  margin: 0 -14px -100dvh;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.gg-light--vignette {
+  background: radial-gradient(125% 85% at 50% 42%, transparent 52%, rgba(24, 10, 2, 0.2) 100%);
+  mix-blend-mode: multiply;
+}
+
+.gg-light--halo {
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+
+.gg-wall[data-dark='true'] .gg-light--halo {
+  mix-blend-mode: screen;
+  opacity: 0.34;
+}
+
+.gg-halo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 247, 224, 0.95) 0%,
+    rgba(255, 238, 200, 0.42) 38%,
+    rgba(255, 232, 190, 0) 68%
+  );
+  will-change: transform;
+}
+
+.gg-rail {
+  position: relative;
+  z-index: 1;
+}
+
+.gg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+  row-gap: 14px;
+  align-items: start;
+}
+
+/* accrochage « en salon » : la colonne de droite est un peu plus basse */
+.gg-grid > .gg-item:nth-child(even) {
+  position: relative;
+  top: 26px;
+}
+
+.gg-grid {
+  padding-bottom: 30px;
+}
+
+.gg-item {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gg-hang {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 3%;
+  border-radius: 12px;
+  -webkit-touch-callout: none;
+}
+
+.gg-hang:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* La plaque a le rapport exact de l'image encadrée : ombre, image et reflets s'y superposent. */
+.gg-plate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(94% * min(1, var(--ar, 1)));
+  aspect-ratio: var(--ar, 1);
+  transform: translate(-50%, -50%);
+}
+
+.gg-cast {
+  position: absolute;
+  top: var(--iy, 6%);
+  bottom: var(--iy, 6%);
+  left: var(--ix, 6%);
+  right: var(--ix, 6%);
+  border-radius: 3px;
+  background: rgba(28, 14, 4, var(--sa, 0.3));
+  filter: blur(9px);
+  transform: translate3d(var(--sx, 0), var(--sy, 8px), 0);
+  will-change: transform;
+}
+
+.gg-swing {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 4%;
+}
+
+.gg-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+}
+
+.gg-ghost {
+  position: absolute;
+  top: var(--iy, 6%);
+  bottom: var(--iy, 6%);
+  left: var(--ix, 6%);
+  right: var(--ix, 6%);
+  overflow: hidden;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--surface) 44%, transparent);
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--surface) 30%, transparent),
+    0 8px 18px rgba(28, 14, 4, 0.18);
+}
+
+.gg-ghost > .kit-skeleton {
+  opacity: 0.75;
+}
+
+.gg-ghost[data-failed='true'] > .kit-skeleton {
+  animation: none;
+  opacity: 0.45;
+}
+
+/* --- Cartel -------------------------------------------------------------------------------------- */
+
+.gg-cartel {
+  display: grid;
+  gap: 1px;
+  justify-items: center;
+  max-width: 94%;
+  margin-top: 6px;
+  padding: 5px 12px 6px;
+  border-radius: 10px;
+  text-align: center;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--surface-2) 90%, transparent) inset,
+    0 3px 9px rgba(28, 14, 4, 0.2);
+}
+
+.gg-cartel strong {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--on-surface);
+}
+
+.gg-cartel span {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.gg-cartel--ghost {
+  width: 78%;
+  gap: 6px;
+  padding: 8px 12px;
+}
+
+.gg-cartel--big {
+  max-width: 300px;
+  margin-top: 22px;
+  padding: 14px 18px 16px;
+  border-radius: 16px;
+  gap: 6px;
+}
+
+.gg-cartel--big strong {
+  font-size: 16px;
+  white-space: normal;
+}
+
+.gg-cartel--big span {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+/* --- Reflets de diamant : trois couches qui bougent avec l'inclinaison ----------------------------- */
+
+.gg-glint {
+  --tx: 0;
+  --ty: 0;
+  position: absolute;
+  inset: var(--iy, 6%) var(--ix, 6%);
+  pointer-events: none;
+}
+
+.gg-glint > i {
+  position: absolute;
+  inset: 0;
+}
+
+/* irisation, comme l'éclat d'une facette */
+.gg-glint__prism {
+  background: linear-gradient(
+    calc(118deg + var(--tx) * 46deg),
+    #ff9db8,
+    #ffe6a0 24%,
+    #a6ffd8 48%,
+    #9ccdff 72%,
+    #d6a8ff
+  );
+  background-size: 180% 180%;
+  background-position: calc(50% + var(--tx) * 40%) calc(50% + var(--ty) * 40%);
+  mix-blend-mode: overlay;
+  opacity: 0.4;
+}
+
+/* bande de lumière qui traverse l'œuvre */
+.gg-glint__band {
+  background: linear-gradient(
+    112deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.12) 43%,
+    rgba(255, 255, 255, 0.95) 49.5%,
+    rgba(255, 244, 214, 0.5) 54%,
+    transparent 63%
+  );
+  background-size: 280% 100%;
+  background-position: calc(50% + var(--tx) * 62%) 50%;
+  mix-blend-mode: soft-light;
+}
+
+/* éclats : deux semis d'étoiles qui glissent en sens inverse, visibles autour du point de lumière */
+.gg-glint__dust {
+  background-image: var(--glitter-a), var(--glitter-b);
+  background-size:
+    74px 74px,
+    122px 122px;
+  background-position:
+    calc(var(--tx) * 22px) calc(var(--ty) * 18px),
+    calc(30px - var(--tx) * 38px) calc(12px - var(--ty) * 30px);
+  -webkit-mask-image: radial-gradient(
+    circle at calc(50% + var(--tx) * 46%) calc(46% + var(--ty) * 46%),
+    #000 0%,
+    rgba(0, 0, 0, 0.4) 36%,
+    transparent 66%
+  );
+  mask-image: radial-gradient(
+    circle at calc(50% + var(--tx) * 46%) calc(46% + var(--ty) * 46%),
+    #000 0%,
+    rgba(0, 0, 0, 0.4) 36%,
+    transparent 66%
+  );
+  mix-blend-mode: screen;
+}
+
+/* --- Mur nu -------------------------------------------------------------------------------------- */
+
+.gg-empty,
+.gg-nomatch {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 18px 0 40px;
+}
+
+.gg-empty__hang {
+  padding-top: 26px;
+  transform-origin: 50% 0;
+}
+
+.gg-empty__sway {
+  position: relative;
+  transform-origin: 50% -22px;
+}
+
+.gg-empty__nail {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--gg-ink);
+  box-shadow: 0 2px 3px rgba(28, 14, 4, 0.4);
+}
+
+.gg-empty__cord {
+  position: absolute;
+  top: -22px;
+  width: 1.5px;
+  height: 30px;
+  background: var(--gg-ink-soft);
+  transform-origin: 50% 0;
+}
+
+.gg-empty__cord--l {
+  left: 50%;
+  transform: rotate(38deg);
+}
+
+.gg-empty__cord--r {
+  left: 50%;
+  transform: rotate(-38deg);
+}
+
+.gg-empty__frame {
+  position: relative;
+  width: 176px;
+  aspect-ratio: 4 / 5;
+  padding: 12px;
+  border: 7px solid var(--gg-ink);
+  border-radius: 5px;
+  background: var(--gg-mat);
+  box-shadow:
+    0 14px 26px rgba(28, 14, 4, 0.28),
+    inset 0 0 0 1px var(--gg-ink-soft);
+  overflow: hidden;
+}
+
+.gg-empty__frame::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.45) 50%, transparent 58%);
+  animation: gg-shine 6s ease-in-out infinite;
+}
+
+.gg-empty__mat {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--gg-ink-soft);
+  color: var(--gg-ink);
+}
+
+@keyframes gg-shine {
+  0%,
+  55% {
+    transform: translateX(-70%);
+  }
+  100% {
+    transform: translateX(70%);
+  }
+}
+
+/* --- Détail d'une œuvre --------------------------------------------------------------------------- */
+
+.gg-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(26px) saturate(1.15);
+  overscroll-behavior: contain;
+}
+
+.gg-detail__spot {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    70% 42% at 50% 27%,
+    color-mix(in srgb, var(--primary) 24%, transparent),
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.gg-detail__bar {
+  position: relative;
+  padding: calc(var(--safe-top) + 8px) 10px 0;
+}
+
+.gg-detail__scroll {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px calc(var(--safe-bottom) + 32px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22px);
+  mask-image: linear-gradient(to bottom, transparent, #000 22px);
+}
+
+.gg-stage {
+  --stage-h: min(42dvh, 390px);
+  height: var(--stage-h);
+  display: grid;
+  place-items: center;
+  perspective: 1000px;
+  touch-action: none;
+}
+
+.gg-tilt {
+  transform-style: preserve-3d;
+}
+
+.gg-plate--detail {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: min(calc(100vw - 64px), calc(var(--stage-h) * var(--ar, 1)));
+}
+
+.gg-plate__in {
+  position: absolute;
+  inset: 0;
+}
+
+.gg-cast--detail {
+  filter: blur(16px);
+  --sa: 0.42;
+  --sy: 20px;
+  --sx: 5px;
+}
+
+.gg-glare {
+  position: absolute;
+  inset: var(--iy, 6%) var(--ix, 6%);
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+
+.gg-info {
+  display: grid;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.gg-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.gg-eyebrow span {
+  color: var(--on-surface-muted);
+}
+
+.gg-info__title {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.gg-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.gg-facts > div {
+  padding: 12px 14px;
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.gg-facts dt {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.gg-facts dd {
+  margin: 3px 0 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.gg-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.gg-actions > .kit-btn {
+  min-height: 52px;
+  font-size: 16px;
+}
+
+.gg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gg-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.gg-tile {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  min-height: 92px;
+  padding: 12px 6px;
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  color: var(--on-surface);
+  text-align: center;
+}
+
+.gg-tile:disabled:not([data-busy='true']) {
+  opacity: 0.5;
+}
+
+.gg-tile__icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.gg-tile__label {
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.gg-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--on-primary-container) 25%, transparent);
+  border-top-color: var(--on-primary-container);
+}
+
+/* --- Feuilles ------------------------------------------------------------------------------------ */
+
+.gg-sheet__title {
+  margin: 4px 0 6px;
+  font-size: 21px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.gg-sheet__hint {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--on-surface-muted);
+}
+
+.gg-sheet__group {
+  margin: 18px 2px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.gg-sheet__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.gg-walls,
+.gg-frames {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 10px;
+}
+
+.gg-wallopt,
+.gg-frameopt {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  min-height: 44px;
+  padding: 0;
+  text-align: center;
+}
+
+.gg-wallopt__name,
+.gg-frameopt__name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gg-swatch {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px var(--outline),
+    var(--shadow-soft);
+  transition: box-shadow 0.2s;
+}
+
+.gg-wallopt[data-selected='true'] .gg-swatch {
+  box-shadow:
+    0 0 0 3px var(--primary),
+    var(--shadow-soft);
+}
+
+.gg-swatch__frame {
+  position: absolute;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 7px rgba(20, 10, 0, 0.32);
+}
+
+.gg-swatch[data-dark='true'] .gg-swatch__frame {
+  border-color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.gg-swatch__frame--a {
+  left: 13%;
+  top: 17%;
+  width: 40%;
+  height: 46%;
+}
+
+.gg-swatch__frame--b {
+  left: 58%;
+  top: 33%;
+  width: 28%;
+  height: 32%;
+}
+
+.gg-wallopt[data-locked='true'] .gg-swatch {
+  filter: grayscale(0.9) brightness(0.72);
+}
+
+.gg-wallopt[data-locked='true'] .gg-wallopt__name {
+  color: var(--on-surface-muted);
+}
+
+.gg-wallopt__lock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  aspect-ratio: 1 / 1.08;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.gg-wallopt__lock small {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.42);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.gg-wallopt__check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.gg-frameopt__img {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--outline);
+  transition: box-shadow 0.2s;
+}
+
+.gg-frameopt[data-current='true'] .gg-frameopt__img {
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.gg-frameopt__img img {
+  max-width: 94%;
+  max-height: 94%;
+  object-fit: contain;
+}
+
+/* --- Exports ------------------------------------------------------------------------------------- */
+
+.gg-job {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 2px 4px 4px;
+}
+
+.gg-job > .kit-btn {
+  min-width: 160px;
+}
+
+.gg-job__hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+}
+
+.gg-job__hero img {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.gg-job__pulse {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary) 34%, transparent), transparent 68%);
+}
+
+.gg-job__text {
+  margin: 0;
+  max-width: 280px;
+  text-align: center;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--on-surface-muted);
+}
+
+.gg-progress {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 16%, var(--surface-3));
+}
+
+.gg-progress__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--primary), var(--tertiary));
+}
+
+.gg-job__row {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.gg-job__pct {
+  font-size: 30px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.gg-job__row small {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.gg-job__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gg-job__preview {
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-lift);
+}
+
+.gg-job__preview video,
+.gg-job__preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 36dvh;
+}
+
+.gg-phone {
+  position: relative;
+  height: min(44dvh, 380px);
+  aspect-ratio: var(--screen-ar, 0.46);
+  overflow: hidden;
+  border-radius: 26px;
+  background: var(--surface-3);
+  box-shadow:
+    0 0 0 5px var(--on-surface),
+    var(--shadow-lift);
+}
+
+.gg-phone > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gg-phone__clock {
+  position: absolute;
+  top: 9%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.gg-phone__error {
+  margin: 0;
+  padding: 40% 18px 0;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.gg-job .imp-seg {
+  width: 100%;
+}
+
+/* --- Message doux -------------------------------------------------------------------------------- */
+
+.gg-toasts {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(var(--safe-bottom) + 28px);
+  z-index: 90;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.gg-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 360px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--on-surface);
+  color: var(--surface);
+  box-shadow: var(--shadow-lift);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  pointer-events: auto;
+}
+
+.gg-toast[data-tone='soft'] {
+  border-radius: 20px;
+}
+
+.gg-toast__icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-empty__frame::after {
+    animation: none;
+  }
+}
+
+[data-motion='reduced'] .gg-empty__frame::after {
+  animation: none;
+}
