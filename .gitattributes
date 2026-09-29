@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.webp binary
+*.ogg binary
+*.opus binary
+*.tgrid binary
+assets/art/sources/** filter=lfs diff=lfs merge=lfs -text
+assets/audio/masters/** filter=lfs diff=lfs merge=lfs -text
