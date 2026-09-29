@@ -1,0 +1,881 @@
+/* Bibliothèque : classes préfixées `lib-`, couleurs uniquement via les jetons de thème. */
+
+.lib {
+  padding-bottom: 12px;
+}
+
+.lib__top {
+  padding: 0 20px;
+}
+
+.lib__top + .lib__top,
+.lib-rail + .lib__top,
+.lib > section + .lib__top {
+  margin-top: 14px;
+}
+
+.lib__import {
+  margin-top: 14px;
+}
+
+.lib__anchor {
+  height: 1px;
+  margin-top: 16px;
+  scroll-margin-top: calc(var(--safe-top) + 58px);
+}
+
+.lib-kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.lib-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- Héros ------------------------------------------------------------------------------------ */
+
+.kit-card.lib-hero {
+  padding: 16px;
+  background:
+    radial-gradient(
+      120% 90% at 100% 0%,
+      color-mix(in srgb, var(--primary-container) 75%, transparent),
+      transparent 70%
+    ),
+    var(--surface-2);
+  overflow: hidden;
+}
+
+.lib-hero__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lib-hero__art {
+  position: relative;
+  flex: none;
+  width: 148px;
+  height: 148px;
+  border-radius: 20px;
+}
+
+.lib-hero__art .thumb {
+  border-radius: 20px;
+  box-shadow: var(--shadow-lift);
+}
+
+.lib-hero__ring {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.lib-hero__ring .kit-ring__inner {
+  font-size: 12px;
+  color: var(--on-surface);
+}
+
+.lib-hero__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.lib-hero__title {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lib-hero__sub {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--on-surface-muted);
+}
+
+/* --- Rails horizontaux ---------------------------------------------------------------------------- */
+
+.lib-rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 20px 10px;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 20px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.lib-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.lib-rail--inset {
+  scroll-padding-inline: 16px;
+  padding: 4px 16px 6px;
+  margin: 8px -16px 0;
+}
+
+.lib-mini {
+  flex: none;
+  width: 112px;
+  display: grid;
+  gap: 8px;
+  text-align: left;
+  scroll-snap-align: start;
+}
+
+.lib-mini__art {
+  position: relative;
+  display: block;
+  width: 112px;
+  height: 112px;
+  border-radius: 18px;
+}
+
+.lib-mini__art .thumb {
+  border-radius: 18px;
+}
+
+.lib-mini__title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-pct {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+/* --- Événement ------------------------------------------------------------------------------------- */
+
+.kit-card.lib-event {
+  padding: 14px 16px 10px;
+  background:
+    radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--tertiary) 24%, transparent), transparent 70%),
+    radial-gradient(
+      80% 100% at 100% 100%,
+      color-mix(in srgb, var(--primary-container) 70%, transparent),
+      transparent 70%
+    ),
+    var(--surface-2);
+  overflow: hidden;
+}
+
+.lib-event__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lib-event__icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--tertiary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.lib-event__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lib-event__text strong {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.lib-event__text small {
+  font-size: 13px;
+  color: var(--on-surface-muted);
+}
+
+.lib-event__work {
+  flex: none;
+  width: 84px;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  scroll-snap-align: start;
+}
+
+.lib-event__art {
+  position: relative;
+  display: block;
+  width: 84px;
+  height: 84px;
+  border-radius: 16px;
+}
+
+.lib-event__art .thumb {
+  border-radius: 16px;
+}
+
+.lib-event__title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  height: 2.4em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* --- Importer une photo ------------------------------------------------------------------------- */
+
+.lib-import {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 12px 16px;
+  text-align: left;
+  border-radius: var(--radius-l);
+  border: 1.5px dashed var(--outline-strong);
+  background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+  color: var(--on-surface);
+}
+
+.lib-import__icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.lib-import__text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.lib-import__text strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.lib-import__text small {
+  font-size: 13px;
+  color: var(--on-surface-muted);
+}
+
+/* --- Barre collante : recherche, catégories, filtres ------------------------------------------- */
+
+.lib-toolbar {
+  position: sticky;
+  top: 0; /* le défilement réserve déjà la place de la barre du titre (padding) */
+  z-index: 4;
+  padding: 8px 0 6px;
+  border-radius: 0 0 20px 20px;
+  transition:
+    background 0.25s,
+    box-shadow 0.25s;
+}
+
+.lib-toolbar[data-stuck='true'] {
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 var(--outline);
+}
+
+.lib-toolbar__row {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.lib-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 6px 0 16px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  color: var(--on-surface-muted);
+  transition: box-shadow 0.2s;
+}
+
+.lib-search:focus-within {
+  box-shadow:
+    0 0 0 2px var(--primary),
+    var(--shadow-soft);
+  color: var(--primary);
+}
+
+.lib-search input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--on-surface);
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lib-search input::placeholder {
+  color: var(--on-surface-muted);
+  font-weight: 600;
+}
+
+.lib-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.lib-search__clear {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--on-surface-muted);
+}
+
+.lib-filter-btn {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  color: var(--on-surface);
+}
+
+.lib-filter-btn[aria-pressed='true'] {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.lib-filter-btn__dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tertiary);
+  box-shadow: 0 0 0 2px var(--surface-2);
+}
+
+.lib-filters {
+  overflow: hidden;
+}
+
+.lib-filters__inner {
+  display: grid;
+  gap: 10px;
+  padding: 12px 20px 2px;
+}
+
+.lib-filters__group {
+  display: grid;
+  gap: 6px;
+}
+
+.lib-filters__label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.lib-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -20px;
+  padding: 2px 20px;
+}
+
+.lib-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.lib-chips .kit-chip,
+.lib-cats .kit-chip {
+  min-height: 44px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lib-filters__reset {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.lib-cats {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 10px 20px 4px;
+}
+
+.lib-cats::-webkit-scrollbar {
+  display: none;
+}
+
+.lib-cat {
+  flex: none;
+  min-height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--outline-strong);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--on-surface);
+}
+
+.lib-cat[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.lib-cat[data-locked='true'] {
+  border-style: dashed;
+  border-color: var(--outline);
+  background: color-mix(in srgb, var(--surface-3) 60%, transparent);
+  color: var(--on-surface-muted);
+}
+
+.lib-cat small {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--surface-3);
+  color: var(--on-surface-muted);
+}
+
+.lib-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 8px 20px 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.lib-hint svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* --- Grille --------------------------------------------------------------------------------------- */
+
+.lib-count {
+  min-width: 28px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  background: var(--surface-3);
+  color: var(--on-surface-muted);
+}
+
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0 20px;
+}
+
+.lib-card {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 0 10px;
+  text-align: left;
+  border-radius: 20px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 230px;
+}
+
+.lib-card__art {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 20px 20px 14px 14px;
+  aspect-ratio: 1;
+}
+
+.lib-card__art .thumb {
+  width: 100% !important; /* la vignette fixe sa taille en ligne : la grille la fait épouser sa colonne */
+  height: 100% !important;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.lib-card__title,
+.lib-card__meta {
+  padding: 0 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lib-card__title {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.lib-card__meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+.lib-card__ring {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.lib-card__pct {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--on-surface);
+}
+
+.lib-card__ring .kit-ring__inner {
+  font-size: 11px;
+}
+
+.lib-check {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.lib-check--sm {
+  right: 4px;
+  top: 4px;
+  width: 22px;
+  height: 22px;
+}
+
+.lib-new {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Reflet qui balaie les œuvres jamais ouvertes. */
+.lib-card__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    color-mix(in srgb, var(--surface-2) 65%, transparent) 50%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  animation: lib-shine 4.2s ease-in-out 0.8s infinite;
+}
+
+@keyframes lib-shine {
+  0% {
+    transform: translateX(-120%);
+  }
+  38%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+.lib-more {
+  height: 40px;
+}
+
+.lib-footnote {
+  margin: 22px 32px 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+/* --- Feuille « Choisir » -------------------------------------------------------------------------- */
+
+.lib-sheet {
+  display: grid;
+  justify-items: center;
+}
+
+.lib-sheet__art {
+  padding: 8px;
+  border-radius: 28px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-lift);
+}
+
+.lib-sheet__art .thumb {
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.lib-sheet__title {
+  margin: 12px 0 2px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.lib-sheet__meta {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--on-surface-muted);
+}
+
+.lib-sheet__label {
+  justify-self: start;
+  margin: 16px 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.lib-opts {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.lib-opt {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  min-height: 64px;
+  padding: 10px 14px;
+  text-align: left;
+  border-radius: 16px;
+  border: 1.5px solid var(--outline);
+  background: var(--surface-2);
+  color: var(--on-surface);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.lib-opt strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.lib-opt small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+.lib-opt .lib-opt__state {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.lib-opt[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.lib-opt[aria-pressed='true'] small {
+  color: var(--on-primary-container);
+}
+
+.lib-opt--mode {
+  min-height: 52px;
+}
+
+.lib-opt[data-locked='true'] {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--surface-3) 60%, transparent);
+  color: var(--on-surface-muted);
+}
+
+.lib-opt .lib-opt__lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--on-surface-muted);
+}
+
+.lib-note {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.lib-note svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.lib-sheet__cta {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 12px;
+  display: grid;
+  background: linear-gradient(to bottom, transparent, var(--surface) 28%);
+}
+
+.lib-sheet__cta .kit-btn {
+  min-height: 54px;
+  font-size: 17px;
+}
+
+/* --- Squelettes -------------------------------------------------------------------------------------- */
+
+.lib-skel {
+  display: grid;
+  gap: 14px;
+  padding: 0 20px;
+}
+
+.lib-skel__chips {
+  display: flex;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.lib-skel .lib-grid {
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lib-card__shine {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+[data-motion='reduced'] .lib-card__shine {
+  animation: none;
+  opacity: 0;
+}
