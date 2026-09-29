@@ -82,7 +82,7 @@ Le moteur vit hors de React (classes TS + bus d'événements). React reçoit au 
 - Série : jour validé à 30 cases ; jokers auto (1 au départ, +1 tous les 7 jours, max 3) ; paliers 3/7/14/30/60/100/200/365.
 - 150 succès (110 à paliers, 25 découvertes, 15 secrets). ~20 collections + 6 événements annuels.
 - Module `src/meta` : logique pure testée (niveaux, déblocages, série, quêtes, succès, coffres, secrets)
-  + `MetaService` (état en mémoire, notifications, écriture groupée en base via `MetaStore`).
+  - `MetaService` (état en mémoire, notifications, écriture groupée en base via `MetaStore`).
 
 ## Contenu & conversion
 
