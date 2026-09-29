@@ -15,7 +15,8 @@
     "moduleDetection": "force",
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["vite.config.ts", "capacitor.config.ts", "commitlint.config.ts", "scripts"]
 }
