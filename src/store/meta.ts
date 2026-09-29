@@ -48,6 +48,9 @@ interface MetaState {
   attach: (service: MetaService) => () => void;
   refresh: () => void;
   dismiss: (id: number) => void;
+  /** Debug : rejoue un toast ou une célébration. */
+  push: (notice: MetaNotice) => void;
+  celebrate: (c: Celebration) => void;
 }
 
 function snapshot(m: MetaService): MetaSnapshot {
@@ -114,5 +117,11 @@ export const useMetaStore = create<MetaState>((set, get) => ({
   },
   dismiss: (id) => {
     set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }));
+  },
+  push: (notice) => {
+    set((s) => ({ toasts: [...s.toasts, { id: nextToast++, notice }].slice(-MAX_TOASTS) }));
+  },
+  celebrate: (celebration) => {
+    set({ celebration });
   },
 }));

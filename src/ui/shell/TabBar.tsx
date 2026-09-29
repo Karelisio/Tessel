@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { tr } from '@/i18n/locale';
 import { t, type I18nText } from '@/i18n/text';
+import { debugTap } from '@/debug/debugTap';
 import { TABS, useNav, type TabId } from '@/store/nav';
 import { spring } from '@/theme/motion/tokens';
 import { IconCreate, IconDaily, IconGallery, IconLibrary, IconProfile } from '@/ui/kit/icons';
@@ -30,6 +31,7 @@ export function TabBar({ badges }: { badges: Partial<Record<TabId, boolean>> }) 
             aria-current={active ? 'page' : undefined}
             whileTap={{ scale: 0.9 }}
             onClick={() => {
+              if (id === 'profile') debugTap();
               setTab(id);
             }}
           >
