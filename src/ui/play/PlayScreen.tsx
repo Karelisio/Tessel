@@ -121,6 +121,7 @@ export function PlayScreen() {
           artworkId: `demo-sunset-${size}`,
           source: 'generator',
           title: 'Lac au coucher du soleil',
+          category: 'paysages',
           grid: () => sunsetLake(size, size, 1),
         };
         artwork.current = ref;
