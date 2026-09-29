@@ -1,0 +1,149 @@
+{
+  "music": [
+    {
+      "id": "music:1",
+      "file": "music/1.ogg",
+      "title": {
+        "fr": "Aube",
+        "en": "Dawn"
+      },
+      "seconds": 136,
+      "samples": 6528000,
+      "lufs": -16
+    },
+    {
+      "id": "music:2",
+      "file": "music/2.ogg",
+      "title": {
+        "fr": "Tesselles",
+        "en": "Tesserae"
+      },
+      "seconds": 132,
+      "samples": 6336000,
+      "lufs": -16
+    },
+    {
+      "id": "music:3",
+      "file": "music/3.ogg",
+      "title": {
+        "fr": "Jardin",
+        "en": "Garden"
+      },
+      "seconds": 128,
+      "samples": 6144000,
+      "lufs": -16
+    },
+    {
+      "id": "music:4",
+      "file": "music/4.ogg",
+      "title": {
+        "fr": "Nuage",
+        "en": "Cloud"
+      },
+      "seconds": 140,
+      "samples": 6720000,
+      "lufs": -16
+    },
+    {
+      "id": "music:5",
+      "file": "music/5.ogg",
+      "title": {
+        "fr": "Atelier",
+        "en": "Studio"
+      },
+      "seconds": 130,
+      "samples": 6240000,
+      "lufs": -16
+    },
+    {
+      "id": "music:6",
+      "file": "music/6.ogg",
+      "title": {
+        "fr": "Rivière",
+        "en": "River"
+      },
+      "seconds": 126,
+      "samples": 6048000,
+      "lufs": -16
+    },
+    {
+      "id": "music:7",
+      "file": "music/7.ogg",
+      "title": {
+        "fr": "Veillée",
+        "en": "Evening"
+      },
+      "seconds": 134,
+      "samples": 6432000,
+      "lufs": -16
+    },
+    {
+      "id": "music:8",
+      "file": "music/8.ogg",
+      "title": {
+        "fr": "Constellation",
+        "en": "Constellation"
+      },
+      "seconds": 138,
+      "samples": 6624000,
+      "lufs": -16
+    }
+  ],
+  "ambience": [
+    {
+      "id": "ambience:cafe",
+      "file": "ambience/cafe.ogg",
+      "title": {
+        "fr": "Café",
+        "en": "Café"
+      },
+      "seconds": 40,
+      "samples": 1920000,
+      "lufs": -22
+    },
+    {
+      "id": "ambience:feu",
+      "file": "ambience/feu.ogg",
+      "title": {
+        "fr": "Feu de cheminée",
+        "en": "Fireplace"
+      },
+      "seconds": 40,
+      "samples": 1920000,
+      "lufs": -22
+    },
+    {
+      "id": "ambience:foret",
+      "file": "ambience/foret.ogg",
+      "title": {
+        "fr": "Forêt",
+        "en": "Forest"
+      },
+      "seconds": 40,
+      "samples": 1920000,
+      "lufs": -22
+    },
+    {
+      "id": "ambience:pluie",
+      "file": "ambience/pluie.ogg",
+      "title": {
+        "fr": "Pluie",
+        "en": "Rain"
+      },
+      "seconds": 40,
+      "samples": 1920000,
+      "lufs": -22
+    },
+    {
+      "id": "ambience:vagues",
+      "file": "ambience/vagues.ogg",
+      "title": {
+        "fr": "Vagues",
+        "en": "Waves"
+      },
+      "seconds": 40,
+      "samples": 1920000,
+      "lufs": -22
+    }
+  ]
+}
