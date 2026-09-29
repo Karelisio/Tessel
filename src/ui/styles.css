@@ -268,3 +268,15 @@ button {
 .btn:disabled {
   opacity: 0.5;
 }
+
+/* --- Barre du haut du jeu : place pour le bouton « Importer une photo » ------------------------ */
+
+/* trois boutons ronds côte à côte : ils ne doivent pas s'écraser en ovales, c'est le groupe des modes
+   (déjà défilable) qui cède la place */
+.topbar > .icon-btn {
+  flex: none;
+}
+
+.topbar > .chip-group {
+  max-width: none;
+}

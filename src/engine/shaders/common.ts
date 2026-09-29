@@ -274,7 +274,8 @@ void main() {
   vec4 tgt = texelFetch(uTarget, c, 0);
   int idx = int(tgt.r * 255.0 + 0.5);
   if (idx == 255) {
-    finalColor = vec4(uPaper, 1.0);
+    // case transparente : même fond qu'autour de l'œuvre, la silhouette se détache
+    finalColor = vec4(uBackdrop, 1.0);
     return;
   }
   float seed = tgt.g;

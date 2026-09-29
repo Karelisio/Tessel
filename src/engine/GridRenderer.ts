@@ -298,7 +298,12 @@ export class GridRenderer {
   }
 
   destroy(): void {
+    const shaders = [this.gridMesh.shader, this.animMesh.shader];
     this.view.destroy({ children: true });
+    // les shaders d'abord : leurs groupes de liaison lâchent les textures avant leur destruction
+    for (const s of shaders) s?.destroy();
+    this.quad.destroy(true);
+    this.animGeometry.destroy(true);
     this.cellsSource.destroy();
     this.targetSource.destroy();
     this.paletteSource.destroy();
@@ -341,7 +346,8 @@ export class GridRenderer {
     const c = this.grid.cells[index] ?? TRANSPARENT;
     const o = index * 4;
     if (c === TRANSPARENT) {
-      const [r, g, b] = this.mode.paper;
+      // une case transparente laisse voir le fond autour de l'œuvre : la silhouette se détache
+      const [r, g, b] = this.mode.backdrop;
       this.cells.set([r * 255, g * 255, b * 255, 0], o);
       return;
     }
