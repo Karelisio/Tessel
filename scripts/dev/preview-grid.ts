@@ -4,8 +4,9 @@ import { sunsetLake } from '../../src/content/generators/sunsetLake';
 import { countByColor } from '../../src/content/grid';
 
 const out = process.argv[2] ?? 'preview.png';
-const scale = 4;
-const g = sunsetLake();
+const scale = Math.max(1, Math.floor(600 / Number(process.argv[3] ?? 150)));
+const size = Number(process.argv[3] ?? 150);
+const g = sunsetLake(size, size, 1);
 const png = new PNG({ width: g.width * scale, height: g.height * scale });
 for (let y = 0; y < png.height; y++)
   for (let x = 0; x < png.width; x++) {

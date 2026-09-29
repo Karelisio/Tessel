@@ -1,3 +1,4 @@
+import { FrameStyle } from '@/fx/finaleTimeline';
 import type { ModeDefinition } from './types';
 
 /**
@@ -15,7 +16,9 @@ export const diamondMode: ModeDefinition = {
   sound: 'diamond',
   haptic: 'tick',
   usesLight: true,
+  frame: FrameStyle.Gold,
   glsl: {
+    pendingAsGap: true,
     gap: /* glsl */ `
 vec3 gapColor(vec3 col, vec2 f) {
   return mix(uPaper * 0.55, col * 0.45, 0.5);
@@ -112,6 +115,17 @@ vec4 emptyCell(vec2 f, int idx, vec3 col, float px, float cellPx, float numberAl
     base = mix(base, ink, m);
   }
   return vec4(base, 1.0);
+}
+`,
+    // cascade de scintillements : chaque pierre s'illumine au passage de l'onde, avec une étoile
+    finale: /* glsl */ `
+vec3 finaleEffect(vec3 c, vec2 cell, vec2 f, float near) {
+  float pulse = finalePulse(cell);
+  if (pulse <= 0.0) return c;
+  float h = hash12(cell);
+  vec2 q = f - vec2(0.3 + 0.4 * h, 0.3 + 0.4 * fract(h * 7.0));
+  float star = max(0.0, 1.0 - (abs(q.x) * abs(q.y) * 900.0 + length(q) * 4.0)) * near;
+  return c + pulse * (0.35 * (vec3(1.0) - c) + star * 0.9);
 }
 `,
     // chute de quelques pixels puis petit rebond

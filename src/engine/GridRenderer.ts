@@ -104,6 +104,7 @@ export class GridRenderer {
       uNumbers: { value: 1, type: 'f32' },
       uPaper: { value: new Float32Array(mode.paper), type: 'vec3<f32>' },
       uBackdrop: { value: new Float32Array(mode.backdrop), type: 'vec3<f32>' },
+      uFinish: { value: new Float32Array([-1, mode.frame, 0, 0]), type: 'vec4<f32>' },
     });
 
     this.quad = new Geometry({
@@ -158,6 +159,7 @@ export class GridRenderer {
     u.uDuration = mode.placeDuration / 1000;
     (u.uPaper as Float32Array).set(mode.paper);
     (u.uBackdrop as Float32Array).set(mode.backdrop);
+    (u.uFinish as Float32Array)[1] = mode.frame;
     this.uniforms.update();
     const oldGrid = this.gridMesh.shader;
     const oldAnim = this.animMesh.shader;
@@ -220,6 +222,24 @@ export class GridRenderer {
   startWave(color: number, originX: number, originY: number, time: number): void {
     (this.uniforms.uniforms.uWave as Float32Array).set([originX, originY, time, color]);
     this.uniforms.update();
+  }
+
+  /** Démarre la cinématique de fin (effets GLSL pilotés par le temps) ; `time < 0` l'annule. */
+  setFinale(time: number): void {
+    (this.uniforms.uniforms.uFinish as Float32Array)[0] = time;
+    this.uniforms.update();
+  }
+
+  /** Remet toutes les cases à vide à l'écran (la progression logique n'est pas touchée). */
+  clearAll(): void {
+    for (let i = 0; i < this.grid.cells.length; i++) this.writeCell(i, CellState.Empty);
+    this.pendingFill.length = 0;
+    this.animEnds.fill(-1);
+    for (let q = 0; q < ANIM_CAPACITY; q++) {
+      for (let v = 0; v < 4; v++) this.animData[(q * 4 + v) * FLOATS_PER_VERTEX + 4] = -1e6;
+    }
+    this.animDirty = true;
+    this.cellsDirty = true;
   }
 
   setCell(index: number, state: CellState): void {

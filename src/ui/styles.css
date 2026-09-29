@@ -213,3 +213,58 @@ button {
   text-align: center;
   color: var(--on-surface);
 }
+
+.chip-group {
+  max-width: calc(100vw - 176px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+.progress-pill {
+  white-space: nowrap;
+}
+
+.finish-panel {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(var(--safe-bottom) + 20px);
+  padding: 18px;
+  border-radius: var(--radius-l);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow-lift);
+  backdrop-filter: blur(12px);
+  display: grid;
+  gap: 14px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.finish-panel__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}

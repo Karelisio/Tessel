@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GameSnapshot } from '@/engine/Game';
+import type { GamePhase, GameSnapshot } from '@/engine/Game';
 import type { ModeId } from '@/modes/types';
 
 interface PlayState {
@@ -8,6 +8,8 @@ interface PlayState {
   showHud: boolean;
   canUndo: boolean;
   canRedo: boolean;
+  phase: GamePhase;
+  setPhase: (p: GamePhase) => void;
   setSnapshot: (s: GameSnapshot, canUndo: boolean, canRedo: boolean) => void;
   setMode: (m: ModeId) => void;
   toggleHud: () => void;
@@ -20,6 +22,10 @@ export const usePlayStore = create<PlayState>((set) => ({
   showHud: import.meta.env.DEV,
   canUndo: false,
   canRedo: false,
+  phase: 'playing',
+  setPhase: (phase) => {
+    set({ phase });
+  },
   setSnapshot: (snapshot, canUndo, canRedo) => {
     set({ snapshot, canUndo, canRedo });
   },

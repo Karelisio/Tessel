@@ -2,6 +2,7 @@ import type { AudioEngine } from '@/audio/AudioEngine';
 import type { HapticsEngine } from '@/audio/haptics';
 import { TRANSPARENT, type Grid, type Rgb } from '@/content/grid';
 import { PlaceResult, Progress } from '@/content/progress';
+import { FINALE, FRAME_RATIO } from '@/fx/finaleTimeline';
 import type { ParticleFx } from '@/fx/Particles';
 import type { ModeDefinition } from '@/modes/types';
 import type { Camera } from './Camera';
@@ -23,6 +24,8 @@ export interface GameSnapshot {
   readonly left: number;
   readonly total: number;
 }
+
+export type GamePhase = 'playing' | 'finale' | 'finished' | 'timelapse';
 
 export interface GameOptions {
   autoCorrect: boolean;
@@ -48,12 +51,13 @@ function lighten([r, g, b]: Rgb, k: number): number {
  * déclenche rendu, particules, son et haptique de façon synchronisée.
  */
 export class Game implements GestureHandlers {
-  readonly progress: Progress;
+  progress: Progress;
   readonly feedback = new FeedbackBus();
   selected = 0;
   options: GameOptions = { autoCorrect: true, reducedMotion: false };
   onSnapshot: ((s: GameSnapshot) => void) | null = null;
   onChangeRequest: (() => void) | null = null;
+  onPhase: ((phase: GamePhase) => void) | null = null;
 
   private mode: ModeDefinition;
   private paintLast: [number, number] | null = null;
@@ -66,6 +70,11 @@ export class Game implements GestureHandlers {
   private dirtySnapshot = true;
   private lastSnapshot = -Infinity;
   private time = 0;
+  private phaseValue: GamePhase = 'playing';
+  /** Ordre de pose (sans les poses annulées) : sert au timelapse. */
+  private readonly history: number[] = [];
+  private replay: { start: number; duration: number; done: number } | null = null;
+  private lastReplaySound = -Infinity;
 
   constructor(
     readonly grid: Grid,
@@ -94,9 +103,20 @@ export class Game implements GestureHandlers {
     this.renderer.setMode(mode);
   }
 
+  get phase(): GamePhase {
+    return this.phaseValue;
+  }
+
+  private setPhase(phase: GamePhase): void {
+    this.phaseValue = phase;
+    this.onPhase?.(phase);
+    this.onChangeRequest?.();
+  }
+
   /** Temps courant (s), fourni par le moteur à chaque frame. */
   tick(time: number): boolean {
     this.time = time;
+    if (this.replay) this.stepReplay();
     for (let i = this.scheduled.length - 1; i >= 0; i--) {
       const s = this.scheduled[i];
       if (s && s.at <= time) {
@@ -109,7 +129,7 @@ export class Game implements GestureHandlers {
       this.lastSnapshot = time;
       this.onSnapshot?.(this.snapshot());
     }
-    return this.scheduled.length > 0 || this.dirtySnapshot;
+    return this.scheduled.length > 0 || this.dirtySnapshot || this.replay !== null;
   }
 
   snapshot(): GameSnapshot {
@@ -134,6 +154,7 @@ export class Game implements GestureHandlers {
   // --- Gestes -------------------------------------------------------------
 
   canPaintAt(sx: number, sy: number): boolean {
+    if (this.phaseValue !== 'playing') return false;
     if (this.camera.scale < MIN_PAINT_CELL_PX) return false;
     const i = this.indexAt(sx, sy);
     return i >= 0 && this.progress.check(i, this.selected) === PlaceResult.Placed;
@@ -197,11 +218,14 @@ export class Game implements GestureHandlers {
   // --- Annuler / rétablir ---------------------------------------------------
 
   undo(): void {
+    if (this.phaseValue !== 'playing') return;
     const stroke = this.undoStack.pop();
     if (!stroke) return;
     for (const i of stroke) {
       if (this.progress.unplace(i)) this.renderer.setCell(i, CellState.Empty);
     }
+    // le trait annulé est le plus récent : il occupe la fin de l'historique
+    this.history.length = Math.max(0, this.history.length - stroke.length);
     this.redoStack.push(stroke);
     this.dirtySnapshot = true;
     this.haptics.soft();
@@ -209,11 +233,15 @@ export class Game implements GestureHandlers {
   }
 
   redo(): void {
+    if (this.phaseValue !== 'playing') return;
     const stroke = this.redoStack.pop();
     if (!stroke) return;
     for (const i of stroke) {
       const color = this.grid.cells[i] ?? TRANSPARENT;
-      if (this.progress.place(i, color) === PlaceResult.Placed) this.renderer.setCell(i, CellState.Filled);
+      if (this.progress.place(i, color) === PlaceResult.Placed) {
+        this.renderer.setCell(i, CellState.Filled);
+        this.history.push(i);
+      }
     }
     this.undoStack.push(stroke);
     this.dirtySnapshot = true;
@@ -240,6 +268,201 @@ export class Game implements GestureHandlers {
     return ok;
   }
 
+  // --- Fin d'œuvre et timelapse ---------------------------------------------
+
+  /** Échelle de la vue encadrée (œuvre + passe-partout + cadre, avec une marge). */
+  framedScale(): number {
+    const extra = 1 + 2 * (FRAME_RATIO.mat + FRAME_RATIO.frame);
+    return (this.camera.fitScale / extra) * 0.97;
+  }
+
+  /**
+   * Cinématique de fin : dézoom, balayage de lumière, effet du mode (GLSL), cadre qui se construit,
+   * avec particules, son et haptique synchronisés sur la même chronologie.
+   */
+  startFinale(): void {
+    if (this.phaseValue === 'finale') return;
+    this.setPhase('finale');
+    const t0 = this.time;
+    const { width: w, height: h } = this.grid;
+    this.renderer.setSelected(-1, t0);
+    this.renderer.setNumberScale(0);
+    this.renderer.setFinale(this.options.reducedMotion ? t0 - FINALE.done : t0);
+    this.camera.flyTo(w / 2, h / 2, this.framedScale());
+    if (this.options.reducedMotion) {
+      this.setPhase('finished');
+      return;
+    }
+    this.schedule(FINALE.sweepStart, () => {
+      this.audio.play('finale');
+      this.haptics.success();
+    });
+    this.schedule(FINALE.effectStart, () => {
+      this.finaleParticles();
+    });
+    for (let k = 0; k < 4; k++) {
+      this.schedule(FINALE.frameStart + (k * FINALE.frameDuration) / 4, () => {
+        this.haptics.pulse('tick-light', this.time * 1000);
+      });
+    }
+    this.schedule(FINALE.frameStart + FINALE.frameDuration, () => {
+      this.haptics.pulse('click', this.time * 1000);
+      this.particles.emitWorld(
+        {
+          kind: 'glow',
+          x: w / 2,
+          y: h / 2,
+          life: 0.9,
+          size: Math.max(w, h) * 0.9,
+          endSize: Math.max(w, h) * 1.4,
+          alpha: 0.18,
+        },
+        true,
+      );
+    });
+    this.schedule(FINALE.done, () => {
+      this.setPhase('finished');
+    });
+  }
+
+  /** Rejoue la création en accéléré (ordre réel des poses), dans le cadre. */
+  playTimelapse(): void {
+    if (this.phaseValue !== 'finished' || this.history.length === 0) return;
+    this.renderer.clearAll();
+    const duration = Math.min(12, Math.max(5, 4 + this.history.length / 2500));
+    this.replay = { start: this.time + 0.4, duration, done: 0 };
+    this.setPhase('timelapse');
+  }
+
+  /** Recommence l'œuvre à zéro (démo, debug). */
+  restart(): void {
+    this.replay = null;
+    this.scheduled.length = 0;
+    this.history.length = 0;
+    this.undoStack.length = 0;
+    this.redoStack.length = 0;
+    this.progress = new Progress(this.grid);
+    this.renderer.clearAll();
+    this.renderer.setFinale(-1);
+    this.renderer.setNumberScale(1);
+    this.selected = this.firstRemainingColor(0);
+    this.renderer.setSelected(this.selected, this.time);
+    this.camera.flyTo(this.grid.width / 2, this.grid.height / 2, this.camera.fitScale);
+    this.dirtySnapshot = true;
+    this.setPhase('playing');
+  }
+
+  /**
+   * Debug : pose instantanément toutes les cases sauf `keep`, couleur par couleur en serpentin,
+   * comme le ferait un joueur (l'historique alimente le timelapse).
+   */
+  debugFillExcept(keep: readonly number[]): void {
+    const skip = new Set(keep);
+    const { width } = this.grid;
+    for (let color = 0; color < this.grid.palette.length; color++) {
+      for (let y = 0; y < this.grid.height; y++) {
+        for (let k = 0; k < width; k++) {
+          const x = y % 2 === 0 ? k : width - 1 - k;
+          const i = y * width + x;
+          if (skip.has(i) || this.grid.cells[i] !== color) continue;
+          if (this.progress.place(i, color) === PlaceResult.Placed) {
+            this.renderer.setCell(i, CellState.Filled);
+            this.history.push(i);
+          }
+        }
+      }
+    }
+    this.dirtySnapshot = true;
+    this.onChangeRequest?.();
+  }
+
+  get placementOrder(): readonly number[] {
+    return this.history;
+  }
+
+  private stepReplay(): void {
+    const r = this.replay;
+    if (!r) return;
+    const t = Math.min(1, Math.max(0, (this.time - r.start) / r.duration));
+    // accélère doucement puis ralentit sur les dernières cases
+    const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+    const target = Math.floor(eased * this.history.length);
+    const batch = target - r.done;
+    for (let k = r.done; k < target; k++) {
+      const i = this.history[k];
+      if (i === undefined) continue;
+      if (batch <= 3) this.renderer.animatePlace(i, this.time);
+      else this.renderer.setCell(i, CellState.Filled);
+    }
+    if (batch > 0 && this.time - this.lastReplaySound > 0.09) {
+      this.lastReplaySound = this.time;
+      this.audio.play(this.mode.sound, { gain: 0.35, burst: true });
+    }
+    r.done = target;
+    if (t >= 1) {
+      this.replay = null;
+      this.haptics.success();
+      this.setPhase('finished');
+    }
+  }
+
+  private finaleParticles(): void {
+    const { width: w, height: h } = this.grid;
+    const p = this.particles;
+    const big = Math.max(w, h);
+    if (this.mode.id === 'diamond') {
+      // étoiles en cascade depuis le centre, au rythme de l'onde GLSL
+      const n = p.n(70);
+      for (let k = 0; k < n; k++) {
+        const x = Math.random() * w;
+        const y = Math.random() * h;
+        const d = Math.hypot((x - w / 2) / big, (y - h / 2) / big) * 1.414;
+        this.schedule(d * FINALE.effectSpread + 0.15, () => {
+          p.emitWorld(
+            {
+              kind: 'star',
+              x,
+              y,
+              life: 0.6,
+              size: big * 0.02,
+              endSize: big * 0.045,
+              rotation: Math.random() * 0.4,
+              spin: 0.6,
+              shape: 1,
+            },
+            true,
+          );
+        });
+      }
+      return;
+    }
+    // autres modes : confettis aux couleurs de l'œuvre, depuis le centre
+    const n = p.n(60);
+    for (let k = 0; k < n; k++) {
+      const color = this.grid.palette[k % this.grid.palette.length] ?? [255, 255, 255];
+      const a = Math.random() * Math.PI * 2;
+      const v = big * (0.25 + Math.random() * 0.45);
+      p.emitWorld(
+        {
+          kind: this.mode.id === 'mosaic' ? 'chip' : k % 2 ? 'chip' : 'dust',
+          x: w / 2,
+          y: h / 2,
+          vx: Math.cos(a) * v,
+          vy: Math.sin(a) * v - big * 0.2,
+          gravity: big * 0.5,
+          drag: 1.8,
+          life: 1.1 + Math.random() * 0.6,
+          size: big * 0.022,
+          endSize: big * 0.01,
+          tint: rgbToNumber(color),
+          rotation: a,
+          spin: 6 * (Math.random() - 0.5),
+        },
+        false,
+      );
+    }
+  }
+
   // --- Interne --------------------------------------------------------------
 
   private visitCell(cx: number, cy: number): void {
@@ -248,12 +471,14 @@ export class Game implements GestureHandlers {
   }
 
   private tryPlace(i: number, drag: boolean, feedbackOnError: boolean): boolean {
+    if (this.phaseValue !== 'playing') return false;
     const r = this.progress.place(i, this.selected);
     const x = i % this.grid.width;
     const y = Math.floor(i / this.grid.width);
     if (r === PlaceResult.Placed) {
       this.renderer.animatePlace(i, this.time, this.options.reducedMotion);
       this.currentStroke.push(i);
+      this.history.push(i);
       this.feedback.emit({
         type: 'place',
         index: i,
@@ -346,9 +571,9 @@ export class Game implements GestureHandlers {
         break;
       }
       case 'artworkComplete':
-        this.schedule(0.6, () => {
-          const [w, h] = [this.grid.width, this.grid.height];
-          this.camera.flyTo(w / 2, h / 2, this.camera.fitScale);
+        // laisse la dernière pose et l'onde de couleur se terminer
+        this.schedule(0.55, () => {
+          this.startFinale();
         });
         break;
       case 'longPress':
@@ -396,6 +621,47 @@ export class Game implements GestureHandlers {
           true,
         );
       }
+      return;
+    }
+    if (this.mode.id === 'mosaic') {
+      // fine poussière de mortier qui retombe autour de la tesselle
+      for (let k = 0; k < p.n(5); k++) {
+        const side = Math.random() * Math.PI * 2;
+        p.emitWorld(
+          {
+            kind: 'dust',
+            x: cx + Math.cos(side) * 0.5,
+            y: cy + Math.sin(side) * 0.5,
+            vx: Math.cos(side) * 0.8,
+            vy: -0.6 + Math.random() * 0.3,
+            gravity: 3.5,
+            drag: 3,
+            life: 0.5 + Math.random() * 0.25,
+            size: 0.22,
+            endSize: 0.12,
+            tint: 0xb9b2a6,
+            alpha: 0.8,
+          },
+          false,
+        );
+      }
+      return;
+    }
+    if (this.mode.id === 'crossstitch') {
+      // petite lueur de la couleur du fil au croisement
+      p.emitWorld(
+        {
+          kind: 'glow',
+          x: cx,
+          y: cy,
+          life: 0.45,
+          size: 0.9,
+          endSize: 1.5,
+          alpha: 0.22,
+          tint: rgbToNumber(color),
+        },
+        false,
+      );
       return;
     }
     // pixel : éclat de couleur

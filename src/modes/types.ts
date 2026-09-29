@@ -1,4 +1,5 @@
 import type { ModeGlsl } from '@/engine/shaders/common';
+import type { FrameStyle } from '@/fx/finaleTimeline';
 
 export type ModeId = 'pixel' | 'diamond' | 'crossstitch' | 'mosaic';
 
@@ -19,6 +20,8 @@ export interface ModeDefinition {
   readonly emptyTint: number;
   readonly sound: string;
   readonly haptic: HapticKind;
+  /** Style du cadre construit à la fin de l'œuvre. */
+  readonly frame: FrameStyle;
   /** Réagit à l'inclinaison du téléphone (reflets). */
   readonly usesLight: boolean;
 }

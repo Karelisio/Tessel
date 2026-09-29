@@ -16,6 +16,12 @@ export class HapticsEngine {
     this.last = nowMs;
     const style = kind === 'click' ? ImpactStyle.Medium : ImpactStyle.Light;
     void Haptics.impact({ style }).catch(() => undefined);
+    // point de croix : une impulsion par fil (le second passe à ~240 ms)
+    if (kind === 'double-tick') {
+      setTimeout(() => {
+        void Haptics.impact({ style: ImpactStyle.Light }).catch(() => undefined);
+      }, 240);
+    }
   }
 
   success(): void {

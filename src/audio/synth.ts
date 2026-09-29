@@ -107,6 +107,82 @@ export const diamondClink: Build = (ctx, v) => {
   }
 };
 
+/** Point de croix : deux frottements de fil (un par passage de l'aiguille), synchronisés avec l'animation. */
+export const threadRub: Build = (ctx, v) => {
+  const out = ctx.createGain();
+  out.gain.value = 1;
+  out.connect(ctx.destination);
+  for (const [at, dur, center] of [
+    [0, 0.19, 2400],
+    [0.24, 0.2, 2900],
+  ] as const) {
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, dur + 0.05, v * 7 + at * 100);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 1.1;
+    // le fil glisse : le filtre balaie vers l'aigu
+    bp.frequency.setValueAtTime(center * 0.55 * (1 + v * 0.04), at);
+    bp.frequency.exponentialRampToValueAtTime(center * (1 + v * 0.04), at + dur);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, at);
+    g.gain.linearRampToValueAtTime(0.32, at + dur * 0.35);
+    g.gain.linearRampToValueAtTime(0, at + dur);
+    src.connect(bp).connect(g).connect(out);
+    src.start(at);
+    // petite note douce quand le fil se tend
+    const o = ctx.createOscillator();
+    o.frequency.value = at === 0 ? 1318.5 : 1661.2;
+    o.connect(env(ctx, out, at + dur * 0.8, 0.004, 0.09, 0.05));
+    o.start(at);
+  }
+};
+
+/** Mosaïque : « clac » céramique (modes résonants) suivi d'un léger tintement. */
+export const tileClack: Build = (ctx, v) => {
+  const out = ctx.createGain();
+  out.connect(ctx.destination);
+  noiseTick(ctx, out, 0, 1800 + v * 120, 0.9, 0.5, v);
+  for (const [f, amp, decay] of [
+    [2150, 0.16, 0.05],
+    [3420, 0.1, 0.035],
+    [5230, 0.06, 0.025],
+    [7700, 0.04, 0.018],
+  ] as const) {
+    const o = ctx.createOscillator();
+    o.frequency.value = f * (1 + (v - 1.5) * 0.02);
+    o.connect(env(ctx, out, 0, 0.0005, decay, amp));
+    o.start(0);
+  }
+  const thump = ctx.createOscillator();
+  thump.frequency.setValueAtTime(190, 0);
+  thump.frequency.exponentialRampToValueAtTime(110, 0.05);
+  thump.connect(env(ctx, out, 0, 0.001, 0.05, 0.25));
+  thump.start(0);
+  const tink = ctx.createOscillator();
+  tink.frequency.value = 2637 * (1 + v * 0.003);
+  tink.connect(env(ctx, out, 0.012, 0.001, 0.12, 0.04));
+  tink.start(0.012);
+};
+
+/** Fin d'œuvre : accord arpégé en cloches douces, sur deux octaves. */
+export const finaleChord: Build = (ctx, v) => {
+  const notes = [329.63, 415.3, 493.88, 659.25, 830.61, 987.77, 1318.5, 1661.2];
+  notes.forEach((f, i) => {
+    const at = i * 0.11;
+    for (const [ratio, amp, decay] of [
+      [1, 0.12, 2.2],
+      [2, 0.035, 1.0],
+      [3.01, 0.015, 0.6],
+    ] as const) {
+      const o = ctx.createOscillator();
+      o.frequency.value = f * ratio * (1 + v * 0.0008);
+      o.connect(env(ctx, ctx.destination, at, 0.006, decay, amp));
+      o.start(at);
+    }
+  });
+};
+
 /** Carillon de couleur terminée : arpège montant de trois notes. */
 export const colorChime: Build = (ctx, v) => {
   const notes = [659.25, 830.61, 987.77, 1318.5];

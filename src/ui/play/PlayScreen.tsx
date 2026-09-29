@@ -1,5 +1,5 @@
 import { SplashScreen } from '@capacitor/splash-screen';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { sunsetLake } from '@/content/generators/sunsetLake';
 import { installCapture, type CaptureApi } from '@/debug/capture';
@@ -24,13 +24,20 @@ declare global {
   }
 }
 
-const MODE_LABELS: Partial<Record<ModeId, string>> = { pixel: 'Pixel', diamond: 'Diamant' };
+const MODE_LABELS: Record<ModeId, string> = {
+  pixel: 'Pixel',
+  diamond: 'Diamant',
+  crossstitch: 'Croix',
+  mosaic: 'Mosaïque',
+};
+const MODE_IDS = Object.keys(MODE_LABELS) as ModeId[];
 
 export function PlayScreen() {
   const host = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<Engine | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { snapshot, mode, showHud, canUndo, canRedo, setSnapshot, setMode, toggleHud } = usePlayStore();
+  const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
+    usePlayStore();
 
   useEffect(() => {
     const el = host.current;
@@ -48,16 +55,18 @@ export function PlayScreen() {
         }
         created = e;
         e.setInsets(TOP_INSET, BOTTOM_INSET);
-        const initialMode = params.get('mode') === 'diamond' ? 'diamond' : usePlayStore.getState().mode;
+        const requested = params.get('mode');
+        const initialMode = MODE_IDS.find((m) => m === requested) ?? usePlayStore.getState().mode;
         usePlayStore.getState().setMode(initialMode);
-        const game = e.load(sunsetLake(150, 150, 1), getMode(initialMode));
+        const size = Math.min(300, Math.max(16, Number(params.get('size') ?? 150) || 150));
+        const game = e.load(sunsetLake(size, size, 1), getMode(initialMode));
         game.onSnapshot = (s) => {
           setSnapshot(s, game.canUndo, game.canRedo);
         };
         void SplashScreen.hide({ fadeOutDuration: 250 }).catch(() => undefined);
         window.__tessel = e;
         window.__bench = () => runBench(e);
-        if (capture) window.__capture = installCapture(e, clock);
+        if (capture) window.__capture = installCapture(e, clock, params.get('capture') ?? '');
         setEngine(e);
       })
       .catch((err: unknown) => {
@@ -68,7 +77,7 @@ export function PlayScreen() {
       alive = false;
       created?.destroy();
     };
-  }, [setSnapshot]);
+  }, [setSnapshot, setPhase]);
 
   const game = engine?.game ?? null;
   const palette = game?.grid.palette ?? [];
@@ -84,7 +93,7 @@ export function PlayScreen() {
       )}
       <div className="topbar">
         <div className="chip-group" role="group" aria-label="Mode">
-          {(Object.keys(MODE_LABELS) as ModeId[]).map((m) => (
+          {MODE_IDS.map((m) => (
             <button
               key={m}
               className="chip"
@@ -155,7 +164,41 @@ export function PlayScreen() {
         </motion.button>
       </div>
       {engine && showHud && <PerfHud engine={engine} />}
-      {snapshot && game && (
+      <AnimatePresence>
+        {(phase === 'finished' || phase === 'timelapse') && game && (
+          <motion.div
+            className="finish-panel"
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 40, opacity: 0 }}
+            transition={{ type: 'spring', ...spring.sheet }}
+          >
+            <strong>Œuvre terminée</strong>
+            <div className="finish-panel__actions">
+              <motion.button
+                className="btn btn--primary"
+                whileTap={{ scale: 0.94 }}
+                disabled={phase === 'timelapse'}
+                onClick={() => {
+                  game.playTimelapse();
+                }}
+              >
+                Revoir la création
+              </motion.button>
+              <motion.button
+                className="btn"
+                whileTap={{ scale: 0.94 }}
+                onClick={() => {
+                  game.restart();
+                }}
+              >
+                Recommencer
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {snapshot && game && phase === 'playing' && (
         <Palette
           palette={palette}
           remaining={snapshot.remaining}

@@ -165,12 +165,106 @@ function build(e: Engine): Map<number, Action[]> {
   return t;
 }
 
-export function installCapture(engine: Engine, clock: ManualClock): CaptureApi {
+/**
+ * Démo « fin d'œuvre » (une œuvre 48×48 conseillée) : quelques poses au zoom, glissé,
+ * dernières cases → cinématique de fin → timelapse.
+ */
+function buildFinale(e: Engine): Map<number, Action[]> {
+  const t = new Map<number, Action[]>();
+  const at = (f: number, a: Action) => {
+    t.set(f, [...(t.get(f) ?? []), a]);
+  };
+  const g = e.game;
+  if (!g) return t;
+  const { width: w, height: h } = g.grid;
+  const tap = (en: Engine, i: number | undefined) => {
+    if (i === undefined) return;
+    const [sx, sy] = screenOf(en, i);
+    g.onTap(sx, sy);
+  };
+
+  at(0, (en) => {
+    en.camera.fit();
+  });
+  // zoom sur les nuages et le ciel orangé
+  at(12, (en) => {
+    en.camera.flyTo(w * 0.62, h * 0.33, 38);
+  });
+  const color = 4; // rose corail, bien visible dans tous les modes
+  let taps: number[] = [];
+  at(60, (en) => {
+    g.selectColor(color);
+    const [x0, y0, x1, y1] = visibleRect(en);
+    const vis = cellsOf(en, color, x0, y0, x1, y1);
+    taps = vis;
+  });
+  [80, 94, 108].forEach((f, k) => {
+    at(f, (en) => {
+      tap(en, taps[Math.floor((taps.length * (k + 1)) / 5)]);
+    });
+  });
+  // glissé sur la plus longue rangée visible
+  let row: number[] = [];
+  at(130, (en) => {
+    let best: number[] = [];
+    let cur: number[] = [];
+    for (const i of cellsOf(en, color, ...visibleRect(en))) {
+      const prev = cur[cur.length - 1];
+      if (prev !== undefined && i === prev + 1) cur.push(i);
+      else cur = [i];
+      if (cur.length > best.length) best = [...cur];
+    }
+    row = best;
+    const first = row[0];
+    if (first === undefined) return;
+    const [sx, sy] = screenOf(en, first);
+    g.onPaintStart(sx, sy);
+  });
+  for (let k = 1; k <= 30; k++) {
+    at(130 + k, (en) => {
+      const first = row[0];
+      const last = row[row.length - 1];
+      if (first === undefined || last === undefined) return;
+      const [x0, y0] = screenOf(en, first);
+      const [x1] = screenOf(en, last);
+      g.onPaintMove(x0 + (x1 - x0) * (k / 30), y0);
+    });
+  }
+  at(161, () => {
+    g.onPaintEnd();
+  });
+  // toutes les cases posées sauf trois, puis les trois dernières au tap
+  let last: number[] = [];
+  at(185, (en) => {
+    const vis = cellsOf(en, color, ...visibleRect(en));
+    last = vis.slice(0, 3);
+    g.debugFillExcept(last);
+    g.selectColor(color);
+  });
+  [205, 217, 229].forEach((f, k) => {
+    at(f, (en) => {
+      tap(en, last[k]);
+    });
+  });
+  // la cinématique démarre seule ; puis timelapse
+  at(500, () => {
+    g.playTimelapse();
+  });
+  return t;
+}
+
+const SCENARIOS: Record<string, { frames: number; build: (e: Engine) => Map<number, Action[]> }> = {
+  finale: { frames: 900, build: buildFinale },
+  demo: { frames: 560, build },
+};
+
+export function installCapture(engine: Engine, clock: ManualClock, scenario = ''): CaptureApi {
   let timeline: Map<number, Action[]> | null = null;
+  const sc = SCENARIOS[scenario] ?? SCENARIOS.demo ?? { frames: 0, build };
   return {
-    frames: 560,
+    frames: sc.frames,
     frame(i: number) {
-      timeline ??= build(engine);
+      timeline ??= sc.build(engine);
       for (const a of timeline.get(i) ?? []) a(engine);
       clock.advance(1000 / 60);
       engine.invalidate();

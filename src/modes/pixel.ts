@@ -1,3 +1,4 @@
+import { FrameStyle } from '@/fx/finaleTimeline';
 import type { ModeDefinition } from './types';
 
 /** Pixel art par numéros : aplats nets sur papier, léger biseau au zoom. */
@@ -11,13 +12,16 @@ export const pixelMode: ModeDefinition = {
   sound: 'pixel',
   haptic: 'tick-light',
   usesLight: false,
+  frame: FrameStyle.White,
   glsl: {
+    pendingAsGap: false,
     gap: /* glsl */ `
 vec3 gapColor(vec3 col, vec2 f) { return col; }
 `,
     material: /* glsl */ `
 vec4 material(vec2 f, vec3 col, float seed, float px, float cellPx) {
-  float k = clamp((cellPx - 8.0) / 24.0, 0.0, 1.0);
+  // le biseau s'efface à la fin de l'œuvre : l'image devient une vraie création
+  float k = clamp((cellPx - 8.0) / 24.0, 0.0, 1.0) * (1.0 - gTension);
   float hi = 1.0 - smoothstep(0.0, 0.16, min(f.x, f.y));
   float lo = 1.0 - smoothstep(0.0, 0.16, min(1.0 - f.x, 1.0 - f.y));
   vec3 c = col * (1.0 + k * (0.07 * hi - 0.08 * lo));
@@ -48,6 +52,11 @@ vec4 emptyCell(vec2 f, int idx, vec3 col, float px, float cellPx, float numberAl
     base = mix(base, ink, m);
   }
   return vec4(base, 1.0);
+}
+`,
+    finale: /* glsl */ `
+vec3 finaleEffect(vec3 c, vec2 cell, vec2 f, float near) {
+  return c + finalePulse(cell) * 0.14 * (vec3(1.0) - c);
 }
 `,
     // rebond 0.8 → ~1.05 → 1
