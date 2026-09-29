@@ -1,3 +1,4 @@
+import { App as CapApp } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -5,7 +6,11 @@ import { sunsetLake } from '@/content/generators/sunsetLake';
 import { installCapture, type CaptureApi } from '@/debug/capture';
 import { runBench, type BenchResult } from '@/debug/bench';
 import { ManualClock } from '@/engine/Clock';
+import { openDatabase } from '@/db';
+import { ProgressStore } from '@/db/ProgressStore';
+import { openSession, type ArtworkRef, type PlaySession } from '@/db/session';
 import { Engine } from '@/engine/Engine';
+import type { Game } from '@/engine/Game';
 import { getMode } from '@/modes';
 import type { ModeId } from '@/modes/types';
 import { usePlayStore } from '@/store/play';
@@ -36,6 +41,10 @@ export function PlayScreen() {
   const host = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<Engine | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [game, setGame] = useState<Game | null>(null);
+  const session = useRef<PlaySession | null>(null);
+  const store = useRef<ProgressStore | null>(null);
+  const artwork = useRef<ArtworkRef | null>(null);
   const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
     usePlayStore();
 
@@ -48,7 +57,7 @@ export function PlayScreen() {
     const capture = params.has('capture');
     const clock = new ManualClock();
     void Engine.create(el, capture ? { clock, manual: true } : {})
-      .then((e) => {
+      .then(async (e) => {
         if (!alive) {
           e.destroy();
           return;
@@ -59,12 +68,30 @@ export function PlayScreen() {
         const initialMode = MODE_IDS.find((m) => m === requested) ?? usePlayStore.getState().mode;
         usePlayStore.getState().setMode(initialMode);
         const size = Math.min(300, Math.max(16, Number(params.get('size') ?? 150) || 150));
-        const game = e.load(sunsetLake(size, size, 1), getMode(initialMode));
-        game.onSnapshot = (s) => {
-          setSnapshot(s, game.canUndo, game.canRedo);
+        const ref: ArtworkRef = {
+          artworkId: `demo-sunset-${size}`,
+          source: 'generator',
+          title: 'Lac au coucher du soleil',
+          grid: () => sunsetLake(size, size, 1),
         };
-        game.onPhase = setPhase;
-        setPhase(game.phase);
+        artwork.current = ref;
+        const bind = (g: Game) => {
+          g.onSnapshot = (s) => {
+            setSnapshot(s, g.canUndo, g.canRedo);
+          };
+          g.onPhase = setPhase;
+          setPhase(g.phase);
+          setGame(g);
+        };
+        // captures et mesures : partie éphémère, sans base de données
+        if (capture || params.has('nodb')) {
+          bind(e.load(ref.grid(), getMode(initialMode)));
+        } else {
+          const db = await openDatabase();
+          store.current = new ProgressStore(db);
+          session.current = await openSession(e, store.current, ref, initialMode);
+          bind(session.current.game);
+        }
         void SplashScreen.hide({ fadeOutDuration: 250 }).catch(() => undefined);
         window.__tessel = e;
         window.__bench = () => runBench(e);
@@ -75,13 +102,42 @@ export function PlayScreen() {
         void SplashScreen.hide().catch(() => undefined);
         setError(err instanceof Error ? err.message : String(err));
       });
+    // sauvegarde immédiate à la mise en arrière-plan, son coupé
+    const appState = CapApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        void session.current?.flush();
+        void created?.audio.suspend();
+      } else void created?.audio.resume();
+    });
     return () => {
       alive = false;
+      void appState.then((h) => h.remove());
+      void session.current?.close();
+      session.current = null;
       created?.destroy();
     };
   }, [setSnapshot, setPhase]);
 
-  const game = engine?.game ?? null;
+  /** Change de mode : chaque mode a sa propre progression sur la même œuvre. */
+  const switchMode = async (m: ModeId) => {
+    setMode(m);
+    if (!engine) return;
+    const ref = artwork.current;
+    if (!store.current || !ref) {
+      engine.setMode(getMode(m));
+      return;
+    }
+    await session.current?.close();
+    session.current = await openSession(engine, store.current, ref, m);
+    const g = session.current.game;
+    g.onSnapshot = (s) => {
+      setSnapshot(s, g.canUndo, g.canRedo);
+    };
+    g.onPhase = setPhase;
+    setPhase(g.phase);
+    setGame(g);
+  };
+
   const palette = game?.grid.palette ?? [];
 
   return (
@@ -101,8 +157,7 @@ export function PlayScreen() {
               className="chip"
               aria-pressed={mode === m}
               onClick={() => {
-                setMode(m);
-                engine?.setMode(getMode(m));
+                void switchMode(m);
               }}
             >
               {mode === m && (

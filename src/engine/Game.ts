@@ -1,7 +1,8 @@
 import type { AudioEngine } from '@/audio/AudioEngine';
 import type { HapticsEngine } from '@/audio/haptics';
 import { TRANSPARENT, type Grid, type Rgb } from '@/content/grid';
-import { PlaceResult, Progress } from '@/content/progress';
+import { PlaceResult, Progress, type Bitset } from '@/content/progress';
+import { Op } from '@/db/codecs';
 import { FINALE, FRAME_RATIO } from '@/fx/finaleTimeline';
 import type { ParticleFx } from '@/fx/Particles';
 import type { ModeDefinition } from '@/modes/types';
@@ -58,6 +59,11 @@ export class Game implements GestureHandlers {
   onSnapshot: ((s: GameSnapshot) => void) | null = null;
   onChangeRequest: (() => void) | null = null;
   onPhase: ((phase: GamePhase) => void) | null = null;
+  /** Chaque pose ou annulation, dans l'ordre (sauvegarde incrémentale). */
+  onOp: ((op: Op, index: number) => void) | null = null;
+  /** La partie a été recommencée à zéro. */
+  onRestart: (() => void) | null = null;
+  private readonly phaseListeners = new Set<(phase: GamePhase) => void>();
 
   private mode: ModeDefinition;
   private paintLast: [number, number] | null = null;
@@ -110,6 +116,40 @@ export class Game implements GestureHandlers {
   private setPhase(phase: GamePhase): void {
     this.phaseValue = phase;
     this.onPhase?.(phase);
+    for (const l of this.phaseListeners) l(phase);
+    this.onChangeRequest?.();
+  }
+
+  addPhaseListener(l: (phase: GamePhase) => void): () => void {
+    this.phaseListeners.add(l);
+    return () => this.phaseListeners.delete(l);
+  }
+
+  /**
+   * Restaure une partie sauvegardée : cases posées et ordre des poses (timelapse).
+   * Une œuvre déjà terminée s'affiche directement encadrée.
+   */
+  restore(filled: Bitset, history: readonly number[]): void {
+    this.progress = new Progress(this.grid, filled);
+    this.history.length = 0;
+    this.history.push(...history);
+    this.undoStack.length = 0;
+    this.redoStack.length = 0;
+    for (let i = 0; i < this.grid.cells.length; i++) {
+      if (filled.get(i) && this.grid.cells[i] !== TRANSPARENT) this.renderer.setCell(i, CellState.Filled);
+    }
+    this.selected = this.firstRemainingColor(0);
+    this.renderer.setSelected(this.selected, this.time);
+    this.dirtySnapshot = true;
+    if (this.progress.complete) {
+      this.renderer.setSelected(-1, this.time);
+      this.renderer.setNumberScale(0);
+      this.renderer.setFinale(this.time - FINALE.done);
+      const framed = this.framedScale();
+      this.camera.minScaleFactor = framed / this.camera.fitScale;
+      this.camera.flyTo(this.grid.width / 2, this.grid.height / 2, framed);
+      this.setPhase('finished');
+    }
     this.onChangeRequest?.();
   }
 
@@ -222,7 +262,10 @@ export class Game implements GestureHandlers {
     const stroke = this.undoStack.pop();
     if (!stroke) return;
     for (const i of stroke) {
-      if (this.progress.unplace(i)) this.renderer.setCell(i, CellState.Empty);
+      if (this.progress.unplace(i)) {
+        this.renderer.setCell(i, CellState.Empty);
+        this.onOp?.(Op.Unplace, i);
+      }
     }
     // le trait annulé est le plus récent : il occupe la fin de l'historique
     this.history.length = Math.max(0, this.history.length - stroke.length);
@@ -241,6 +284,7 @@ export class Game implements GestureHandlers {
       if (this.progress.place(i, color) === PlaceResult.Placed) {
         this.renderer.setCell(i, CellState.Filled);
         this.history.push(i);
+        this.onOp?.(Op.Place, i);
       }
     }
     this.undoStack.push(stroke);
@@ -352,6 +396,7 @@ export class Game implements GestureHandlers {
     this.renderer.setSelected(this.selected, this.time);
     this.camera.flyTo(this.grid.width / 2, this.grid.height / 2, this.camera.fitScale);
     this.dirtySnapshot = true;
+    this.onRestart?.();
     this.setPhase('playing');
   }
 
@@ -371,6 +416,7 @@ export class Game implements GestureHandlers {
           if (this.progress.place(i, color) === PlaceResult.Placed) {
             this.renderer.setCell(i, CellState.Filled);
             this.history.push(i);
+            this.onOp?.(Op.Place, i);
           }
         }
       }
@@ -482,6 +528,7 @@ export class Game implements GestureHandlers {
       this.renderer.animatePlace(i, this.time, this.options.reducedMotion);
       this.currentStroke.push(i);
       this.history.push(i);
+      this.onOp?.(Op.Place, i);
       this.feedback.emit({
         type: 'place',
         index: i,
