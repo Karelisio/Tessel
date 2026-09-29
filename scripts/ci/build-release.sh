@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Construit l'APK release signé de Tessel pour la version X.Y.Z donnée.
 # Appelé par semantic-release (prepareCmd). Nécessite les variables ANDROID_KEYSTORE_PATH,
-# ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD et ANDROID_HOME.
+# ANDROID_KEYSTORE_PASSWORD et ANDROID_HOME. ANDROID_KEY_ALIAS est facultatif si le keystore ne
+# contient qu'une clé ; ANDROID_KEY_PASSWORD vaut par défaut le mot de passe du keystore (PKCS12).
 set -euo pipefail
 
 if [[ $# -ne 1 || ! $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -15,9 +16,20 @@ cd "$ROOT"
 
 : "${ANDROID_KEYSTORE_PATH:?ANDROID_KEYSTORE_PATH est requis (keystore de signature)}"
 : "${ANDROID_KEYSTORE_PASSWORD:?ANDROID_KEYSTORE_PASSWORD est requis}"
-: "${ANDROID_KEY_ALIAS:?ANDROID_KEY_ALIAS est requis}"
-: "${ANDROID_KEY_PASSWORD:?ANDROID_KEY_PASSWORD est requis}"
 [[ -f "$ANDROID_KEYSTORE_PATH" ]] || { echo "Keystore introuvable : $ANDROID_KEYSTORE_PATH" >&2; exit 1; }
+
+if [[ -z "${ANDROID_KEY_ALIAS:-}" ]]; then
+  mapfile -t ALIASES < <(keytool -list -keystore "$ANDROID_KEYSTORE_PATH" \
+    -storepass "$ANDROID_KEYSTORE_PASSWORD" 2>/dev/null | sed -n 's/^\([^,]*\), .*PrivateKeyEntry.*$/\1/p')
+  if [[ ${#ALIASES[@]} -ne 1 ]]; then
+    echo "ANDROID_KEY_ALIAS est requis (${#ALIASES[@]} clés trouvées dans le keystore)" >&2
+    exit 1
+  fi
+  ANDROID_KEY_ALIAS="${ALIASES[0]}"
+  echo "==> Alias de signature lu dans le keystore : $ANDROID_KEY_ALIAS"
+fi
+ANDROID_KEY_PASSWORD="${ANDROID_KEY_PASSWORD:-$ANDROID_KEYSTORE_PASSWORD}"
+export ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD
 
 SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
 [[ -n "$SDK_ROOT" ]] || { echo "ANDROID_HOME (ou ANDROID_SDK_ROOT) est requis" >&2; exit 1; }
