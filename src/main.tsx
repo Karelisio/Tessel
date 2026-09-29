@@ -1,3 +1,4 @@
+import { SplashScreen } from '@capacitor/splash-screen';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/nunito';
@@ -12,3 +13,8 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 );
+
+// filet de sécurité : l'écran de démarrage natif ne doit jamais rester bloqué
+setTimeout(() => {
+  void SplashScreen.hide().catch(() => undefined);
+}, 4000);

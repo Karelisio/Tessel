@@ -1,3 +1,4 @@
+import { SplashScreen } from '@capacitor/splash-screen';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { sunsetLake } from '@/content/generators/sunsetLake';
@@ -28,6 +29,7 @@ const MODE_LABELS: Partial<Record<ModeId, string>> = { pixel: 'Pixel', diamond: 
 export function PlayScreen() {
   const host = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<Engine | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const { snapshot, mode, showHud, canUndo, canRedo, setSnapshot, setMode, toggleHud } = usePlayStore();
 
   useEffect(() => {
@@ -38,24 +40,30 @@ export function PlayScreen() {
     const params = new URLSearchParams(location.search);
     const capture = params.has('capture');
     const clock = new ManualClock();
-    void Engine.create(el, capture ? { clock, manual: true } : {}).then((e) => {
-      if (!alive) {
-        e.destroy();
-        return;
-      }
-      created = e;
-      e.setInsets(TOP_INSET, BOTTOM_INSET);
-      const initialMode = params.get('mode') === 'diamond' ? 'diamond' : usePlayStore.getState().mode;
-      usePlayStore.getState().setMode(initialMode);
-      const game = e.load(sunsetLake(150, 150, 1), getMode(initialMode));
-      game.onSnapshot = (s) => {
-        setSnapshot(s, game.canUndo, game.canRedo);
-      };
-      window.__tessel = e;
-      window.__bench = () => runBench(e);
-      if (capture) window.__capture = installCapture(e, clock);
-      setEngine(e);
-    });
+    void Engine.create(el, capture ? { clock, manual: true } : {})
+      .then((e) => {
+        if (!alive) {
+          e.destroy();
+          return;
+        }
+        created = e;
+        e.setInsets(TOP_INSET, BOTTOM_INSET);
+        const initialMode = params.get('mode') === 'diamond' ? 'diamond' : usePlayStore.getState().mode;
+        usePlayStore.getState().setMode(initialMode);
+        const game = e.load(sunsetLake(150, 150, 1), getMode(initialMode));
+        game.onSnapshot = (s) => {
+          setSnapshot(s, game.canUndo, game.canRedo);
+        };
+        void SplashScreen.hide({ fadeOutDuration: 250 }).catch(() => undefined);
+        window.__tessel = e;
+        window.__bench = () => runBench(e);
+        if (capture) window.__capture = installCapture(e, clock);
+        setEngine(e);
+      })
+      .catch((err: unknown) => {
+        void SplashScreen.hide().catch(() => undefined);
+        setError(err instanceof Error ? err.message : String(err));
+      });
     return () => {
       alive = false;
       created?.destroy();
@@ -68,6 +76,12 @@ export function PlayScreen() {
   return (
     <div className="play">
       <div className="play__canvas" ref={host} />
+      {error && (
+        <div className="fatal" role="alert">
+          <strong>Impossible de démarrer le rendu</strong>
+          <span>{error}</span>
+        </div>
+      )}
       <div className="topbar">
         <div className="chip-group" role="group" aria-label="Mode">
           {(Object.keys(MODE_LABELS) as ModeId[]).map((m) => (

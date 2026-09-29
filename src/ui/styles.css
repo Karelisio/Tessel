@@ -202,3 +202,14 @@ button {
   pointer-events: none;
   white-space: pre;
 }
+
+.fatal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  color: var(--on-surface);
+}
