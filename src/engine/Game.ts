@@ -288,7 +288,9 @@ export class Game implements GestureHandlers {
     this.renderer.setSelected(-1, t0);
     this.renderer.setNumberScale(0);
     this.renderer.setFinale(this.options.reducedMotion ? t0 - FINALE.done : t0);
-    this.camera.flyTo(w / 2, h / 2, this.framedScale());
+    const framed = this.framedScale();
+    this.camera.minScaleFactor = framed / this.camera.fitScale;
+    this.camera.flyTo(w / 2, h / 2, framed);
     if (this.options.reducedMotion) {
       this.setPhase('finished');
       return;
@@ -345,6 +347,7 @@ export class Game implements GestureHandlers {
     this.renderer.clearAll();
     this.renderer.setFinale(-1);
     this.renderer.setNumberScale(1);
+    this.camera.minScaleFactor = 1;
     this.selected = this.firstRemainingColor(0);
     this.renderer.setSelected(this.selected, this.time);
     this.camera.flyTo(this.grid.width / 2, this.grid.height / 2, this.camera.fitScale);

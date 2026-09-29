@@ -63,8 +63,11 @@ export class Camera {
     return Math.min((this.vp.width * 0.94) / this.gridW, (h * 0.94) / this.gridH);
   }
 
+  /** Dézoom autorisé sous la vue ajustée (ex. vue encadrée de fin d'œuvre). */
+  minScaleFactor = 1;
+
   get minScale(): number {
-    return this.fitScale;
+    return this.fitScale * this.minScaleFactor;
   }
 
   get maxScale(): number {

@@ -63,6 +63,8 @@ export function PlayScreen() {
         game.onSnapshot = (s) => {
           setSnapshot(s, game.canUndo, game.canRedo);
         };
+        game.onPhase = setPhase;
+        setPhase(game.phase);
         void SplashScreen.hide({ fadeOutDuration: 250 }).catch(() => undefined);
         window.__tessel = e;
         window.__bench = () => runBench(e);
