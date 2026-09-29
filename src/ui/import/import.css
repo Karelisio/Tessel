@@ -1,0 +1,871 @@
+/*
+ * Écran d'import photo : feuille plein écran.
+ * Uniquement les jetons de thème (styles.css), sauf la teinte d'alerte propre à cet écran.
+ */
+
+.imp {
+  --imp-danger: #b3453f;
+  --imp-well: color-mix(in srgb, var(--on-surface) 9%, var(--surface));
+  --imp-link: color-mix(in srgb, var(--primary) 68%, var(--on-surface));
+
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--surface);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-lift);
+}
+
+.imp-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--safe-top);
+  outline: none;
+}
+
+/* colonne centrée : lisible aussi sur tablette */
+.imp-col {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* --- Barre du haut ---------------------------------------------------------------------------- */
+
+.imp-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 64px;
+  padding: 10px 16px;
+}
+
+.imp-bar__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.imp-link {
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--imp-link);
+}
+
+.imp-link:active {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+/* --- Sélecteurs : contrôle segmenté et pastilles --------------------------------------------- */
+
+.imp-seg {
+  display: flex;
+}
+
+.imp-seg--segmented {
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.imp-seg--chips {
+  gap: 8px;
+}
+
+.imp-seg__btn {
+  position: relative;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+.imp-seg__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.imp-seg__text {
+  position: relative;
+  display: block;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--on-surface-muted);
+  transition: color 180ms;
+}
+
+.imp-seg__btn[aria-pressed='true'] .imp-seg__text {
+  color: var(--on-primary);
+}
+
+.imp-seg--chips .imp-seg__btn {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--outline);
+}
+
+.imp-seg--chips .imp-seg__btn[aria-pressed='true'] {
+  box-shadow: none;
+}
+
+/* --- Zone image ------------------------------------------------------------------------------- */
+
+.imp-stage {
+  position: relative;
+  flex: none;
+  height: 45%;
+  margin: 0 16px;
+  border-radius: var(--radius-l);
+  background: var(--imp-well);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.imp-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.imp-stage__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.imp-frame {
+  position: relative;
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+}
+
+.imp-frame__clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+
+.imp-frame__clip img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* --- Cadre de recadrage ----------------------------------------------------------------------- */
+
+.imp-crop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.imp-crop__clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.imp-crop__shade {
+  position: absolute;
+  box-shadow: 0 0 0 100vmax rgba(30, 22, 34, 0.56);
+}
+
+.imp-crop__box {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+  /* trait blanc doublé d'un filet sombre : lisible sur les photos claires comme sombres */
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    inset 0 0 0 3px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.imp-crop__box:focus-visible {
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    inset 0 0 0 5px var(--primary),
+    0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.imp-crop__box[data-dragging] {
+  cursor: grabbing;
+}
+
+/* règle des tiers, visible pendant le glissé */
+.imp-crop__guides {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 180ms;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent calc(33.333% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(33.333% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(33.333% + 0.5px),
+      transparent calc(33.333% + 0.5px),
+      transparent calc(66.666% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(66.666% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(66.666% + 0.5px),
+      transparent calc(66.666% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(33.333% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(33.333% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(33.333% + 0.5px),
+      transparent calc(33.333% + 0.5px),
+      transparent calc(66.666% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(66.666% - 0.5px),
+      rgba(255, 255, 255, 0.75) calc(66.666% + 0.5px),
+      transparent calc(66.666% + 0.5px)
+    );
+}
+
+.imp-crop__box[data-dragging] .imp-crop__guides {
+  opacity: 1;
+}
+
+/* poignées : cible de 44 px centrée sur le coin (sans transform, Framer Motion anime l'échelle) */
+.imp-crop__handle {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  touch-action: none;
+}
+
+.imp-crop__handle[data-h='nw'] {
+  left: 0;
+  top: 0;
+  cursor: nwse-resize;
+}
+
+.imp-crop__handle[data-h='ne'] {
+  left: 100%;
+  top: 0;
+  cursor: nesw-resize;
+}
+
+.imp-crop__handle[data-h='sw'] {
+  left: 0;
+  top: 100%;
+  cursor: nesw-resize;
+}
+
+.imp-crop__handle[data-h='se'] {
+  left: 100%;
+  top: 100%;
+  cursor: nwse-resize;
+}
+
+.imp-crop__grip {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 0 solid #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.imp-crop__handle[data-h='nw'] .imp-crop__grip {
+  left: 20px;
+  top: 20px;
+  border-width: 4px 0 0 4px;
+  border-top-left-radius: 6px;
+}
+
+.imp-crop__handle[data-h='ne'] .imp-crop__grip {
+  right: 20px;
+  top: 20px;
+  border-width: 4px 4px 0 0;
+  border-top-right-radius: 6px;
+}
+
+.imp-crop__handle[data-h='sw'] .imp-crop__grip {
+  left: 20px;
+  bottom: 20px;
+  border-width: 0 0 4px 4px;
+  border-bottom-left-radius: 6px;
+}
+
+.imp-crop__handle[data-h='se'] .imp-crop__grip {
+  right: 20px;
+  bottom: 20px;
+  border-width: 0 4px 4px 0;
+  border-bottom-right-radius: 6px;
+}
+
+/* --- Aperçu de la grille ---------------------------------------------------------------------- */
+
+.imp-preview {
+  display: block;
+  border-radius: 4px;
+  image-rendering: pixelated;
+  box-shadow: var(--shadow-soft);
+  /* damier clair visible à travers les cases transparentes */
+  background-color: #f8f5f2;
+  background-image: conic-gradient(#e6e1dc 25%, transparent 0 50%, #e6e1dc 0 75%, transparent 0);
+  background-size: 16px 16px;
+}
+
+.imp-busy {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px 7px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--on-surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  /* n'apparaît que si le résultat se fait attendre plus de 150 ms */
+  opacity: 0;
+  animation: imp-appear 140ms ease-out 150ms forwards;
+}
+
+.imp-busy--error {
+  color: var(--imp-danger);
+  animation-delay: 0s;
+}
+
+@keyframes imp-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+.imp-spinner {
+  flex: none;
+  animation: imp-spin 900ms linear infinite;
+}
+
+@keyframes imp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes imp-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* « Réduire les animations » : le cercle ne tourne plus, il respire */
+@media (prefers-reduced-motion: reduce) {
+  .imp-spinner {
+    animation: imp-pulse 1400ms ease-in-out infinite;
+  }
+}
+
+/* --- Ligne sous l'image (formats / statistiques) ---------------------------------------------- */
+
+.imp-row {
+  flex: none;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 6px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.imp-row::-webkit-scrollbar {
+  display: none;
+}
+
+.imp-stats {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Panneau de réglages ---------------------------------------------------------------------- */
+
+.imp-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 16px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  /* les bords fondent : le contenu semble sortir du panneau plutôt qu'être coupé net */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 10px,
+    #000 calc(100% - 16px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0, #000 10px, #000 calc(100% - 16px), transparent 100%);
+}
+
+.imp-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.imp-group__title {
+  margin: 0 0 6px 6px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--on-surface-muted);
+}
+
+.imp-group__body {
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  box-shadow:
+    0 1px 3px rgba(74, 63, 75, 0.06),
+    inset 0 0 0 1px var(--outline);
+}
+
+.imp-group__body > * + * {
+  border-top: 1px solid var(--outline);
+}
+
+.imp-modes {
+  padding: 14px;
+}
+
+/* les quatre modes restent visibles ensemble, même sur un petit écran */
+.imp-modes .imp-seg {
+  flex-wrap: wrap;
+}
+
+.imp-reset {
+  align-self: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--imp-link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 3px;
+}
+
+.imp-reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.imp-collapse {
+  overflow: hidden;
+  border-top: 1px solid var(--outline);
+}
+
+.imp-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 16px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--imp-danger) 82%, var(--on-surface));
+}
+
+/* --- Curseur ---------------------------------------------------------------------------------- */
+
+.imp-slider {
+  padding: 12px 6px 2px;
+}
+
+.imp-slider[data-disabled] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.imp-slider__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 10px;
+}
+
+.imp-slider__label {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.imp-slider__value {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.imp-slider__control {
+  position: relative;
+  height: 44px;
+  cursor: pointer;
+  /* le défilement vertical du panneau reste possible, le glissé horizontal règle la valeur */
+  touch-action: pan-y;
+}
+
+.imp-slider__rail {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--primary) 26%, var(--surface-2));
+}
+
+.imp-slider__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--primary);
+}
+
+.imp-slider__thumb {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  display: grid;
+  place-items: center;
+  outline: none;
+}
+
+.imp-slider__halo {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+.imp-slider__knob {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow:
+    0 0 0 3px var(--surface-2),
+    0 2px 5px rgba(74, 63, 75, 0.32);
+}
+
+.imp-slider__thumb:focus-visible .imp-slider__knob {
+  outline: 2px solid var(--on-surface);
+  outline-offset: 5px;
+}
+
+.imp-slider__hint {
+  padding: 0 10px 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+/* --- Interrupteur ----------------------------------------------------------------------------- */
+
+.imp-switch {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.imp-switch:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.imp-switch:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-m);
+}
+
+.imp-switch__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.imp-switch__label {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.imp-switch__hint {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+.imp-switch__track {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  border: 2px solid var(--on-surface-muted);
+  background: color-mix(in srgb, var(--on-surface) 7%, var(--surface-2));
+  transition:
+    background-color 180ms,
+    border-color 180ms;
+}
+
+.imp-switch__track[data-on] {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+/* zone de 28 px dans la piste de 48 × 28 (hors bordure) ; le rond intérieur change d'échelle */
+.imp-switch__thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.imp-switch__dot {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--on-surface-muted);
+  transition: background-color 180ms;
+}
+
+.imp-switch__track[data-on] .imp-switch__dot {
+  background: var(--on-primary);
+  box-shadow: 0 1px 4px rgba(74, 63, 75, 0.28);
+}
+
+/* --- Choix de la source ----------------------------------------------------------------------- */
+
+.imp-pick {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  overflow-y: auto;
+}
+
+/* l'illustration, le texte et les cartes se centrent dans la place restante */
+.imp-pick__hero {
+  display: grid;
+  gap: 22px;
+  margin-block: auto;
+}
+
+.imp-pick__art {
+  justify-self: center;
+  width: min(210px, 56%);
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.imp-pick__lead {
+  margin: 0;
+  padding: 0 4px;
+  text-align: center;
+  text-wrap: balance;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--on-surface-muted);
+}
+
+/* petit écran : la place va aux cartes */
+@media (max-height: 720px) {
+  .imp-pick__art {
+    display: none;
+  }
+}
+
+.imp-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.imp-art__sky0 {
+  fill: color-mix(in srgb, var(--primary) 11%, var(--surface-2));
+}
+
+.imp-art__sky1 {
+  fill: color-mix(in srgb, var(--primary) 20%, var(--surface-2));
+}
+
+.imp-art__sky2 {
+  fill: color-mix(in srgb, var(--primary) 30%, var(--surface-2));
+}
+
+.imp-art__sun {
+  fill: color-mix(in srgb, var(--primary) 30%, #ffd58a);
+}
+
+.imp-art__far {
+  fill: color-mix(in srgb, var(--primary) 58%, var(--surface-2));
+}
+
+.imp-art__near {
+  fill: color-mix(in srgb, var(--primary) 82%, var(--on-surface));
+}
+
+.imp-pick__notice {
+  flex: none;
+  min-height: 92px;
+  padding-bottom: 16px;
+}
+
+.imp-pick__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.imp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 210px;
+  padding: 22px 12px;
+  border-radius: var(--radius-l);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.imp-card:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.imp-card__icon {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 14%, var(--surface-2));
+}
+
+.imp-card__title {
+  display: block;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.imp-card__sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.imp-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-m);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  background: color-mix(in srgb, var(--imp-danger) 10%, var(--surface-2));
+  color: color-mix(in srgb, var(--imp-danger) 82%, var(--on-surface));
+}
+
+.imp-notice svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* --- Pied fixe -------------------------------------------------------------------------------- */
+
+.imp-foot {
+  flex: none;
+  display: flex;
+  gap: 12px;
+  /* aligné sur la colonne centrale (640 px max) */
+  padding: 12px max(16px, calc((100% - 608px) / 2)) calc(var(--safe-bottom) + 12px);
+  border-top: 1px solid var(--outline);
+  background: var(--surface);
+}
+
+.imp-foot__btn {
+  flex: 1;
+  min-height: 52px;
+  font-size: 16px;
+}
+
+.imp-foot__btn.btn--primary {
+  flex: 1.5;
+}
+
+/* --- Barre du haut du jeu : place pour le bouton « Importer une photo » ------------------------ */
+
+/* trois boutons ronds côte à côte : ils ne doivent pas s'écraser en ovales, c'est le groupe des modes
+   (déjà défilable) qui cède la place */
+.topbar > .icon-btn {
+  flex: none;
+}
+
+.topbar > .chip-group {
+  max-width: none;
+}

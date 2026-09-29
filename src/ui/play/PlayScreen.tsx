@@ -1,7 +1,7 @@
 import { App as CapApp } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { sunsetLake } from '@/content/generators/sunsetLake';
 import { installCapture, type CaptureApi } from '@/debug/capture';
 import { runBench, type BenchResult } from '@/debug/bench';
@@ -15,6 +15,7 @@ import { getMode } from '@/modes';
 import type { ModeId } from '@/modes/types';
 import { usePlayStore } from '@/store/play';
 import { spring } from '@/theme/motion/tokens';
+import { ImportSheet, type ImportResult } from '@/ui/import/ImportSheet';
 import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
 
@@ -26,6 +27,8 @@ declare global {
     __tessel?: Engine;
     __capture?: CaptureApi;
     __bench?: () => Promise<BenchResult[]>;
+    /** Développement : ouvre l'écran d'import directement sur cette image (tests automatisés). */
+    __importBlob?: (blob: Blob) => void;
   }
 }
 
@@ -45,8 +48,25 @@ export function PlayScreen() {
   const session = useRef<PlaySession | null>(null);
   const store = useRef<ProgressStore | null>(null);
   const artwork = useRef<ArtworkRef | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
+  const [importPhoto, setImportPhoto] = useState<Blob | null>(null);
   const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
     usePlayStore();
+
+  /** Branche une partie sur l'interface : instantané, phase, et partie courante. */
+  const bind = useCallback(
+    (g: Game) => {
+      g.onSnapshot = (s) => {
+        setSnapshot(s, g.canUndo, g.canRedo);
+      };
+      g.onPhase = setPhase;
+      // état de la nouvelle partie tout de suite : pas d'image de l'ancienne palette entre deux parties
+      setSnapshot(g.snapshot(), g.canUndo, g.canRedo);
+      setPhase(g.phase);
+      setGame(g);
+    },
+    [setSnapshot, setPhase],
+  );
 
   useEffect(() => {
     const el = host.current;
@@ -75,14 +95,6 @@ export function PlayScreen() {
           grid: () => sunsetLake(size, size, 1),
         };
         artwork.current = ref;
-        const bind = (g: Game) => {
-          g.onSnapshot = (s) => {
-            setSnapshot(s, g.canUndo, g.canRedo);
-          };
-          g.onPhase = setPhase;
-          setPhase(g.phase);
-          setGame(g);
-        };
         // captures et mesures : partie éphémère, sans base de données
         if (capture || params.has('nodb')) {
           bind(e.load(ref.grid(), getMode(initialMode)));
@@ -116,7 +128,7 @@ export function PlayScreen() {
       session.current = null;
       created?.destroy();
     };
-  }, [setSnapshot, setPhase]);
+  }, [bind]);
 
   /** Change de mode : chaque mode a sa propre progression sur la même œuvre. */
   const switchMode = async (m: ModeId) => {
@@ -129,14 +141,49 @@ export function PlayScreen() {
     }
     await session.current?.close();
     session.current = await openSession(engine, store.current, ref, m);
-    const g = session.current.game;
-    g.onSnapshot = (s) => {
-      setSnapshot(s, g.canUndo, g.canRedo);
-    };
-    g.onPhase = setPhase;
-    setPhase(g.phase);
-    setGame(g);
+    bind(session.current.game);
   };
+
+  /** Remplace la partie par la photo convertie ; le changement de mode continue de jouer sur cette photo. */
+  const confirmImport = async ({ grid, mode: chosen, title }: ImportResult) => {
+    setImportOpen(false);
+    if (!engine) return;
+    const ref: ArtworkRef = {
+      artworkId: `photo:${crypto.randomUUID()}`,
+      source: 'photo',
+      title,
+      grid: () => grid,
+    };
+    try {
+      if (store.current) {
+        const previous = session.current;
+        session.current = null;
+        await previous?.close();
+        session.current = await openSession(engine, store.current, ref, chosen);
+        bind(session.current.game);
+      } else {
+        // partie éphémère (?nodb, capture) : pas de base de données
+        bind(engine.load(grid, getMode(chosen)));
+      }
+    } catch (err) {
+      console.error('Import de la photo impossible', err);
+      return;
+    }
+    artwork.current = ref;
+    setMode(chosen);
+  };
+
+  // développement : les tests automatisés ouvrent l'écran d'import sans passer par le sélecteur de fichier
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    window.__importBlob = (blob) => {
+      setImportPhoto(blob);
+      setImportOpen(true);
+    };
+    return () => {
+      delete window.__importBlob;
+    };
+  }, []);
 
   const palette = game?.grid.palette ?? [];
 
@@ -177,6 +224,31 @@ export function PlayScreen() {
             {Math.floor(((snapshot.total - snapshot.left) / snapshot.total) * 100)} %
           </div>
         )}
+        <motion.button
+          className="icon-btn"
+          aria-label="Importer une photo"
+          disabled={!engine}
+          whileTap={{ scale: 0.88 }}
+          onClick={() => {
+            setImportPhoto(null);
+            setImportOpen(true);
+          }}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="3.5" y="4.5" width="17" height="15" rx="3.5" />
+            <circle cx="9" cy="10" r="1.6" />
+            <path d="M4 17.6l4.8-4.8a1.5 1.5 0 012.1 0l3.2 3.2 2-2a1.5 1.5 0 012.1 0l2.3 2.3" />
+          </svg>
+        </motion.button>
         <motion.button
           className="icon-btn"
           aria-label="Annuler"
@@ -266,6 +338,17 @@ export function PlayScreen() {
           }}
         />
       )}
+      <ImportSheet
+        open={importOpen}
+        initialMode={mode}
+        initialPhoto={importPhoto}
+        onClose={() => {
+          setImportOpen(false);
+        }}
+        onConfirm={(result) => {
+          void confirmImport(result);
+        }}
+      />
     </div>
   );
 }
