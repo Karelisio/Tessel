@@ -27,6 +27,7 @@ uniform float uNumbers;      // échelle des numéros (0 = masqués)
 uniform vec3 uPaper;
 uniform vec3 uBackdrop;
 uniform vec4 uFinish;        // fin d'œuvre : départ (s, < 0 = inactive), style de cadre
+uniform vec4 uAssist;        // aides : motifs daltoniens (0/1), aperçu des couleurs (0–2), contraste élevé (0/1)
 `;
 
 export const HELPERS_GLSL = /* glsl */ `
@@ -76,6 +77,66 @@ float numberMask(vec2 f, int n, float px) {
   float m1 = digitMask((f - vec2(0.5 - adv, 0.5)) / size + 0.5, n / 10, aa);
   float m2 = digitMask((f - vec2(0.5 + adv, 0.5)) / size + 0.5, n - (n / 10) * 10, aa);
   return max(m1, m2);
+}
+
+// Distance (en cases) à des rayures de période P le long de s.
+float stripes(float s, float period) { return abs(fract(s / period) - 0.5) * period; }
+
+// Motif d'aide au daltonisme n° k (12 motifs, en coordonnées de grille : il se prolonge d'une case à
+// l'autre de la même couleur). Renvoie la couverture 0–1. Les mêmes motifs habillent la palette.
+float assistPattern(vec2 w, int k, float px) {
+  float aa = px * 0.9;
+  float hw = 0.045;
+  float d;
+  if (k == 0) d = length(fract(w * 2.0) - 0.5) * 0.5 - 0.07;
+  else if (k == 1) d = stripes(w.y, 0.34) - hw;
+  else if (k == 2) d = stripes(w.x, 0.34) - hw;
+  else if (k == 3) d = stripes((w.x + w.y) * 0.7071, 0.34) - hw;
+  else if (k == 4) d = stripes((w.x - w.y) * 0.7071, 0.34) - hw;
+  else if (k == 5) d = min(stripes(w.x, 0.5), stripes(w.y, 0.5)) - hw * 0.8;
+  else if (k == 6) d = min(stripes((w.x + w.y) * 0.7071, 0.5), stripes((w.x - w.y) * 0.7071, 0.5)) - hw * 0.8;
+  else if (k == 7) {
+    vec2 q = abs(fract(w * 2.0) - 0.5) * 0.5;
+    d = max(q.x, q.y) - 0.1;
+    d = abs(d) - hw * 0.7;
+  } else if (k == 8) d = stripes(length(fract(w) - 0.5), 0.22) - hw * 0.9;
+  else if (k == 9) d = stripes(w.y + 0.07 * sin(w.x * 12.566), 0.4) - hw;
+  else if (k == 10) d = stripes(w.y + abs(fract(w.x * 2.0) - 0.5) * 0.5, 0.4) - hw;
+  else {
+    vec2 q = fract(w * 2.0) - 0.5;
+    d = (abs(q.x) + abs(q.y)) * 0.5 - 0.1;
+  }
+  return 1.0 - smoothstep(-aa, aa, d);
+}
+
+// Aides visuelles sur une case vide : intensité de l'aperçu, motifs daltoniens, contraste.
+// nm = couverture du numéro (déjà dessiné dans base).
+vec3 applyAssist(vec3 base, vec2 w, vec2 f, int idx, vec3 col, float px, float cellPx, float nm, float selected) {
+  float ghost = uAssist.y;
+  if (ghost < 1.0) {
+    // aperçu plus discret : la case se désature vers le papier, le numéro reste net
+    vec3 plain = vec3(luma(base));
+    base = mix(mix(plain, base, ghost), base, nm);
+  } else if (ghost > 1.0) {
+    vec3 tinted = mix(base, col, (ghost - 1.0) * 0.3);
+    base = mix(tinted, base, nm);
+  }
+  if (uAssist.x > 0.5) {
+    float show = smoothstep(5.0, 10.0, cellPx) * 0.26;
+    // autour du numéro quand il est lisible, sur toute la case sinon
+    vec2 q = abs(f - 0.5);
+    float around = mix(1.0, smoothstep(0.2, 0.34, max(q.x, q.y)), smoothstep(11.0, 17.0, cellPx) * step(0.01, uNumbers));
+    float m = assistPattern(w, idx - (idx / 12) * 12, px) * show * around * (selected > 0.5 ? 1.4 : 1.0);
+    vec3 ink = luma(base) > 0.45 ? base * 0.35 : mix(base, vec3(1.0), 0.6);
+    base = mix(base, ink, m);
+  }
+  if (uAssist.z > 0.5) {
+    vec3 ink = selected > 0.5 && luma(col) < 0.35 ? vec3(1.0) : vec3(0.08);
+    base = mix(base, ink, nm * 0.6);
+    float edge = min(min(f.x, f.y), min(1.0 - f.x, 1.0 - f.y));
+    base *= 1.0 - (1.0 - smoothstep(0.0, px * 1.4, edge)) * 0.18 * smoothstep(4.0, 10.0, cellPx);
+  }
+  return base;
 }
 
 // Intensité de la surbrillance de la couleur active (avec pulsation au changement).
@@ -297,6 +358,10 @@ void main() {
       float numberAlpha = state > 0.25 ? 0.0 : smoothstep(11.0, 17.0, cellPx);
       vec4 e = emptyCell(f, idx, col, px, cellPx, numberAlpha, selected);
       detail = e.rgb;
+      if (uAssist.x > 0.5 || uAssist.z > 0.5 || abs(uAssist.y - 1.0) > 0.01) {
+        float nm = numberAlpha > 0.0 && uNumbers > 0.0 ? numberMask(f, idx + 1, px) * numberAlpha : 0.0;
+        detail = applyAssist(detail, w, f, idx, col, px, cellPx, nm, selected);
+      }
     }
     outc = mix(far, detail, near);
   }

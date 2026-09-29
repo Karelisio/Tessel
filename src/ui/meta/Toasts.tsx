@@ -5,9 +5,12 @@ import { t } from '@/i18n/text';
 import type { MetaNotice } from '@/meta/MetaService';
 import { mergeRewards } from '@/meta/rewards';
 import { useMetaStore, type Toast } from '@/store/meta';
+import { useNav } from '@/store/nav';
+import { usePlayStore } from '@/store/play';
 import { spring } from '@/theme/motion/tokens';
 import { IconCheck, IconChest, IconFlame, IconStar, IconTrophy } from './icons';
 import { achievementTitle, questLabel, rewardLabel } from './labels';
+import { LevelUp } from './LevelUp';
 
 interface Content {
   tone: 'level' | 'achievement' | 'quest' | 'streak';
@@ -153,13 +156,34 @@ function ToastCard({ toast }: { toast: Toast }) {
 /** Notifications de progression : niveau, succès, quêtes, série. */
 export function Toasts() {
   const toasts = useMetaStore((s) => s.toasts);
+  const celebration = useMetaStore((s) => s.celebration);
+  const playing = useNav((s) => s.playing);
+  const phase = usePlayStore((s) => s.phase);
+  // on ne coupe pas une œuvre en cours : la célébration attend la fin ou le retour aux onglets
+  const celebrate = celebration !== null && (!playing || phase !== 'playing');
+  const shown = celebrate ? toasts.filter((x) => x.notice.type !== 'levelUp') : toasts;
   return (
-    <ul className="toasts" aria-live="polite">
-      <AnimatePresence initial={false}>
-        {toasts.slice(-2).map((toast) => (
-          <ToastCard key={toast.id} toast={toast} />
-        ))}
+    <>
+      <ul className="toasts" aria-live="polite">
+        <AnimatePresence initial={false}>
+          {shown.slice(-2).map((toast) => (
+            <ToastCard key={toast.id} toast={toast} />
+          ))}
+        </AnimatePresence>
+      </ul>
+      <AnimatePresence>
+        {celebrate && (
+          <LevelUp
+            key="levelup"
+            from={celebration.from}
+            level={celebration.level}
+            rewards={celebration.rewards}
+            onClose={() => {
+              useMetaStore.getState().endCelebration();
+            }}
+          />
+        )}
       </AnimatePresence>
-    </ul>
+    </>
   );
 }

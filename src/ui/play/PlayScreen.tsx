@@ -23,17 +23,22 @@ import { useMetaStore } from '@/store/meta';
 import { useNav, type OpenRequest } from '@/store/nav';
 import { usePlayStore } from '@/store/play';
 import { useSettings } from '@/store/settings';
+import { themeRgb } from '@/theme/applyTheme';
 import { spring } from '@/theme/motion/tokens';
 import { Sheet } from '@/ui/kit';
 import { IconBack, IconMore } from '@/ui/kit/icons';
 import { IconLock } from '@/ui/meta/icons';
 import { ToolDock } from '@/ui/meta/ToolDock';
 import '@/ui/meta/meta.css';
+import { Minimap } from './Minimap';
 import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
+import { closeTo, openFrom } from './transition';
 
 const TOP_INSET = 64;
 const BOTTOM_INSET = 130;
+/** Une main : barre du haut descendue au-dessus de la palette. */
+const ONE_HAND_INSETS = [16, 186] as const;
 
 declare global {
   interface Window {
@@ -54,6 +59,14 @@ function applyEngineSettings(engine: Engine): void {
   engine.audio.setVolume('ambience', s.ambienceVolume);
   engine.haptics.enabled = s.haptics;
   engine.particles.setQuality(s.quality);
+  if (s.oneHanded) engine.setInsets(...ONE_HAND_INSETS);
+  else engine.setInsets(TOP_INSET, BOTTOM_INSET);
+  engine.setAssist({
+    colorblind: s.colorblind,
+    ghost: s.ghost,
+    highContrast: s.highContrast,
+    numberScale: s.numberScale,
+  });
 }
 
 function applyGameSettings(game: Game): void {
@@ -68,6 +81,7 @@ function applyGameSettings(game: Game): void {
  */
 export function PlayScreen() {
   const host = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<Engine | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [game, setGame] = useState<Game | null>(null);
@@ -82,6 +96,8 @@ export function PlayScreen() {
   const hasMeta = useMetaStore((st) => st.service !== null);
   const playing = useNav((s) => s.playing);
   const leftHanded = useSettings((st) => st.leftHanded);
+  const minimap = useSettings((st) => st.minimap);
+  const oneHanded = useSettings((st) => st.oneHanded);
   const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
     usePlayStore();
 
@@ -121,7 +137,6 @@ export function PlayScreen() {
           return;
         }
         created = e;
-        e.setInsets(TOP_INSET, BOTTOM_INSET);
         window.__tessel = e;
         window.__bench = () => runBench(e);
         if (capture || params.has('nodb')) {
@@ -216,16 +231,29 @@ export function PlayScreen() {
     };
     apply();
     const offSettings = useSettings.subscribe(apply);
+    // fond autour de l'œuvre accordé au thème
+    const backdrop = () => {
+      engine.setBackdrop(themeRgb('--canvas-bg'));
+    };
+    backdrop();
+    window.addEventListener('tessel-theme', backdrop);
     // sortie du jeu : tout est écrit, les listes se rafraîchissent
     const offNav = useNav.subscribe((s, prev) => {
       if (s.playing === prev.playing) return;
       apply();
+      // transition partagée depuis / vers la vignette touchée
+      const el = root.current;
+      if (el && !useSettings.getState().reducedMotion) {
+        if (s.playing) openFrom(el, engine, s.request?.origin);
+        else closeTo(el, s.request?.origin);
+      }
       if (!s.playing)
         void session.current?.flush().then(() => {
           useDataVersion.getState().bump();
         });
     });
     return () => {
+      window.removeEventListener('tessel-theme', backdrop);
       offSettings();
       offNav();
     };
@@ -304,7 +332,14 @@ export function PlayScreen() {
   const percent = snapshot ? Math.floor(((snapshot.total - snapshot.left) / snapshot.total) * 100) : 0;
 
   return (
-    <div className="play" data-active={playing} data-left={leftHanded} aria-hidden={!playing}>
+    <div
+      ref={root}
+      className="play"
+      data-active={playing}
+      data-left={leftHanded}
+      data-onehand={oneHanded}
+      aria-hidden={!playing}
+    >
       <div className="play__canvas" ref={host} />
       {error && (
         <div className="fatal" role="alert">
@@ -325,7 +360,18 @@ export function PlayScreen() {
         </motion.button>
         <div className="play-title" onDoubleClick={toggleHud}>
           <strong>{title}</strong>
-          {snapshot && <span>{percent} %</span>}
+          {snapshot && (
+            <span className="play-title__meta">
+              <span>{percent} %</span>
+              <span className="play-title__bar" aria-hidden>
+                <motion.i
+                  initial={false}
+                  animate={{ scaleX: (snapshot.total - snapshot.left) / Math.max(1, snapshot.total) }}
+                  transition={{ type: 'spring', ...spring.gentle }}
+                />
+              </span>
+            </span>
+          )}
         </div>
         <motion.button
           className="icon-btn"
@@ -426,6 +472,14 @@ export function PlayScreen() {
           </motion.div>
         )}
       </AnimatePresence>
+      {engine && game && minimap && phase === 'playing' && (
+        <Minimap
+          key={game.grid.cells.length + game.grid.width}
+          engine={engine}
+          game={game}
+          left={leftHanded}
+        />
+      )}
       {game && phase === 'playing' && hasMeta && playing && (
         <ToolDock armed={snapshot?.armed ?? null} disabled={false} onUse={useTool} />
       )}

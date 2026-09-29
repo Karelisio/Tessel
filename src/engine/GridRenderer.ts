@@ -63,6 +63,9 @@ export class GridRenderer {
   private animDirty = false;
   private mode: ModeDefinition;
   private readonly pendingFill: { index: number; at: number }[] = [];
+  /** Fond autour de l'œuvre imposé par le thème (sinon celui du mode). */
+  private backdropOverride: readonly [number, number, number] | null = null;
+  private ghost = 1;
 
   constructor(
     readonly grid: Grid,
@@ -105,6 +108,7 @@ export class GridRenderer {
       uPaper: { value: new Float32Array(mode.paper), type: 'vec3<f32>' },
       uBackdrop: { value: new Float32Array(mode.backdrop), type: 'vec3<f32>' },
       uFinish: { value: new Float32Array([-1, mode.frame, 0, 0]), type: 'vec4<f32>' },
+      uAssist: { value: new Float32Array([0, 1, 0, 0]), type: 'vec4<f32>' },
     });
 
     this.quad = new Geometry({
@@ -158,7 +162,7 @@ export class GridRenderer {
     const u = this.uniforms.uniforms as Record<string, unknown>;
     u.uDuration = mode.placeDuration / 1000;
     (u.uPaper as Float32Array).set(mode.paper);
-    (u.uBackdrop as Float32Array).set(mode.backdrop);
+    (u.uBackdrop as Float32Array).set(this.backdrop);
     (u.uFinish as Float32Array)[1] = mode.frame;
     this.uniforms.update();
     const oldGrid = this.gridMesh.shader;
@@ -211,6 +215,44 @@ export class GridRenderer {
     l[1] = y;
     l[2] = z;
     this.uniforms.update();
+  }
+
+  private get backdrop(): readonly [number, number, number] {
+    return this.backdropOverride ?? this.mode.backdrop;
+  }
+
+  /** Fond autour de l'œuvre (et des cases transparentes) ; null = celui du mode. */
+  setBackdrop(rgb: readonly [number, number, number] | null): void {
+    this.backdropOverride = rgb;
+    (this.uniforms.uniforms.uBackdrop as Float32Array).set(this.backdrop);
+    this.uniforms.update();
+    this.rewriteCells();
+  }
+
+  /**
+   * Aides visuelles : motifs daltoniens, intensité de l'aperçu des couleurs (0–2) sur les cases vides,
+   * contraste élevé (numéros et grille plus marqués).
+   */
+  setAssist(colorblind: boolean, ghost: number, highContrast: boolean): void {
+    (this.uniforms.uniforms.uAssist as Float32Array).set([
+      colorblind ? 1 : 0,
+      ghost,
+      highContrast ? 1 : 0,
+      0,
+    ]);
+    this.uniforms.update();
+    if (ghost !== this.ghost) {
+      this.ghost = ghost;
+      this.rewriteCells();
+    }
+  }
+
+  private rewriteCells(): void {
+    for (let i = 0; i < this.grid.cells.length; i++) {
+      const a = this.cells[i * 4 + 3] ?? 0;
+      this.writeCell(i, a >= 255 ? CellState.Filled : a >= 128 ? CellState.Animating : CellState.Empty);
+    }
+    this.cellsDirty = true;
   }
 
   setNumberScale(scale: number): void {
@@ -354,7 +396,7 @@ export class GridRenderer {
     const o = index * 4;
     if (c === TRANSPARENT) {
       // une case transparente laisse voir le fond autour de l'œuvre : la silhouette se détache
-      const [r, g, b] = this.mode.backdrop;
+      const [r, g, b] = this.backdrop;
       this.cells.set([r * 255, g * 255, b * 255, 0], o);
       return;
     }
@@ -362,7 +404,7 @@ export class GridRenderer {
     if (state === CellState.Filled) {
       this.cells.set([r, g, b, STATE_ALPHA[state]], o);
     } else {
-      const t = this.mode.emptyTint;
+      const t = Math.min(0.6, this.mode.emptyTint * this.ghost);
       const [pr, pg, pb] = this.mode.paper;
       this.cells.set(
         [

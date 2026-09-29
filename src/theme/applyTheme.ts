@@ -121,3 +121,16 @@ export async function applyTheme(theme: ThemeId, highContrast: boolean): Promise
 export function themeColor(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
+
+let probe: CanvasRenderingContext2D | null = null;
+
+/** Couleur d'un jeton CSS en rgb 0–1 (fond du rendu WebGL). */
+export function themeRgb(name: string): [number, number, number] {
+  probe ??= document.createElement('canvas').getContext('2d');
+  if (!probe) return [0.95, 0.93, 0.9];
+  probe.fillStyle = '#f1ebe5';
+  probe.fillStyle = themeColor(name) || '#f1ebe5';
+  const hex = probe.fillStyle;
+  const n = parseInt(hex.slice(1, 7), 16);
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+}

@@ -25,6 +25,10 @@ export interface Settings {
   oneHanded: boolean;
   /** Motifs en plus des numéros (daltonisme). */
   colorblind: boolean;
+  /** Intensité de l'aperçu des couleurs sur les cases vides (0 – 2, 1 par défaut). */
+  ghost: number;
+  /** Minicarte et radar quand on zoome. */
+  minimap: boolean;
   highContrast: boolean;
   notifications: boolean;
   autoUpdateCheck: boolean;
@@ -47,6 +51,8 @@ export const DEFAULT_SETTINGS: Settings = {
   leftHanded: false,
   oneHanded: false,
   colorblind: false,
+  ghost: 1,
+  minimap: true,
   highContrast: false,
   notifications: false,
   autoUpdateCheck: true,

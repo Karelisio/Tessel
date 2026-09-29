@@ -163,6 +163,20 @@ button {
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
 }
 
+.swatch__pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  mask-image: radial-gradient(circle, transparent 40%, #000 46%);
+}
+
+.swatch__disc > span,
+.swatch__disc > svg:not(.swatch__pattern) {
+  position: relative;
+}
+
 .swatch__ring {
   position: absolute;
   inset: 0;
@@ -284,14 +298,28 @@ button {
 .play {
   z-index: 30;
   background: var(--canvas-bg);
-  transition: opacity 0.24s ease;
+  transition: opacity 0.22s ease;
 }
 
+/* la fermeture reste visible le temps de la transition vers la vignette */
 .play[data-active='false'] {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   z-index: 0;
+  transition:
+    opacity 0.2s ease 0.16s,
+    visibility 0s linear 0.36s,
+    z-index 0s linear 0.36s;
+}
+
+.play__ghost {
+  position: absolute;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  transform-origin: center;
+  z-index: 1;
 }
 
 .play-title {
@@ -312,11 +340,30 @@ button {
   text-overflow: ellipsis;
 }
 
-.play-title span {
+.play-title__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
   font-weight: 800;
   color: var(--primary);
   font-variant-numeric: tabular-nums;
+}
+
+.play-title__bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  overflow: hidden;
+}
+
+.play-title__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transform-origin: left;
 }
 
 .play[data-left='true'] .tool-dock {
@@ -395,4 +442,130 @@ button {
     linear-gradient(90deg, #cfc7b8 2px, transparent 2px) 0 0 / 16px 16px,
     linear-gradient(#cfc7b8 2px, transparent 2px) 0 0 / 16px 16px,
     linear-gradient(135deg, #6aa9d8, #58a88a);
+}
+
+/* --- Minicarte et radar ------------------------------------------------------------------------------ */
+
+.minimap {
+  position: absolute;
+  top: calc(var(--safe-top) + 72px);
+  right: 12px;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--surface) 92%, transparent),
+    var(--shadow-lift);
+  touch-action: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.28s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.minimap[data-left='true'] {
+  right: auto;
+  left: 12px;
+}
+
+.minimap[data-shown='false'] {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.minimap__base,
+.minimap__radar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.minimap__base {
+  image-rendering: pixelated;
+}
+
+.minimap__radar {
+  animation: radar-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes radar-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.minimap__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 2px solid var(--primary);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+.radar-arrow {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--primary);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  transition: transform 0.25s ease;
+  animation: radar-in 0.3s ease both;
+}
+
+.radar-arrow__icon {
+  display: grid;
+}
+
+.radar-arrow small {
+  position: absolute;
+  bottom: -16px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--on-surface-muted);
+}
+
+@keyframes radar-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minimap__radar {
+    animation: none;
+  }
+}
+
+[data-motion='reduced'] .minimap__radar {
+  animation: none;
+}
+
+/* --- Une main : tout se joue en bas de l'écran ------------------------------------------------------ */
+
+.play[data-onehand='true'] .topbar {
+  top: auto;
+  bottom: calc(var(--safe-bottom) + 104px);
+}
+
+.play[data-onehand='true'] .tool-dock {
+  bottom: calc(var(--safe-bottom) + 166px);
+}
+
+.play[data-onehand='true'] .minimap {
+  top: calc(var(--safe-top) + 12px);
+}
+
+.play[data-onehand='true'] .hint {
+  bottom: calc(var(--safe-bottom) + 166px);
 }

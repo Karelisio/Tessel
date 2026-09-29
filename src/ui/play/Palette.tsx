@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { memo, useEffect, useRef } from 'react';
 import { luminance, rgbToHex, type Rgb } from '@/content/grid';
+import { useSettings } from '@/store/settings';
 import { spring } from '@/theme/motion/tokens';
+import { ColorPattern } from './patterns';
 
 interface SwatchProps {
   index: number;
@@ -20,6 +22,7 @@ const Swatch = memo(function Swatch({ index, color, remaining, total, selected, 
   const progress = total > 0 ? 1 - remaining / total : 1;
   const hex = rgbToHex(color);
   const dark = luminance(color) < 0.35;
+  const patterns = useSettings((st) => st.colorblind);
   return (
     <motion.button
       className="swatch"
@@ -53,6 +56,13 @@ const Swatch = memo(function Swatch({ index, color, remaining, total, selected, 
         style={{ background: hex, color: dark ? '#fff' : 'rgba(40,30,40,0.75)' }}
         animate={{ boxShadow: selected ? 'var(--shadow-lift)' : '0 0 0 rgba(0,0,0,0)' }}
       >
+        {patterns && (
+          <ColorPattern
+            className="swatch__pattern"
+            index={index}
+            ink={dark ? 'rgba(255,255,255,0.5)' : 'rgba(30,20,30,0.3)'}
+          />
+        )}
         <AnimatePresence mode="popLayout" initial={false}>
           {done ? (
             <motion.svg

@@ -514,3 +514,213 @@
   pointer-events: none;
   z-index: 25;
 }
+
+/* --- Montée de niveau ---------------------------------------------------------------------------- */
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.levelup {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--safe-top) + 24px) 20px calc(var(--safe-bottom) + 24px);
+  background:
+    radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--primary) 30%, transparent), transparent 60%),
+    color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.levelup__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: min(100%, 380px);
+  text-align: center;
+  color: var(--on-surface);
+}
+
+.levelup__medal {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+.levelup__rays {
+  position: absolute;
+  inset: -70px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--primary) 26%, transparent) 0deg 7deg,
+    transparent 7deg 22.5deg
+  );
+  mask-image: radial-gradient(circle, #000 20%, transparent 68%);
+}
+
+.levelup__badge {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 14px 24px rgba(120, 60, 40, 0.28));
+}
+
+.levelup__badge svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.levelup__number {
+  position: relative;
+  font-size: 58px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+  font-variant-numeric: tabular-nums;
+}
+
+.levelup__kicker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.levelup__title {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.levelup__cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  perspective: 800px;
+}
+
+.levelup__card {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: 112px;
+  padding: 14px 10px 12px;
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+  backface-visibility: hidden;
+}
+
+.levelup__card-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  color: var(--on-primary-container);
+  background: var(--primary-container);
+}
+
+.levelup__card small {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.levelup__card strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.levelup__gifts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.levelup__gift {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--on-secondary-container);
+  background: var(--secondary-container);
+}
+
+.levelup__continue {
+  margin-top: 22px;
+  min-width: 180px;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--on-primary);
+  background: var(--primary);
+  box-shadow: var(--shadow-lift);
+}
+
+/* succès : halo doré et reflet qui balaie la carte */
+.toast--achievement {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, #e9c46a 70%, transparent),
+    0 0 22px color-mix(in srgb, #e9c46a 45%, transparent),
+    var(--shadow-lift);
+}
+
+.toast--achievement::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 240, 200, 0.55) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: toast-sheen 1.6s ease 0.3s 2;
+  pointer-events: none;
+}
+
+.toast--achievement .toast__icon {
+  animation: toast-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes toast-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes toast-glow {
+  50% {
+    box-shadow: 0 0 14px 2px color-mix(in srgb, #e9c46a 70%, transparent);
+  }
+}
+
+[data-motion='reduced'] .toast--achievement::after,
+[data-motion='reduced'] .toast--achievement .toast__icon {
+  animation: none;
+}

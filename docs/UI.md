@@ -12,7 +12,8 @@ tutoiement, ton doux et chaleureux.
   (provisoires), Profil (`ProfileScreen.tsx`). Sous-pages empilées : `achievements`, `collections`, `stats`,
   `settings`, `quests` (`screens/<Nom>Screen.tsx`, export **default**, chargées paresseusement).
 - Navigation (`src/store/nav.ts`, `useNav`) : `setTab(tab)`, `push(page)`, `pop()`,
-  `open(ref, { mode?, origin? })` ouvre une œuvre dans le jeu, `openImport()` ouvre l'import photo.
+  `open(ref, { mode?, origin: originOf(élémentTouché) })` ouvre une œuvre dans le jeu avec une transition partagée
+  depuis la vignette (`originOf` dans `ui/library/origin.ts`), `openImport()` ouvre l'import photo.
 - Œuvres : `libraryRef(entry, difficulty, index)`, `dailyRef(day)`, `refForProject(project, index)` dans
   `src/content/refs.ts` produisent l'`ArtworkRef` à passer à `useNav().open`.
 

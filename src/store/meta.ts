@@ -3,7 +3,7 @@ import type { LevelInfo } from '@/meta/levels';
 import type { ModeId } from '@/modes/types';
 import type { MetaNotice, MetaService } from '@/meta/MetaService';
 import type { Quest } from '@/meta/quests';
-import type { ChestSize, ToolId } from '@/meta/rewards';
+import type { ChestSize, Reward, ToolId } from '@/meta/rewards';
 import type { StreakStatus } from '@/meta/streak';
 import { daysBetween, nextWeekStart } from '@/meta/time';
 
@@ -32,10 +32,19 @@ export interface Toast {
   notice: MetaNotice;
 }
 
+/** Montée(s) de niveau à célébrer (regroupées) : du niveau `from` au niveau `level`. */
+export interface Celebration {
+  from: number;
+  level: number;
+  rewards: Reward[];
+}
+
 interface MetaState {
   service: MetaService | null;
   snap: MetaSnapshot | null;
   toasts: Toast[];
+  celebration: Celebration | null;
+  endCelebration: () => void;
   attach: (service: MetaService) => () => void;
   refresh: () => void;
   dismiss: (id: number) => void;
@@ -68,6 +77,10 @@ export const useMetaStore = create<MetaState>((set, get) => ({
   service: null,
   snap: null,
   toasts: [],
+  celebration: null,
+  endCelebration: () => {
+    set({ celebration: null });
+  },
   attach: (service) => {
     set({ service, snap: snapshot(service) });
     const offChange = service.subscribe(() => {
@@ -77,6 +90,16 @@ export const useMetaStore = create<MetaState>((set, get) => ({
       // une journée validée sans rien de particulier n'a pas besoin d'un toast
       if (notice.type === 'streak' && notice.update.milestone === null && notice.update.freezesUsed === 0)
         if (!notice.update.broken && notice.update.state.current !== 1) return;
+      if (notice.type === 'levelUp') {
+        const c = get().celebration;
+        set({
+          celebration: {
+            from: c ? c.from : notice.level - 1,
+            level: notice.level,
+            rewards: [...(c?.rewards ?? []), ...notice.rewards],
+          },
+        });
+      }
       set((s) => ({ toasts: [...s.toasts, { id: nextToast++, notice }].slice(-MAX_TOASTS) }));
     });
     return () => {

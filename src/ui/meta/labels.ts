@@ -25,7 +25,7 @@ export const CHEST_NAMES: Readonly<Record<ChestSize, I18nText>> = {
   large: t('Grand coffre', 'Large chest'),
 };
 
-const UNLOCK_KINDS: Readonly<Record<UnlockKind, I18nText>> = {
+export const UNLOCK_KINDS: Readonly<Record<UnlockKind, I18nText>> = {
   mode: t('Nouveau mode', 'New mode'),
   category: t('Nouvelle catégorie', 'New category'),
   frame: t('Nouveau cadre', 'New frame'),

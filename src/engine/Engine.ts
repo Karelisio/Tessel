@@ -13,6 +13,16 @@ import { GridRenderer } from './GridRenderer';
 import { PerfMonitor } from './PerfMonitor';
 import { Tilt } from './Tilt';
 
+/** Aides visuelles de la grille (réglages). */
+export interface GridAssist {
+  colorblind: boolean;
+  /** Intensité de l'aperçu des couleurs sur les cases vides (0–2). */
+  ghost: number;
+  highContrast: boolean;
+  /** Taille des numéros (1 = normale). */
+  numberScale: number;
+}
+
 const RESOLUTION_CAP: Record<Quality, number> = { low: 1.25, medium: 1.6, high: 2 };
 
 export interface EngineOptions {
@@ -47,6 +57,10 @@ export class Engine {
   private resizeObserver: ResizeObserver | null = null;
   private insets = { top: 0, bottom: 0 };
   private readonly startedAt: number;
+  private assist: GridAssist = { colorblind: false, ghost: 1, highContrast: false, numberScale: 1 };
+  private backdrop: readonly [number, number, number] | null = null;
+  private readonly cameraListeners = new Set<() => void>();
+  private lastCamera: [number, number, number] = [0, 0, 0];
 
   private constructor(
     readonly app: Application,
@@ -99,6 +113,7 @@ export class Engine {
     this.digits ??= createDigitAtlas();
     const renderer = new GridRenderer(grid, mode, this.digits);
     this.renderer = renderer;
+    this.applyAssist();
     this.camera.setGrid(grid.width, grid.height);
     this.app.stage.addChild(renderer.view, this.particles.world, this.particles.screen);
     this.applySize();
@@ -127,6 +142,36 @@ export class Engine {
 
   setMode(mode: ModeDefinition): void {
     this.game?.setMode(mode);
+    this.dirty = true;
+  }
+
+  setAssist(assist: GridAssist): void {
+    this.assist = assist;
+    this.applyAssist();
+  }
+
+  /** Fond autour de l'œuvre, accordé au thème (null : celui du mode). */
+  setBackdrop(rgb: readonly [number, number, number] | null): void {
+    this.backdrop = rgb;
+    this.renderer?.setBackdrop(rgb);
+    this.dirty = true;
+  }
+
+  /** Prévient à chaque mouvement de caméra (minicarte, radar). */
+  onCamera(listener: () => void): () => void {
+    this.cameraListeners.add(listener);
+    return () => {
+      this.cameraListeners.delete(listener);
+    };
+  }
+
+  private applyAssist(): void {
+    const r = this.renderer;
+    if (!r) return;
+    const a = this.assist;
+    r.setAssist(a.colorblind, a.ghost, a.highContrast);
+    r.setNumberScale(a.numberScale);
+    if (this.backdrop) r.setBackdrop(this.backdrop);
     this.dirty = true;
   }
 
@@ -176,6 +221,11 @@ export class Engine {
       needs = true;
     }
     this.particles.syncCamera(this.camera.tx, this.camera.ty, this.camera.scale);
+    const cam = this.lastCamera;
+    if (cam[0] !== this.camera.tx || cam[1] !== this.camera.ty || cam[2] !== this.camera.scale) {
+      this.lastCamera = [this.camera.tx, this.camera.ty, this.camera.scale];
+      for (const l of this.cameraListeners) l();
+    }
     if (needs) this.app.renderer.render(this.app.stage);
     this.perf.record(frameMs, performance.now() - t0, needs);
     return needs;

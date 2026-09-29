@@ -5,7 +5,9 @@ import { useNav } from '@/store/nav';
 import { useSettings } from '@/store/settings';
 import { ImportSheet, type ImportResult } from '@/ui/import/ImportSheet';
 import { Toasts } from '@/ui/meta/Toasts';
+import { Onboarding } from '@/ui/shell/Onboarding';
 import { Shell } from '@/ui/shell/Shell';
+import { Splash } from '@/ui/shell/Splash';
 import { usePlayStore } from '@/store/play';
 import { useMetaStore } from '@/store/meta';
 import { PlayScreen } from './play/PlayScreen';
@@ -21,7 +23,8 @@ function confirmImport({ grid, mode, title }: ImportResult): void {
     .open({ artworkId: `photo:${crypto.randomUUID()}`, source: 'photo', title, grid: () => grid }, { mode });
 }
 
-if (import.meta.env.DEV) (window as unknown as { __nav: typeof useNav }).__nav = useNav;
+if (import.meta.env.DEV)
+  Object.assign(window as unknown as Record<string, unknown>, { __nav: useNav, __settings: useSettings });
 
 export function App() {
   useApplySettings();
@@ -47,6 +50,8 @@ export function App() {
           onConfirm={confirmImport}
         />
         <Toasts />
+        <Onboarding />
+        <Splash />
       </div>
     </MotionConfig>
   );
