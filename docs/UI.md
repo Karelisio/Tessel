@@ -98,3 +98,5 @@ serveur de dev sur http://localhost:5173). Données de test dans la console du n
 - Partage (`format.ts`) : `encodeTessel` / `decodeTessel` (fichier `.tessel`, `fileName(title, 'tessel')` et
   `shareFile`/`saveToDevice` de `src/render/exports.ts`), `qrMatrix(shared)` (null si trop grande pour un QR) +
   `drawQr(matrix, px)`, `scanQr(imageData)` (image caméra ou photo) → œuvre ou null.
+- Œuvre reçue : `useNav().incoming` (fichier .tessel ouvert depuis Android, ou `readTesselFile(file)` de
+  `src/create/incoming.ts` pour un fichier choisi), à confirmer puis `receiveShared(null)`.

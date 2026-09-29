@@ -1,4 +1,6 @@
 import { MotionConfig } from 'framer-motion';
+import { useEffect } from 'react';
+import { listenIncomingShares } from '@/create/incoming';
 import { useApplySettings } from '@/app/useApplySettings';
 import { getServices } from '@/app/services';
 import { useNav } from '@/store/nav';
@@ -28,6 +30,7 @@ if (import.meta.env.DEV)
 
 export function App() {
   useApplySettings();
+  useEffect(listenIncomingShares, []);
   const reduced = useSettings((s) => s.reducedMotion);
   const locale = useSettings((s) => s.locale);
   const importing = useNav((s) => s.importing);

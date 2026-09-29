@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { ArtworkRef } from '@/db/session';
+import type { SharedArtwork } from '@/create/format';
 import type { ModeId } from '@/modes/types';
 
 export type TabId = 'library' | 'daily' | 'gallery' | 'create' | 'profile';
@@ -25,6 +26,9 @@ interface NavState {
   request: OpenRequest | null;
   /** Import de photo ouvert (photo déjà choisie : outils de test). */
   importing: { photo: Blob | null } | null;
+  /** Œuvre reçue (fichier .tessel ouvert, QR scanné) en attente de confirmation. */
+  incoming: SharedArtwork | null;
+  receiveShared: (a: SharedArtwork | null) => void;
   openImport: (photo?: Blob | null) => void;
   closeImport: () => void;
   setTab: (tab: TabId) => void;
@@ -61,6 +65,10 @@ export const useNav = create<NavState>((set, get) => ({
   playing: false,
   request: null,
   importing: null,
+  incoming: null,
+  receiveShared: (incoming) => {
+    set({ incoming });
+  },
   openImport: (photo = null) => {
     set({ importing: { photo } });
   },
