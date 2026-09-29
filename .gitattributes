@@ -6,3 +6,4 @@
 *.tgrid binary
 assets/art/sources/** filter=lfs diff=lfs merge=lfs -text
 assets/audio/masters/** filter=lfs diff=lfs merge=lfs -text
+*.bat text eol=crlf

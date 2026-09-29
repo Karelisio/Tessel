@@ -1,0 +1,204 @@
+/* Thème « Doux » (défaut) — les autres thèmes redéfinissent ces jetons. */
+:root {
+  --bg: #f3eee9;
+  --surface: #fbf7f4;
+  --surface-2: #ffffff;
+  --on-surface: #4a3f4b;
+  --on-surface-muted: #8a7f8b;
+  --primary: #b77ba8;
+  --on-primary: #ffffff;
+  --outline: rgba(74, 63, 75, 0.12);
+  --shadow-soft: 0 6px 18px rgba(74, 63, 75, 0.12);
+  --shadow-lift: 0 12px 26px rgba(74, 63, 75, 0.22);
+  --radius-l: 24px;
+  --radius-m: 16px;
+  --font: 'Nunito Variable', Nunito, system-ui, Roboto, sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--on-surface);
+  font-family: var(--font);
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.play {
+  position: fixed;
+  inset: 0;
+}
+
+.play__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.topbar {
+  position: absolute;
+  top: calc(var(--safe-top) + 10px);
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.topbar > * {
+  pointer-events: auto;
+}
+
+.chip-group {
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+.chip {
+  position: relative;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--on-surface-muted);
+}
+
+.chip[aria-pressed='true'] {
+  color: var(--on-primary);
+}
+
+.chip__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--primary);
+  z-index: -1;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.progress-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.palette {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 0 calc(var(--safe-bottom) + 8px);
+  background: linear-gradient(to top, var(--surface) 70%, color-mix(in srgb, var(--surface) 0%, transparent));
+}
+
+.palette__track {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.palette__track::-webkit-scrollbar {
+  display: none;
+}
+
+.swatch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  scroll-snap-align: center;
+}
+
+.swatch__disc {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 16px;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+}
+
+.swatch__ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.swatch__count {
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud {
+  position: absolute;
+  top: calc(var(--safe-top) + 64px);
+  left: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font:
+    600 11px/1.45 ui-monospace,
+    monospace;
+  background: rgba(30, 24, 34, 0.72);
+  color: #e9fbe9;
+  pointer-events: none;
+  white-space: pre;
+}
