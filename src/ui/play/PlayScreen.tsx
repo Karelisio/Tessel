@@ -304,6 +304,25 @@ export function PlayScreen() {
     await start(ref, m);
   };
 
+  const [sharing, setSharing] = useState(false);
+  /** Partage l'œuvre terminée, encadrée, en image. */
+  const shareCurrent = async () => {
+    const id = session.current?.meta.id;
+    if (!id || sharing) return;
+    setSharing(true);
+    try {
+      const ex = await import('@/render/exports');
+      const art = await ex.loadArtwork(id);
+      const blob = await ex.canvasBlob(await ex.renderArtwork(art, { size: 1600 }));
+      await ex.shareFile(blob, ex.fileName(art.title, 'png'), art.title);
+    } catch (e) {
+      console.error('Partage impossible', e);
+      showHint(tr(t('Partage impossible pour le moment', 'Sharing is unavailable right now')));
+    } finally {
+      setSharing(false);
+    }
+  };
+
   const useTool = (tool: ToolId) => {
     const sess = session.current;
     if (!sess) return;
@@ -473,6 +492,29 @@ export function PlayScreen() {
                 }}
               >
                 {tr(t('Recommencer', 'Start over'))}
+              </motion.button>
+            </div>
+            <div className="finish-panel__actions finish-panel__actions--more">
+              <motion.button
+                className="btn btn--text"
+                whileTap={{ scale: 0.94 }}
+                disabled={sharing}
+                onClick={() => {
+                  void shareCurrent();
+                }}
+              >
+                {sharing ? tr(t('Préparation…', 'Preparing…')) : tr(t('Partager', 'Share'))}
+              </motion.button>
+              <motion.button
+                className="btn btn--text"
+                whileTap={{ scale: 0.94 }}
+                onClick={() => {
+                  // l'œuvre rejoint le mur de la galerie
+                  useNav.getState().closePlay();
+                  useNav.getState().setTab('gallery');
+                }}
+              >
+                {tr(t('Voir dans la galerie', 'See in the gallery'))}
               </motion.button>
             </div>
           </motion.div>
