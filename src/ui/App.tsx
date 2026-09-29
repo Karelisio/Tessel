@@ -21,6 +21,8 @@ function confirmImport({ grid, mode, title }: ImportResult): void {
     .open({ artworkId: `photo:${crypto.randomUUID()}`, source: 'photo', title, grid: () => grid }, { mode });
 }
 
+if (import.meta.env.DEV) (window as unknown as { __nav: typeof useNav }).__nav = useNav;
+
 export function App() {
   useApplySettings();
   const reduced = useSettings((s) => s.reducedMotion);

@@ -59,6 +59,7 @@ tutoiement, ton doux et chaleureux.
 ## Vérifier
 
 `npm run typecheck`, `npx eslint src`, `npx prettier --check src`, et visuellement :
-`npx tsx --tsconfig tsconfig.app.json scripts/dev/shell-check.ts <dossier> <onglet>` (captures dans les 4 thèmes ;
+`npx tsx --tsconfig tsconfig.app.json scripts/dev/shell-check.ts <dossier> <onglet|sous-page> [0,800,1600]`
+(captures dans les 4 thèmes, aux défilements donnés ; `window.__nav` pilote la navigation ;
 serveur de dev sur http://localhost:5173). Données de test dans la console du navigateur : `window.__meta`
 (`debugGrant([{ kind: 'xp', amount: 50000 }])`…).
