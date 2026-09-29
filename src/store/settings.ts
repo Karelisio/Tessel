@@ -30,6 +30,8 @@ export interface Settings {
   ghost: number;
   /** Minicarte et radar quand on zoome. */
   minimap: boolean;
+  /** Ambiance sonore en boucle (`ambience:…`), chaîne vide = aucune. */
+  ambience: string;
   /** Matière choisie par mode (clé `texture:…`), la matière de base sinon. */
   textures: Partial<Record<ModeId, string>>;
   highContrast: boolean;
@@ -57,6 +59,7 @@ export const DEFAULT_SETTINGS: Settings = {
   ghost: 1,
   minimap: true,
   textures: {},
+  ambience: '',
   highContrast: false,
   notifications: false,
   autoUpdateCheck: true,

@@ -65,6 +65,19 @@ class SfxBank {
   }
 }
 
+export interface MusicTrack {
+  id: string;
+  file: string;
+  title: { fr: string; en: string };
+  seconds: number;
+  samples: number;
+}
+
+interface AudioManifest {
+  music: MusicTrack[];
+  ambience: MusicTrack[];
+}
+
 /**
  * Moteur audio maison : bus musique / ambiance / effets, limiteur doux sur le master,
  * banques d'effets à variantes avec limite de voix.
@@ -105,12 +118,15 @@ export class AudioEngine {
     const rendered = await Promise.all(BANKS.map(async (spec) => [spec, await renderBank(spec)] as const));
     for (const [spec, buffers] of rendered) this.banks.set(spec.id, new SfxBank(spec, buffers));
     await ctx.resume();
+    // musique et ambiance demandées avant le premier geste
+    this.refreshBeds();
   }
 
   setVolume(bus: Bus, value: number): void {
     this.volumes[bus] = value;
     const g = this.buses.get(bus);
     if (g && this.ctx) g.gain.setTargetAtTime(value, this.ctx.currentTime, 0.05);
+    if (bus !== 'sfx') this.refreshBeds();
   }
 
   play(bank: string, opts: { gain?: number; semitones?: number; burst?: boolean } = {}): void {
@@ -121,6 +137,123 @@ export class AudioEngine {
     b.play(ctx, out, opts);
   }
 
+  // ------------------------------------------------------------ musique et ambiances
+
+  private music: { el: HTMLAudioElement; gain: GainNode; id: string } | null = null;
+  private playlist: MusicTrack[] = [];
+  private queue: string[] = [];
+  private musicWanted = false;
+  private ambience: { src: AudioBufferSourceNode; gain: GainNode; id: string } | null = null;
+  private ambienceWanted: string | null = null;
+  private manifest: Promise<AudioManifest> | null = null;
+
+  private loadManifest(): Promise<AudioManifest> {
+    this.manifest ??= fetch('audio/tracks.json')
+      .then((r) => (r.ok ? (r.json() as Promise<AudioManifest>) : { music: [], ambience: [] }))
+      .catch(() => ({ music: [], ambience: [] }));
+    return this.manifest;
+  }
+
+  /**
+   * Musique de fond : lecture en continu (fichiers, sans tout décoder en mémoire) des pistes données,
+   * mélangées, avec fondu enchaîné. Liste vide ou volume nul : silence.
+   */
+  async setMusic(trackIds: readonly string[]): Promise<void> {
+    const m = await this.loadManifest();
+    this.playlist = m.music.filter((t) => trackIds.includes(t.id));
+    this.musicWanted = this.playlist.length > 0;
+    if (!this.musicWanted) this.fadeOutMusic();
+    else if (!this.music) this.nextTrack();
+    else if (!this.playlist.some((t) => t.id === this.music?.id)) this.nextTrack();
+  }
+
+  private nextTrack(): void {
+    const ctx = this.ctx;
+    const out = this.buses.get('music');
+    if (!ctx || !out || !this.musicWanted || this.playlist.length === 0 || this.volumes.music <= 0) return;
+    if (this.queue.length === 0) {
+      this.queue = this.playlist.map((t) => t.id).sort(() => Math.random() - 0.5);
+      // pas deux fois la même piste d'affilée
+      if (this.queue[0] === this.music?.id && this.queue.length > 1)
+        this.queue.push(this.queue.shift() ?? '');
+    }
+    const id = this.queue.shift();
+    const track = this.playlist.find((t) => t.id === id);
+    if (!track) return;
+    this.fadeOutMusic();
+    const el = new Audio(`audio/${track.file}`);
+    el.crossOrigin = 'anonymous';
+    el.preload = 'auto';
+    const gain = ctx.createGain();
+    gain.gain.value = 0;
+    ctx.createMediaElementSource(el).connect(gain).connect(out);
+    gain.gain.setTargetAtTime(1, ctx.currentTime, 1.2);
+    const current = { el, gain, id: track.id };
+    this.music = current;
+    // enchaîne quelques secondes avant la fin
+    el.addEventListener('timeupdate', () => {
+      if (this.music === current && el.duration - el.currentTime < 4) this.nextTrack();
+    });
+    el.addEventListener('error', () => {
+      if (this.music === current) this.music = null;
+    });
+    void el.play().catch(() => undefined);
+  }
+
+  private fadeOutMusic(): void {
+    const m = this.music;
+    const ctx = this.ctx;
+    this.music = null;
+    if (!m || !ctx) return;
+    m.gain.gain.setTargetAtTime(0, ctx.currentTime, 1.2);
+    setTimeout(() => {
+      m.el.pause();
+      m.el.src = '';
+    }, 6000);
+  }
+
+  /** Ambiance en boucle sans couture (pluie, feu…), null pour aucune. */
+  async setAmbience(id: string | null): Promise<void> {
+    this.ambienceWanted = id;
+    const ctx = this.ctx;
+    const out = this.buses.get('ambience');
+    if (this.ambience && this.ambience.id !== id) {
+      const a = this.ambience;
+      this.ambience = null;
+      if (ctx) {
+        a.gain.gain.setTargetAtTime(0, ctx.currentTime, 0.8);
+        a.src.stop(ctx.currentTime + 4);
+      }
+    }
+    if (!id || !ctx || !out || this.ambience?.id === id || this.volumes.ambience <= 0) return;
+    const m = await this.loadManifest();
+    const entry = m.ambience.find((a) => a.id === id);
+    if (!entry) return;
+    const data = await fetch(`audio/${entry.file}`).then((r) => r.arrayBuffer());
+    const buffer = await ctx.decodeAudioData(data);
+    if (this.ambienceWanted !== id || this.ambience) return;
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.loop = true;
+    src.loopStart = 0;
+    // longueur exacte : le bourrage de fin d'encodage ne crée pas de trou dans la boucle
+    src.loopEnd = Math.min(buffer.duration, entry.samples / 48000);
+    const gain = ctx.createGain();
+    gain.gain.value = 0;
+    src.connect(gain).connect(out);
+    gain.gain.setTargetAtTime(1, ctx.currentTime, 1.5);
+    src.start();
+    this.ambience = { src, gain, id };
+  }
+
+  /** Réveille la musique et l'ambiance après un changement de volume (0 → audible). */
+  private refreshBeds(): void {
+    if (this.volumes.music <= 0) this.fadeOutMusic();
+    else if (!this.music && this.musicWanted) this.nextTrack();
+    if (this.volumes.ambience > 0 && this.ambienceWanted && !this.ambience)
+      void this.setAmbience(this.ambienceWanted);
+  }
+
   async suspend(): Promise<void> {
     await this.ctx?.suspend();
   }
@@ -129,3 +262,6 @@ export class AudioEngine {
     await this.ctx?.resume();
   }
 }
+
+/** Moteur audio unique de l'application (jeu, musique, ambiances). */
+export const sharedAudio = new AudioEngine();

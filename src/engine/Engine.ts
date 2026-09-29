@@ -1,5 +1,5 @@
 import { Application, type BufferImageSource } from 'pixi.js';
-import { AudioEngine } from '@/audio/AudioEngine';
+import { sharedAudio } from '@/audio/AudioEngine';
 import { HapticsEngine } from '@/audio/haptics';
 import type { Grid } from '@/content/grid';
 import { ParticleFx, type Quality } from '@/fx/Particles';
@@ -40,7 +40,7 @@ export interface EngineOptions {
 export class Engine {
   readonly camera = new Camera();
   readonly perf = new PerfMonitor();
-  readonly audio = new AudioEngine();
+  readonly audio = sharedAudio;
   readonly haptics = new HapticsEngine();
   readonly tilt = new Tilt();
   readonly particles: ParticleFx;

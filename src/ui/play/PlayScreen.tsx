@@ -16,7 +16,7 @@ import { t } from '@/i18n/text';
 import type { MetaService } from '@/meta/MetaService';
 import { MODE_NAMES } from '@/meta/format';
 import type { ToolId } from '@/meta/rewards';
-import { catalogItem } from '@/meta/catalog';
+import { CATALOG, catalogItem } from '@/meta/catalog';
 import { unlockLevel } from '@/meta/unlocks';
 import { getMode } from '@/modes';
 import { texturesOf } from '@/modes/textures';
@@ -37,6 +37,9 @@ import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
 import { closeTo, openFrom } from './transition';
 
+/** Ambiances du catalogue (pluie, feu…). */
+const AMBIENCE_KEYS = CATALOG.map((i) => i.key).filter((k) => k.startsWith('ambience:'));
+
 const TOP_INSET = 64;
 const BOTTOM_INSET = 130;
 /** Une main : barre du haut descendue au-dessus de la palette. */
@@ -56,9 +59,6 @@ declare global {
 
 function applyEngineSettings(engine: Engine): void {
   const s = useSettings.getState();
-  engine.audio.setVolume('sfx', s.effectsVolume);
-  engine.audio.setVolume('music', s.musicVolume);
-  engine.audio.setVolume('ambience', s.ambienceVolume);
   engine.haptics.enabled = s.haptics;
   engine.particles.setQuality(s.quality);
   if (s.oneHanded) engine.setInsets(...ONE_HAND_INSETS);
@@ -102,6 +102,7 @@ export function PlayScreen() {
   const minimap = useSettings((st) => st.minimap);
   const oneHanded = useSettings((st) => st.oneHanded);
   const textures = useSettings((st) => st.textures);
+  const ambience = useSettings((st) => st.ambience);
   const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
     usePlayStore();
 
@@ -626,6 +627,41 @@ export function PlayScreen() {
               >
                 {locked && <IconLock size={12} />}
                 {name ? tr(name) : String(i + 1)}
+              </motion.button>
+            );
+          })}
+        </div>
+        <h3 className="modes-title modes-title--sub">{tr(t('Ambiance sonore', 'Ambient sound'))}</h3>
+        <div
+          className="texture-chips"
+          role="radiogroup"
+          aria-label={tr(t('Ambiance sonore', 'Ambient sound'))}
+        >
+          {['', ...AMBIENCE_KEYS].map((key) => {
+            const locked =
+              key !== '' &&
+              hasMeta &&
+              !(useMetaStore.getState().service?.isUnlocked(key as `ambience:${string}`) ?? true);
+            const name = key ? catalogItem(key as `ambience:${string}`)?.name : undefined;
+            return (
+              <motion.button
+                key={key || 'none'}
+                role="radio"
+                aria-checked={ambience === key}
+                className="texture-chip"
+                data-locked={locked}
+                whileTap={{ scale: 0.94 }}
+                onClick={() => {
+                  if (locked) {
+                    const level = unlockLevel(key as `ambience:${string}`) ?? 0;
+                    showHint(tr(t(`Se débloque au niveau ${level}`, `Unlocks at level ${level}`)));
+                    return;
+                  }
+                  useSettings.getState().set({ ambience: key });
+                }}
+              >
+                {locked && <IconLock size={12} />}
+                {name ? tr(name) : tr(t('Aucune', 'None'))}
               </motion.button>
             );
           })}

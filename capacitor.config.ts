@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
   android: { backgroundColor: '#FBF7F4' },
   plugins: {
     SplashScreen: { launchAutoHide: false, backgroundColor: '#FBF7F4', showSpinner: false },
+    LocalNotifications: { smallIcon: 'ic_stat_tessel', iconColor: '#D9709A' },
   },
 };
 
