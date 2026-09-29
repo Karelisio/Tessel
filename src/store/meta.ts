@@ -82,7 +82,8 @@ export const useMetaStore = create<MetaState>((set, get) => ({
   toasts: [],
   celebration: null,
   endCelebration: () => {
-    set({ celebration: null });
+    // la célébration a remplacé les toasts de niveau : ils ne réapparaissent pas ensuite
+    set((s) => ({ celebration: null, toasts: s.toasts.filter((x) => x.notice.type !== 'levelUp') }));
   },
   attach: (service) => {
     set({ service, snap: snapshot(service) });

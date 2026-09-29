@@ -9,6 +9,7 @@ import { useSettings, type Quality, type Settings } from '@/store/settings';
 import { spring } from '@/theme/motion/tokens';
 import { UpdateRow } from '@/update/UpdateRow';
 import { Button, Card, ListRow, Screen, SectionHeader, Segmented, Sheet, Slider, Switch } from '@/ui/kit';
+import { BackupRows } from './profile/BackupRows';
 import { IconInfo, IconReplay } from './profile/icons';
 import { ThemePicker } from './profile/ThemePicker';
 import './profile/profile.css';
@@ -279,7 +280,11 @@ export default function SettingsScreen() {
         />
       </Group>
 
-      <Group title={tr(t('À propos', 'About'))} index={7}>
+      <Group title={tr(t('Sauvegarde', 'Backup'))} index={7}>
+        <BackupRows />
+      </Group>
+
+      <Group title={tr(t('À propos', 'About'))} index={8}>
         <ListRow
           icon={<IconInfo size={20} />}
           title="Tessel"
