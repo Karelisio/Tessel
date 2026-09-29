@@ -6,6 +6,7 @@ import type { Bitset } from '@/content/progress';
 import type { Grid } from '@/content/grid';
 import { TRANSPARENT } from '@/content/grid';
 import { getMode } from '@/modes';
+import { useSettings } from '@/store/settings';
 import type { ModeId } from '@/modes/types';
 import { TesselNative, type WallpaperTarget } from '@/native/TesselNative';
 import { ArtworkRenderer, type RenderOptions } from './ArtworkRenderer';
@@ -56,6 +57,7 @@ export async function renderArtwork(a: Artwork, opts: ImageOptions): Promise<HTM
   return r.render({
     grid: a.grid,
     mode: getMode(a.mode),
+    texture: useSettings.getState().textures[a.mode] ?? null,
     filled: a.filled,
     framed: opts.framed ?? true,
     frame: opts.frame === undefined ? a.frame : opts.frame,

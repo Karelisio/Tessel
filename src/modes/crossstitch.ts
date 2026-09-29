@@ -31,6 +31,12 @@ vec3 fabric(vec2 f) {
   float hole = 1.0 - smoothstep(0.06, 0.11, length(dc) / (1.0 - 0.45 * gTension));
   c *= 1.0 - hole * 0.42;
   c *= 1.0 + (hash12(floor((gCell + f) * 6.0)) - 0.5) * 0.025;
+  if (int(uTexture + 0.5) == 2) {
+    // lin naturel : fils irréguliers (flammes) dans les deux sens
+    vec2 w = gCell + f;
+    float slub = vnoise(vec2(w.x * 0.7, w.y * 9.0)) * 0.6 + vnoise(vec2(w.x * 9.0, w.y * 0.7)) * 0.4;
+    c *= 0.94 + 0.12 * slub;
+  }
   return c;
 }
 
@@ -100,7 +106,7 @@ vec4 material(vec2 f, vec3 col, float seed, float px, float cellPx) {
 vec4 emptyCell(vec2 f, int idx, vec3 col, float px, float cellPx, float numberAlpha, float selected) {
   vec3 base = fabric(f);
   // motif imprimé (toile « pré-imprimée »), très léger
-  float tint = selected > 0.5 ? clamp(0.3 * selectionGlow(uTime), 0.0, 0.6) : 0.12;
+  float tint = selected > 0.5 ? clamp(0.3 * selectionGlow(uTime), 0.0, 0.6) : (luma(uPaper) < 0.4 ? 0.2 : 0.12);
   vec2 q = abs(f - 0.5);
   float inside = 1.0 - smoothstep(0.36, 0.36 + px * 1.5, max(q.x, q.y));
   base = mix(base, mix(base, col, tint), inside);
@@ -108,6 +114,8 @@ vec4 emptyCell(vec2 f, int idx, vec3 col, float px, float cellPx, float numberAl
     float m = numberMask(f, idx + 1, px) * numberAlpha;
     vec3 ink = selected > 0.5 ? mix(col * 0.3, vec3(0.12), 0.5) : mix(vec3(0.46), col * 0.45, 0.3);
     if (selected > 0.5 && luma(col) < 0.35) ink = vec3(0.97);
+    // toile sombre (noire, bleu nuit) : numéros clairs
+    if (luma(uPaper) < 0.4) ink = selected > 0.5 ? mix(col, vec3(1.0), 0.55) : vec3(0.78);
     base = mix(base, ink, m);
   }
   return vec4(base, 1.0);

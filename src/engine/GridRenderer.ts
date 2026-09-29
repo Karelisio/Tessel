@@ -12,6 +12,7 @@ import {
 import { TRANSPARENT, type Grid } from '@/content/grid';
 import { hash2 } from '@/content/random';
 import { frameSpec, type FrameSpec } from '@/content/frames';
+import type { TextureSpec } from '@/modes/textures';
 import type { ModeDefinition } from '@/modes/types';
 import type { Camera } from './Camera';
 import { GRID_VERTEX, animFragment, animVertex, gridFragment } from './shaders/common';
@@ -65,6 +66,8 @@ export class GridRenderer {
   private mode: ModeDefinition;
   private readonly pendingFill: { index: number; at: number }[] = [];
   /** Fond autour de l'œuvre imposé par le thème (sinon celui du mode). */
+  /** Matière choisie pour le mode courant (papier, toile, diamants, tesselles). */
+  private texture: TextureSpec | null = null;
   /** Cadre choisi pour cette œuvre (sinon celui du mode). */
   private frameKey: string | null = null;
   private backdropOverride: readonly [number, number, number] | null = null;
@@ -113,6 +116,7 @@ export class GridRenderer {
       uFinish: { value: new Float32Array([-1, 0, 0, 0]), type: 'vec4<f32>' },
       uAssist: { value: new Float32Array([0, 1, 0, 0]), type: 'vec4<f32>' },
       uFrameA: { value: new Float32Array(4), type: 'vec4<f32>' },
+      uTexture: { value: 0, type: 'f32' },
       uFrameB: { value: new Float32Array(4), type: 'vec4<f32>' },
     });
 
@@ -168,6 +172,9 @@ export class GridRenderer {
     this.mode = mode;
     const u = this.uniforms.uniforms as Record<string, unknown>;
     u.uDuration = mode.placeDuration / 1000;
+    // la matière appartient à l'ancien mode : le moteur réapplique celle du nouveau
+    this.texture = null;
+    u.uTexture = 0;
     (u.uPaper as Float32Array).set(mode.paper);
     (u.uBackdrop as Float32Array).set(this.backdrop);
     this.uniforms.update();
@@ -226,6 +233,21 @@ export class GridRenderer {
 
   private get backdrop(): readonly [number, number, number] {
     return this.backdropOverride ?? this.mode.backdrop;
+  }
+
+  private get paper(): readonly [number, number, number] {
+    return this.texture?.paper ?? this.mode.paper;
+  }
+
+  /** Matière du mode (variante du shader et support). */
+  setTexture(spec: TextureSpec): void {
+    if (spec.mode !== this.mode.id) return;
+    this.texture = spec;
+    const u = this.uniforms.uniforms as Record<string, unknown>;
+    u.uTexture = spec.variant;
+    (u.uPaper as Float32Array).set(this.paper);
+    this.uniforms.update();
+    this.rewriteCells();
   }
 
   /** Cadre construit à la fin de l'œuvre (clé `frame:…` du catalogue ; null = celui du mode). */
@@ -431,7 +453,7 @@ export class GridRenderer {
       this.cells.set([r, g, b, STATE_ALPHA[state]], o);
     } else {
       const t = Math.min(0.6, this.mode.emptyTint * this.ghost);
-      const [pr, pg, pb] = this.mode.paper;
+      const [pr, pg, pb] = this.paper;
       this.cells.set(
         [
           pr * 255 * (1 - t) + r * t,

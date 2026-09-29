@@ -4,6 +4,7 @@ import { TRANSPARENT, type Grid } from '@/content/grid';
 import { createDigitAtlas, NUMBER_FONT } from '@/engine/digits';
 import { CellState, GridRenderer } from '@/engine/GridRenderer';
 import { FRAME_RATIO } from '@/fx/finaleTimeline';
+import { textureSpec } from '@/modes/textures';
 import type { ModeDefinition } from '@/modes/types';
 
 /** Texture maximale sûre sur les GPU mobiles. */
@@ -24,6 +25,8 @@ export interface RenderOptions {
   background?: readonly [number, number, number];
   /** Marge autour du cadre, en fraction du plus grand côté de la grille (ombre portée). */
   margin?: number;
+  /** Matière du mode (`texture:…`), la matière de base sinon. */
+  texture?: string | null;
   /** Fond transparent autour de l'œuvre encadrée (mur de galerie). */
   transparent?: boolean;
 }
@@ -127,6 +130,7 @@ export class ArtworkRenderer {
 
     const r = new GridRenderer(grid, mode, this.digits);
     r.setFrame(opts.frame ?? null);
+    r.setTexture(textureSpec(mode.id, opts.texture));
     if (opts.background) r.setBackdrop(opts.background);
     r.setTransparentOutside(opts.transparent ?? false);
     r.resize(width, height, 1);

@@ -3,7 +3,8 @@ import { AudioEngine } from '@/audio/AudioEngine';
 import { HapticsEngine } from '@/audio/haptics';
 import type { Grid } from '@/content/grid';
 import { ParticleFx, type Quality } from '@/fx/Particles';
-import type { ModeDefinition } from '@/modes/types';
+import { textureSpec } from '@/modes/textures';
+import type { ModeDefinition, ModeId } from '@/modes/types';
 import { Camera } from './Camera';
 import { realClock, type Clock } from './Clock';
 import { NUMBER_FONT, createDigitAtlas } from './digits';
@@ -59,6 +60,7 @@ export class Engine {
   private readonly startedAt: number;
   private assist: GridAssist = { colorblind: false, ghost: 1, highContrast: false, numberScale: 1 };
   private backdrop: readonly [number, number, number] | null = null;
+  private textures: Partial<Record<ModeId, string>> = {};
   private readonly cameraListeners = new Set<() => void>();
   private lastCamera: [number, number, number] = [0, 0, 0];
 
@@ -114,6 +116,7 @@ export class Engine {
     const renderer = new GridRenderer(grid, mode, this.digits);
     this.renderer = renderer;
     this.applyAssist();
+    this.applyTexture();
     this.camera.setGrid(grid.width, grid.height);
     this.app.stage.addChild(renderer.view, this.particles.world, this.particles.screen);
     this.applySize();
@@ -142,12 +145,27 @@ export class Engine {
 
   setMode(mode: ModeDefinition): void {
     this.game?.setMode(mode);
+    this.applyTexture();
     this.dirty = true;
   }
 
   setAssist(assist: GridAssist): void {
     this.assist = assist;
     this.applyAssist();
+  }
+
+  /** Matières choisies par mode (clés `texture:…`). */
+  setTextures(textures: Partial<Record<ModeId, string>>): void {
+    this.textures = textures;
+    this.applyTexture();
+  }
+
+  private applyTexture(): void {
+    const r = this.renderer;
+    if (!r) return;
+    const id = r.currentMode.id;
+    r.setTexture(textureSpec(id, this.textures[id]));
+    this.dirty = true;
   }
 
   /** Fond autour de l'œuvre, accordé au thème (null : celui du mode). */

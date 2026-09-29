@@ -60,16 +60,49 @@ vec4 material(vec2 f, vec3 col, float seed, float px, float cellPx) {
   if (d.x > 0.0 && d.y > 0.0) g = normalize(max(d, 0.0) * sign(q));
   float bevel = smoothstep(-0.13, 0.0, sd);
   vec3 n = normalize(vec3(g * bevel * 1.3, 1.0));
-  // micro-relief de la pierre
-  vec2 np = (gCell + f) * 9.0 + seed * 17.0;
+  int tex = int(uTexture + 0.5);
+  vec2 w = gCell + f;
+  vec2 np = w * 9.0 + seed * 17.0;
   float grain = vnoise(np) * 0.6 + vnoise(np * 2.7) * 0.4;
-  n = normalize(n + vec3(vnoise(np + 3.1) - 0.5, vnoise(np + 7.7) - 0.5, 0.0) * 0.12);
+  // relief : pierre et smalt irréguliers, verre et céramique lisses
+  float rough = tex == 0 ? 0.12 : tex == 4 ? 0.34 : tex == 3 ? 0.05 : 0.02;
+  n = normalize(n + vec3(vnoise(np + 3.1) - 0.5, vnoise(np + 7.7) - 0.5, 0.0) * rough);
   vec3 L = normalize(uLight);
+  vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
   float diff = max(dot(n, L), 0.0);
-  float spec = pow(max(dot(n, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0), 36.0);
+  float nh = max(dot(n, H), 0.0);
   // chaque tesselle a sa nuance
-  vec3 base = col * (0.93 + 0.12 * fract(seed * 7.31)) * (0.94 + 0.1 * grain);
-  vec3 c = base * (0.55 + 0.55 * diff) + spec * 0.22 * (0.6 + 0.4 * gTension);
+  vec3 base = col * (0.93 + 0.12 * fract(seed * 7.31));
+  vec3 c;
+  if (tex == 1) {
+    // pâte de verre : couleur profonde et translucide, reflet net, petites bulles
+    vec2 bq = fract(w * 3.0 + seed * 5.0) - 0.5;
+    float bubble = (1.0 - smoothstep(0.03, 0.06, length(bq))) * step(0.55, hash12(floor(w * 3.0 + seed * 5.0)));
+    c = base * (0.62 + 0.4 * diff) + base * 0.18 * (1.0 - bevel) + pow(nh, 80.0) * 0.55;
+    c += bubble * 0.12;
+  } else if (tex == 2) {
+    // céramique émaillée : aplat brillant, fines craquelures
+    float crack = 1.0 - smoothstep(0.0, 0.03, abs(vnoise(w * 5.0 + seed * 9.0) - 0.5));
+    c = base * (0.7 + 0.35 * diff) + pow(nh, 60.0) * 0.45;
+    c *= 1.0 - crack * 0.12;
+  } else if (tex == 3) {
+    // marbre : veines sinueuses dans chaque tesselle
+    float v = abs(sin((w.x * 0.8 + w.y * 0.5 + vnoise(w * 0.9 + seed * 4.0) * 2.5) * 2.4));
+    float vein = 1.0 - smoothstep(0.0, 0.22, v);
+    vec3 marble = mix(base * (0.94 + 0.1 * grain), mix(base, vec3(1.0), 0.55), vein * 0.6);
+    c = marble * (0.62 + 0.45 * diff) + pow(nh, 50.0) * 0.3;
+  } else if (tex == 4) {
+    // smalts : verre émaillé irrégulier, quelques tesselles à la feuille d'or
+    vec3 gold = vec3(0.8, 0.62, 0.3);
+    bool leaf = fract(seed * 11.7) > 0.93;
+    vec3 b2 = leaf ? gold * (0.85 + 0.2 * grain) : base * (0.92 + 0.12 * grain);
+    float sp = pow(nh, leaf ? 24.0 : 40.0);
+    c = b2 * (0.5 + 0.6 * diff) + (leaf ? gold * sp * 0.9 : vec3(sp * 0.35));
+  } else {
+    // pierre mate avec micro-relief
+    base *= 0.94 + 0.1 * grain;
+    c = base * (0.55 + 0.55 * diff) + pow(nh, 36.0) * 0.22 * (0.6 + 0.4 * gTension);
+  }
   // lustrage final
   c += gTension * 0.03;
   return vec4(c, cover);

@@ -582,3 +582,41 @@ button {
 .play[data-onehand='true'] .hint {
   bottom: calc(var(--safe-bottom) + 166px);
 }
+
+/* --- Matière du mode (feuille « ⋯ ») ---------------------------------------------------------------- */
+
+.modes-title--sub {
+  margin-top: 18px;
+}
+
+.texture-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.texture-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--outline);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--on-surface);
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.texture-chip[aria-checked='true'] {
+  border-color: transparent;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.texture-chip[data-locked='true'] {
+  opacity: 0.5;
+}

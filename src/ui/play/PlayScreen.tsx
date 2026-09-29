@@ -16,8 +16,10 @@ import { t } from '@/i18n/text';
 import type { MetaService } from '@/meta/MetaService';
 import { MODE_NAMES } from '@/meta/format';
 import type { ToolId } from '@/meta/rewards';
+import { catalogItem } from '@/meta/catalog';
 import { unlockLevel } from '@/meta/unlocks';
 import { getMode } from '@/modes';
+import { texturesOf } from '@/modes/textures';
 import { MODE_IDS, type ModeId } from '@/modes/types';
 import { useMetaStore } from '@/store/meta';
 import { useNav, type OpenRequest } from '@/store/nav';
@@ -61,6 +63,7 @@ function applyEngineSettings(engine: Engine): void {
   engine.particles.setQuality(s.quality);
   if (s.oneHanded) engine.setInsets(...ONE_HAND_INSETS);
   else engine.setInsets(TOP_INSET, BOTTOM_INSET);
+  engine.setTextures(s.textures);
   engine.setAssist({
     colorblind: s.colorblind,
     ghost: s.ghost,
@@ -98,6 +101,7 @@ export function PlayScreen() {
   const leftHanded = useSettings((st) => st.leftHanded);
   const minimap = useSettings((st) => st.minimap);
   const oneHanded = useSettings((st) => st.oneHanded);
+  const textures = useSettings((st) => st.textures);
   const { snapshot, mode, showHud, canUndo, canRedo, phase, setSnapshot, setMode, setPhase, toggleHud } =
     usePlayStore();
 
@@ -593,6 +597,35 @@ export function PlayScreen() {
                     <IconLock size={12} /> {tr(t('Niveau', 'Level'))} {unlockLevel(`mode:${m}`)}
                   </small>
                 )}
+              </motion.button>
+            );
+          })}
+        </div>
+        <h3 className="modes-title modes-title--sub">{tr(t('Matière', 'Material'))}</h3>
+        <div className="texture-chips" role="radiogroup" aria-label={tr(t('Matière', 'Material'))}>
+          {texturesOf(mode).map((tx, i) => {
+            const locked = hasMeta && !(useMetaStore.getState().service?.isUnlocked(tx.key) ?? true);
+            const active = (textures[mode] ?? texturesOf(mode)[0]?.key) === tx.key;
+            const name = catalogItem(tx.key)?.name;
+            return (
+              <motion.button
+                key={tx.key}
+                role="radio"
+                aria-checked={active}
+                className="texture-chip"
+                data-locked={locked}
+                whileTap={{ scale: 0.94 }}
+                onClick={() => {
+                  if (locked) {
+                    const level = unlockLevel(tx.key) ?? 0;
+                    showHint(tr(t(`Se débloque au niveau ${level}`, `Unlocks at level ${level}`)));
+                    return;
+                  }
+                  useSettings.getState().set({ textures: { ...textures, [mode]: tx.key } });
+                }}
+              >
+                {locked && <IconLock size={12} />}
+                {name ? tr(name) : String(i + 1)}
               </motion.button>
             );
           })}

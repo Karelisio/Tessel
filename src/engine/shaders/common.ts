@@ -27,6 +27,7 @@ uniform float uNumbers;      // échelle des numéros (0 = masqués)
 uniform vec3 uPaper;
 uniform vec3 uBackdrop;
 uniform vec4 uFinish;        // fin d'œuvre : départ (s, < 0 = inactive)
+uniform float uTexture;      // matière du mode (variante, voir modes/textures.ts)
 uniform vec4 uFrameA;        // cadre : couleur de base, matière (voir content/frames.ts)
 uniform vec4 uFrameB;        // cadre : couleur d'accent, paramètre de la matière
 uniform vec4 uAssist;        // aides : motifs daltoniens, aperçu (0–2), contraste élevé ; w = fond transparent

@@ -3,6 +3,7 @@ import { ArrayBufferTarget, Muxer } from 'mp4-muxer';
 import { TRANSPARENT } from '@/content/grid';
 import { FINALE } from '@/fx/finaleTimeline';
 import { getMode } from '@/modes';
+import { useSettings } from '@/store/settings';
 import { ArtworkRenderer, type Scene } from './ArtworkRenderer';
 import type { Artwork } from './exports';
 
@@ -230,7 +231,15 @@ export async function exportTimelapse(a: Artwork, opts: TimelapseOptions): Promi
   const plan = timelapsePlan(order.length, fps, seconds, a.completed);
   const r = await ArtworkRenderer.get();
   return r.sequence(
-    { grid: a.grid, mode: getMode(a.mode), filled: null, framed: true, frame: a.frame, size: even(size) },
+    {
+      grid: a.grid,
+      mode: getMode(a.mode),
+      texture: useSettings.getState().textures[a.mode] ?? null,
+      filled: null,
+      framed: true,
+      frame: a.frame,
+      size: even(size),
+    },
     (scene) => (gif ? encodeGif(scene, plan, order, fps, opts) : encodeMp4(scene, plan, order, fps, opts)),
   );
 }

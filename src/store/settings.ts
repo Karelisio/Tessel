@@ -1,6 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import { create } from 'zustand';
 import type { Locale } from '@/i18n/text';
+import type { ModeId } from '@/modes/types';
 
 export type ThemeId = 'doux' | 'material' | 'clair' | 'sombre';
 export type Quality = 'low' | 'medium' | 'high';
@@ -29,6 +30,8 @@ export interface Settings {
   ghost: number;
   /** Minicarte et radar quand on zoome. */
   minimap: boolean;
+  /** Matière choisie par mode (clé `texture:…`), la matière de base sinon. */
+  textures: Partial<Record<ModeId, string>>;
   highContrast: boolean;
   notifications: boolean;
   autoUpdateCheck: boolean;
@@ -53,6 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
   colorblind: false,
   ghost: 1,
   minimap: true,
+  textures: {},
   highContrast: false,
   notifications: false,
   autoUpdateCheck: true,

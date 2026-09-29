@@ -33,32 +33,51 @@ float envLight(vec3 r, vec3 l) {
 }
 
 vec4 material(vec2 f, vec3 col, float seed, float px, float cellPx) {
+  int tex = int(uTexture + 0.5);
+  bool roundDrill = tex != 1;
   vec2 p = f * 2.0 - 1.0;
   float aa = max(px * 2.0, 0.004);
-  // carré arrondi (écart entre diamants)
-  float halfSize = 0.935;
-  float radius = 0.14;
-  vec2 q = abs(p) - vec2(halfSize - radius);
-  float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - radius;
+  vec2 ap = abs(p);
+  vec2 sg = sign(p + 1e-5);
+  float table = 0.44;
+  float d;
+  float m;
+  float edge;
+  float facetId;
+  vec3 n = vec3(0.0, 0.0, 1.0);
+  if (roundDrill) {
+    // diamant rond : table circulaire + 8 facettes rayonnantes
+    float r = length(p);
+    d = r - 0.9;
+    m = r;
+    float a = atan(p.y, p.x);
+    float sector = floor(a / 0.785398 + 0.5);
+    float ac = sector * 0.785398;
+    if (r >= table) n = normalize(vec3(cos(ac) * 0.95, sin(ac) * 0.95, 1.0));
+    float eTable = abs(r - table);
+    float eSector = r > table ? (0.392699 - abs(a - ac)) * r : 1.0;
+    edge = 1.0 - smoothstep(0.0, aa * 1.5, min(eTable, eSector));
+    facetId = sector;
+  } else {
+    // diamant carré : carré arrondi, table + 8 facettes de biseau
+    float halfSize = 0.935;
+    float radius = 0.14;
+    vec2 q = ap - vec2(halfSize - radius);
+    d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - radius;
+    m = max(ap.x, ap.y);
+    if (m >= table) {
+      float k = 0.95;
+      if (ap.x > ap.y) n = normalize(vec3(sg.x * k, sg.y * k * 0.36, 1.0));
+      else n = normalize(vec3(sg.x * k * 0.36, sg.y * k, 1.0));
+    }
+    float eTable = abs(m - table);
+    float eDiag = m > table ? abs(ap.x - ap.y) * 0.7071 : 1.0;
+    float eAxis = m > table ? min(ap.x, ap.y) : 1.0;
+    edge = 1.0 - smoothstep(0.0, aa * 1.5, min(eTable, min(eDiag, eAxis)));
+    facetId = dot(sg, vec2(1.0, 2.0)) + (ap.x > ap.y ? 0.5 : 0.0);
+  }
   float cover = 1.0 - smoothstep(-aa, aa, d);
   if (cover <= 0.0) return vec4(0.0);
-
-  // facettes : table centrale + 8 facettes de biseau
-  vec2 ap = abs(p);
-  float m = max(ap.x, ap.y);
-  float table = 0.44;
-  vec3 n = vec3(0.0, 0.0, 1.0);
-  vec2 sg = sign(p + 1e-5);
-  if (m >= table) {
-    float k = 0.95;
-    if (ap.x > ap.y) n = normalize(vec3(sg.x * k, sg.y * k * 0.36, 1.0));
-    else n = normalize(vec3(sg.x * k * 0.36, sg.y * k, 1.0));
-  }
-  // arêtes entre facettes
-  float eTable = abs(m - table);
-  float eDiag = m > table ? abs(ap.x - ap.y) * 0.7071 : 1.0;
-  float eAxis = m > table ? min(ap.x, ap.y) : 1.0;
-  float edge = 1.0 - smoothstep(0.0, aa * 1.5, min(eTable, min(eDiag, eAxis)));
   float detail = smoothstep(5.0, 14.0, cellPx);
 
   vec3 L = normalize(uLight);
@@ -74,10 +93,14 @@ vec4 material(vec2 f, vec3 col, float seed, float px, float cellPx) {
   float depth = smoothstep(0.0, 0.9, m);
   body *= mix(0.84, 1.16, depth);
   // chaque facette capte une zone différente de l'environnement : alternance clair/sombre
-  float facetId = dot(sg, vec2(1.0, 2.0)) + (ap.x > ap.y ? 0.5 : 0.0);
   body *= m >= table ? 0.92 + 0.16 * fract(sin(facetId * 12.9898 + seed * 3.0) * 43758.5) : 1.0;
   vec3 c = body;
   c += env * mix(col, vec3(1.0), 0.6) * 0.5 * detail;
+  if (tex == 2) {
+    // traitement aurore boréale : reflets irisés qui changent avec la facette et l'inclinaison
+    vec3 ab = 0.5 + 0.5 * cos(6.28318 * (dot(n.xy, vec2(0.8, 0.6)) * 1.4 + dot(L.xy, vec2(0.5)) + seed + vec3(0.0, 0.33, 0.67)));
+    c = mix(c, c * 0.65 + ab * 0.5, 0.38 * detail);
+  }
   c += spec * 1.15;
   c += edge * detail * 0.14 * (0.5 + diff);
 
