@@ -1,0 +1,281 @@
+/* --- Écran ----------------------------------------------------------------------------------- */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: calc(var(--safe-top) + 58px);
+  padding: calc(var(--safe-top) + 6px) 10px 6px;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.screen__bar[data-collapsed='true'] {
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--outline);
+}
+
+.screen__bar-title {
+  flex: 1;
+  font-weight: 800;
+  font-size: 18px;
+  padding-left: 6px;
+}
+
+.screen__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.screen__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(var(--safe-top) + 58px) 0 calc(var(--safe-bottom) + var(--tabbar-h) + 24px);
+}
+
+.screen__title {
+  margin: 0 20px 14px;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* --- Boutons ----------------------------------------------------------------------------------- */
+
+.kit-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--on-surface);
+}
+
+.kit-btn {
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.kit-btn--filled {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.kit-btn--tonal {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.kit-btn--text {
+  color: var(--primary);
+}
+
+.kit-btn:disabled {
+  opacity: 0.45;
+}
+
+/* --- Cartes, puces, sections -------------------------------------------------------------------- */
+
+.kit-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--radius-l);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+}
+
+.kit-chip {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid var(--outline-strong);
+  color: var(--on-surface);
+}
+
+.kit-chip[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.kit-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 22px 20px 10px;
+}
+
+.kit-section h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.kit-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  text-align: left;
+  color: var(--on-surface);
+}
+
+.kit-row__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  flex: none;
+}
+
+.kit-row__text {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.kit-row__text small {
+  color: var(--on-surface-muted);
+  font-size: 13px;
+}
+
+.kit-ring {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+.kit-ring svg {
+  position: absolute;
+  inset: 0;
+}
+
+.kit-ring__inner {
+  position: relative;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.kit-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--tertiary);
+  color: #fff;
+}
+
+.kit-skeleton {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    var(--surface-3) 30%,
+    color-mix(in srgb, var(--surface-3) 40%, var(--surface-2)) 50%,
+    var(--surface-3) 70%
+  );
+  background-size: 300% 100%;
+  animation: kit-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes kit-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+.kit-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 40px 30px;
+  text-align: center;
+  color: var(--on-surface-muted);
+}
+
+.kit-empty strong {
+  color: var(--on-surface);
+  font-size: 18px;
+}
+
+.kit-empty__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+/* --- Feuilles ----------------------------------------------------------------------------------- */
+
+.kit-scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 60;
+}
+
+.kit-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 10px 18px calc(var(--safe-bottom) + 24px);
+  border-radius: 28px 28px 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+  z-index: 61;
+  touch-action: pan-y;
+}
+
+.kit-sheet__grip {
+  width: 40px;
+  height: 5px;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  background: var(--outline-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-skeleton {
+    animation: none;
+  }
+}

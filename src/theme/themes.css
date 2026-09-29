@@ -1,0 +1,99 @@
+/*
+ * Jetons de couleur des thèmes. Les composants n'utilisent que ces variables.
+ * Material You : les valeurs sont posées en ligne sur <html> par applyTheme (couleurs du téléphone).
+ */
+:root,
+[data-theme='doux'] {
+  color-scheme: light;
+  --bg: #f3eee9;
+  --surface: #fbf7f4;
+  --surface-2: #ffffff;
+  --surface-3: #efe7e2;
+  --on-surface: #4a3f4b;
+  --on-surface-muted: #8a7f8b;
+  --primary: #b77ba8;
+  --on-primary: #ffffff;
+  --primary-container: #f3dfec;
+  --on-primary-container: #5b3452;
+  --secondary-container: #e6ecd9;
+  --on-secondary-container: #3d4a30;
+  --tertiary: #d9876f;
+  --outline: rgba(74, 63, 75, 0.12);
+  --outline-strong: rgba(74, 63, 75, 0.3);
+  --scrim: rgba(40, 30, 42, 0.32);
+  --canvas-bg: #f1ebe5;
+  --shadow-soft: 0 6px 18px rgba(74, 63, 75, 0.12);
+  --shadow-lift: 0 12px 26px rgba(74, 63, 75, 0.22);
+  --glow-a: #f6d9e8;
+  --glow-b: #fbe6cf;
+  --glow-c: #dfe8f6;
+}
+
+[data-theme='clair'] {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --surface: #fafbfc;
+  --surface-2: #ffffff;
+  --surface-3: #eceef2;
+  --on-surface: #1f2328;
+  --on-surface-muted: #697079;
+  --primary: #3f6fd8;
+  --on-primary: #ffffff;
+  --primary-container: #dce6fb;
+  --on-primary-container: #1c3a7a;
+  --secondary-container: #e3ecef;
+  --on-secondary-container: #26414a;
+  --tertiary: #e0864a;
+  --outline: rgba(31, 35, 40, 0.1);
+  --outline-strong: rgba(31, 35, 40, 0.28);
+  --scrim: rgba(15, 18, 24, 0.3);
+  --canvas-bg: #eef0f3;
+  --shadow-soft: 0 6px 18px rgba(20, 28, 45, 0.1);
+  --shadow-lift: 0 12px 26px rgba(20, 28, 45, 0.2);
+  --glow-a: #dfe8fb;
+  --glow-b: #eef3f8;
+  --glow-c: #f6ebe1;
+}
+
+[data-theme='sombre'] {
+  color-scheme: dark;
+  --bg: #161419;
+  --surface: #1d1a21;
+  --surface-2: #26222b;
+  --surface-3: #2f2a35;
+  --on-surface: #ece6ef;
+  --on-surface-muted: #a79fad;
+  --primary: #d6a3c9;
+  --on-primary: #3a2034;
+  --primary-container: #4f2f47;
+  --on-primary-container: #f7d8ee;
+  --secondary-container: #37402f;
+  --on-secondary-container: #dbe7cb;
+  --tertiary: #efa98f;
+  --outline: rgba(236, 230, 239, 0.1);
+  --outline-strong: rgba(236, 230, 239, 0.3);
+  --scrim: rgba(0, 0, 0, 0.5);
+  --canvas-bg: #121015;
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 12px 28px rgba(0, 0, 0, 0.5);
+  --glow-a: #3a2437;
+  --glow-b: #2b2332;
+  --glow-c: #1f2a36;
+}
+
+/* Contraste élevé : textes et bordures francs, quel que soit le thème. */
+[data-contrast='high'] {
+  --on-surface-muted: var(--on-surface);
+  --outline: var(--outline-strong);
+}
+
+[data-contrast='high'][data-theme='sombre'] {
+  --on-surface: #ffffff;
+  --bg: #000000;
+  --surface: #0d0c0f;
+}
+
+[data-contrast='high']:not([data-theme='sombre']) {
+  --on-surface: #0d0b0e;
+  --bg: #ffffff;
+}

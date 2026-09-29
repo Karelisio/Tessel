@@ -271,6 +271,27 @@ export class ProgressStore {
     await this.db.run(`UPDATE projects SET ${counter} = ${counter} + ? WHERE id = ?`, [by, id]);
   }
 
+  /**
+   * Aperçu léger d'une partie (miniatures) : grille et dernière photo compacte des cases posées,
+   * sans rejouer le journal (peut retarder de quelques secondes sur la partie en cours).
+   */
+  async preview(id: string): Promise<{ grid: Grid; filled: Bitset } | undefined> {
+    const row = await queryOne<{ grid: string; snapshot: string | null; completed_at: number | null }>(
+      this.db,
+      'SELECT grid, snapshot, completed_at FROM projects WHERE id = ?',
+      [id],
+    );
+    if (!row) return undefined;
+    const grid = decodeGrid(fromBase64(row.grid));
+    const size = grid.cells.length;
+    let filled: Bitset;
+    if (row.completed_at !== null) {
+      filled = new Bitset(size);
+      filled.bytes.fill(255);
+    } else filled = row.snapshot ? decodeBitset(row.snapshot, size) : new Bitset(size);
+    return { grid, filled };
+  }
+
   /** Identifiants des œuvres terminées au moins une fois (tous modes et difficultés). */
   async completedArtworkIds(): Promise<string[]> {
     const rows = await this.db.query<{ artwork_id: string }>(

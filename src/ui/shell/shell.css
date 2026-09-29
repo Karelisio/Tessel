@@ -1,0 +1,130 @@
+.living-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+.living-bg__blob {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: living-breathe 22s ease-in-out infinite alternate;
+}
+
+.living-bg__blob--a {
+  background: var(--glow-a);
+  top: -30vmax;
+  left: -20vmax;
+}
+
+.living-bg__blob--b {
+  background: var(--glow-b);
+  bottom: -35vmax;
+  right: -25vmax;
+  animation-duration: 28s;
+  animation-delay: -8s;
+}
+
+.living-bg__blob--c {
+  background: var(--glow-c);
+  top: 30vh;
+  left: 20vw;
+  width: 50vmax;
+  height: 50vmax;
+  animation-duration: 34s;
+  animation-delay: -14s;
+}
+
+@keyframes living-breathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vmax, 4vmax, 0) scale(1.15);
+  }
+}
+
+[data-motion='reduced'] .living-bg__blob {
+  animation: none;
+}
+
+.shell {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.shell__page {
+  position: absolute;
+  inset: 0;
+}
+
+.tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 -1px 0 var(--outline);
+}
+
+.tabbar__item {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  color: var(--on-surface-muted);
+}
+
+.tabbar__item[aria-current='page'] {
+  color: var(--on-secondary-container);
+}
+
+.tabbar__icon {
+  position: relative;
+  width: 60px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.tabbar__pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--secondary-container);
+}
+
+.tabbar__dot {
+  position: absolute;
+  top: 3px;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tertiary);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.tabbar__label {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tabbar__item[aria-current='page'] .tabbar__label {
+  color: var(--on-surface);
+}
+.shell__sub {
+  z-index: 15;
+}

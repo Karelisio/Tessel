@@ -1,20 +1,13 @@
-/* Thème « Doux » (défaut) — les autres thèmes redéfinissent ces jetons. */
+@import '../theme/themes.css';
+
+/* Dimensions et typographie communes ; les couleurs vivent dans theme/themes.css. */
 :root {
-  --bg: #f3eee9;
-  --surface: #fbf7f4;
-  --surface-2: #ffffff;
-  --on-surface: #4a3f4b;
-  --on-surface-muted: #8a7f8b;
-  --primary: #b77ba8;
-  --on-primary: #ffffff;
-  --outline: rgba(74, 63, 75, 0.12);
-  --shadow-soft: 0 6px 18px rgba(74, 63, 75, 0.12);
-  --shadow-lift: 0 12px 26px rgba(74, 63, 75, 0.22);
   --radius-l: 24px;
   --radius-m: 16px;
   --font: 'Nunito Variable', Nunito, system-ui, Roboto, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-h: 72px;
 }
 
 * {
@@ -279,4 +272,127 @@ button {
 
 .topbar > .chip-group {
   max-width: none;
+}
+
+/* --- Jeu en plein écran au-dessus des onglets ---------------------------------------------------- */
+
+.app {
+  position: fixed;
+  inset: 0;
+}
+
+.play {
+  z-index: 30;
+  background: var(--canvas-bg);
+  transition: opacity 0.24s ease;
+}
+
+.play[data-active='false'] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.play-title {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  padding: 6px 14px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+.play-title strong {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-title span {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.play[data-left='true'] .tool-dock {
+  right: auto;
+  left: 12px;
+}
+
+.modes-title {
+  margin: 0 4px 4px;
+  font-size: 20px;
+}
+
+.modes-hint {
+  margin: 0 4px 14px;
+  color: var(--on-surface-muted);
+  font-size: 14px;
+}
+
+.modes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mode-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+  border: 2px solid transparent;
+}
+
+.mode-card[aria-pressed='true'] {
+  border-color: var(--primary);
+}
+
+.mode-card[data-locked='true'] {
+  opacity: 0.55;
+}
+
+.mode-card small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--on-surface-muted);
+}
+
+.mode-card__swatch {
+  height: 54px;
+  border-radius: 12px;
+}
+
+.mode-card__swatch--pixel {
+  background: conic-gradient(from 90deg at 50% 50%, #f2a28a 25%, #7cc6a4 0 50%, #f2a28a 0 75%, #7cc6a4 0) 0
+    0 / 18px 18px;
+}
+
+.mode-card__swatch--diamond {
+  background:
+    radial-gradient(circle at 30% 30%, #fff 0 12%, transparent 13%) 0 0 / 18px 18px,
+    conic-gradient(from 45deg, #9fc9f3, #c9a3f0, #f3b3d2, #9fc9f3) 0 0 / 18px 18px;
+}
+
+.mode-card__swatch--crossstitch {
+  background:
+    linear-gradient(45deg, transparent 40%, #d9876f 40% 60%, transparent 60%) 0 0 / 14px 14px,
+    linear-gradient(-45deg, transparent 40%, #b85c48 40% 60%, transparent 60%) 0 0 / 14px 14px,
+    #f3eadc;
+}
+
+.mode-card__swatch--mosaic {
+  background:
+    linear-gradient(90deg, #cfc7b8 2px, transparent 2px) 0 0 / 16px 16px,
+    linear-gradient(#cfc7b8 2px, transparent 2px) 0 0 / 16px 16px,
+    linear-gradient(135deg, #6aa9d8, #58a88a);
 }

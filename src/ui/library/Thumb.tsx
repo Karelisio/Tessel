@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import './library.css';
 import { TRANSPARENT, type Grid } from '@/content/grid';
 import { loadGrid } from '@/content/library';
 

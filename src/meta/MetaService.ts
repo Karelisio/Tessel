@@ -250,6 +250,21 @@ export class MetaService {
     return this.state.achievements.size;
   }
 
+  /** Historique quotidien (cases, temps, œuvres), du plus récent au plus ancien. */
+  async dailyHistory(
+    limit = 30,
+  ): Promise<{ day: string; cells: number; timeMs: number; completed: number }[]> {
+    await this.flush();
+    const rows = (await this.store?.dailyHistory(limit)) ?? [];
+    return rows.map((r) => ({ day: r.day, cells: r.cells, timeMs: r.time_ms, completed: r.completed }));
+  }
+
+  /** Couleurs les plus posées (rgb 0xRRGGBB). */
+  async favoriteColors(limit = 8): Promise<{ rgb: number; cells: number }[]> {
+    await this.flush();
+    return (await this.store?.favoriteColors(limit)) ?? [];
+  }
+
   // --- Abonnements -----------------------------------------------------------------
 
   /** Événements à montrer (niveau, succès, quêtes, série). */
