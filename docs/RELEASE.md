@@ -20,12 +20,12 @@ Le workflow peut aussi être lancé à la main (`workflow_dispatch`).
 
 À définir dans _Settings > Secrets and variables > Actions_ :
 
-| Secret                      | Contenu                                                               |
-| --------------------------- | --------------------------------------------------------------------- |
-| `ANDROID_KEYSTORE_BASE64`   | keystore `.jks` encodé en base64, sur une seule ligne                 |
-| `ANDROID_KEYSTORE_PASSWORD` | mot de passe du keystore                                              |
-| `ANDROID_KEY_ALIAS`         | alias de la clé (`tessel` dans l'exemple ci-dessous)                  |
-| `ANDROID_KEY_PASSWORD`      | mot de passe de la clé (en PKCS12, **identique** à celui du keystore) |
+| Secret                      | Contenu                                                                |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `ANDROID_KEYSTORE_BASE64`   | keystore `.jks` encodé en base64, sur une seule ligne                  |
+| `ANDROID_KEYSTORE_PASSWORD` | mot de passe du keystore                                               |
+| `ANDROID_KEY_ALIAS`         | facultatif : alias de la clé, lu dans le keystore s'il n'y en a qu'une |
+| `ANDROID_KEY_PASSWORD`      | facultatif : mot de passe de la clé, celui du keystore par défaut      |
 
 Si `ANDROID_KEYSTORE_BASE64` est vide ou absent, le workflow échoue immédiatement avec un message explicite.
 
