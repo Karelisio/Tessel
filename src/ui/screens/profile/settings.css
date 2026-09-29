@@ -212,7 +212,6 @@
   display: grid;
   gap: 10px;
   padding: 4px 4px 8px;
-  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 12px);
 }
 
 .set-confirm h3 {

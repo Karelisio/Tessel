@@ -38,6 +38,18 @@ interface NavState {
 
 let nextId = 1;
 
+/** Surcouches ouvertes (feuilles, coffres, célébrations) : le retour Android ferme la dernière. */
+const overlays: (() => void)[] = [];
+
+/** Déclare une surcouche ouverte ; renvoie la fonction qui la retire. */
+export function pushOverlay(close: () => void): () => void {
+  overlays.push(close);
+  return () => {
+    const i = overlays.lastIndexOf(close);
+    if (i >= 0) overlays.splice(i, 1);
+  };
+}
+
 export const useNav = create<NavState>((set, get) => ({
   tab: 'library',
   stack: [],
@@ -76,6 +88,11 @@ export const useNav = create<NavState>((set, get) => ({
     set({ playing: false });
   },
   back: () => {
+    const close = overlays.at(-1);
+    if (close) {
+      close();
+      return true;
+    }
     const s = get();
     if (s.importing) {
       set({ importing: null });

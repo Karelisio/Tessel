@@ -138,7 +138,6 @@
   display: grid;
   gap: 14px;
   padding: 4px 2px 6px;
-  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 12px);
   text-align: center;
   justify-items: center;
 }

@@ -7,6 +7,7 @@ import { mergeRewards, type Reward } from '@/meta/rewards';
 import { useSettings } from '@/store/settings';
 import { spring } from '@/theme/motion/tokens';
 import { Confetti } from '@/ui/fx/Confetti';
+import { useBackClose } from '@/ui/kit/backClose';
 import { UNLOCK_KINDS, rewardLabel } from './labels';
 
 /** Rosette à 14 festons (badge de niveau). */
@@ -123,6 +124,7 @@ export function LevelUp({ from, level, rewards, onClose }: LevelUpProps) {
   const reduced = useSettings((s) => s.reducedMotion);
   const shown = useCountUp(from, level, 380, reduced);
   const [ready, setReady] = useState(false);
+  useBackClose(true, onClose);
   useEffect(() => {
     const h = setTimeout(() => {
       setReady(true);

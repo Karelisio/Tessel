@@ -1,6 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion, type HTMLMotionProps } from 'framer-motion';
 import { useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { spring, staggerDelay } from '@/theme/motion/tokens';
+import { useBackClose } from './backClose';
 import { IconBack, IconChevron } from './icons';
 import './kit.css';
 
@@ -270,7 +272,9 @@ export function Sheet({
   label: string;
   children: ReactNode;
 }) {
-  return (
+  useBackClose(open, onClose);
+  // rendue dans <body> : au-dessus de la barre d'onglets et des sous-pages
+  return createPortal(
     <AnimatePresence>
       {open && (
         <>
@@ -301,6 +305,7 @@ export function Sheet({
           </motion.section>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

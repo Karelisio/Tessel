@@ -7,6 +7,7 @@ import { CHEST_SIZES, mergeRewards, type ChestSize, type Reward } from '@/meta/r
 import { useMetaStore } from '@/store/meta';
 import { spring } from '@/theme/motion/tokens';
 import { Button, Card, IconButton } from '@/ui/kit';
+import { useBackClose } from '@/ui/kit/backClose';
 import { IconClose } from '@/ui/kit/icons';
 import { IconBucket, IconChest, IconLoupe, IconSnow, IconStar, IconTrophy, IconWand } from '@/ui/meta/icons';
 import { CHEST_NAMES, rewardLabel } from '@/ui/meta/labels';
@@ -123,6 +124,9 @@ function ChestOpener({ initial, onClose }: { initial: ChestSize; onClose: () => 
   const remaining = useMetaStore((s) => s.snap?.chests[size] ?? 0);
   const reduced = useReducedMotion();
   const [phase, setPhase] = useState<Phase>('idle');
+  useBackClose(true, () => {
+    if (phase !== 'shaking') onClose();
+  });
   const [loot, setLoot] = useState<Reward[]>([]);
   const [round, setRound] = useState(0);
 
