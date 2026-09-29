@@ -28,6 +28,10 @@ import { ProgressSheet } from '@/ui/meta/ProgressSheet';
 import { Toasts } from '@/ui/meta/Toasts';
 import { ToolDock } from '@/ui/meta/ToolDock';
 import '@/ui/meta/meta.css';
+import { loadLibrary } from '@/content/library';
+import type { LibraryIndex } from '@/content/library/types';
+import { dailyRef, libraryRef, refForProject } from '@/content/refs';
+import { LibrarySheet } from '@/ui/library/LibrarySheet';
 import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
 
@@ -64,6 +68,8 @@ export function PlayScreen() {
   const artwork = useRef<ArtworkRef | null>(null);
   const meta = useRef<MetaService | null>(null);
   const [importOpen, setImportOpen] = useState(false);
+  const [libraryOpen, setLibraryOpen] = useState(false);
+  const [library, setLibrary] = useState<LibraryIndex | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [hint, setHint] = useState<string | null>(null);
   const [bonusXp, setBonusXp] = useState<number | null>(null);
@@ -127,7 +133,7 @@ export function PlayScreen() {
         artwork.current = ref;
         // captures et mesures : partie éphémère, sans base de données
         if (capture || params.has('nodb')) {
-          bind(e.load(ref.grid(), getMode(initialMode)));
+          bind(e.load(await ref.grid(), getMode(initialMode)));
         } else {
           const db = await openDatabase();
           store.current = new ProgressStore(db);
@@ -136,9 +142,19 @@ export function PlayScreen() {
           detachMeta = useMetaStore.getState().attach(m);
           if (import.meta.env.DEV) window.__meta = m;
           // un mode pas encore débloqué (lien direct, mode mémorisé) laisse la place au pixel
-          const playable = m.unlockedModes.includes(initialMode) ? initialMode : 'pixel';
+          const index = await loadLibrary().catch((err: unknown) => {
+            console.error('Bibliothèque indisponible', err);
+            return null;
+          });
+          setLibrary(index);
+          // reprise de la dernière partie, sinon l'œuvre du jour
+          const last = (await store.current.list({ limit: 1 }))[0];
+          const resume = last ? refForProject(last, index) : dailyRef(m.day);
+          const wanted = last?.mode ?? initialMode;
+          const playable = m.unlockedModes.includes(wanted) ? wanted : 'pixel';
           usePlayStore.getState().setMode(playable);
-          session.current = await openSession(e, store.current, ref, playable, m);
+          artwork.current = resume;
+          session.current = await openSession(e, store.current, resume, playable, m);
           watchCompletion(session.current);
           bind(session.current.game);
         }
@@ -230,6 +246,28 @@ export function PlayScreen() {
   };
 
   /** Remplace la partie par la photo convertie ; le changement de mode continue de jouer sur cette photo. */
+  /** Ouvre une œuvre (bibliothèque, œuvre du jour) dans le mode courant, s'il est débloqué. */
+  const openArtwork = async (ref: ArtworkRef) => {
+    setLibraryOpen(false);
+    if (!engine || !store.current) return;
+    const m = meta.current;
+    const playable = !m || m.unlockedModes.includes(mode) ? mode : 'pixel';
+    try {
+      const previous = session.current;
+      session.current = null;
+      await previous?.close();
+      if (m && ref.source === 'daily' && !(await store.current.findLatest(ref.artworkId, playable)))
+        m.record('daily.opened');
+      session.current = await openSession(engine, store.current, ref, playable, m);
+      watchCompletion(session.current);
+      bind(session.current.game);
+      artwork.current = ref;
+      setMode(playable);
+    } catch (err) {
+      console.error('Œuvre impossible à ouvrir', err);
+    }
+  };
+
   const confirmImport = async ({ grid, mode: chosen, title }: ImportResult) => {
     setImportOpen(false);
     if (!engine) return;
@@ -320,12 +358,11 @@ export function PlayScreen() {
         )}
         <motion.button
           className="icon-btn"
-          aria-label="Importer une photo"
-          disabled={!engine}
+          aria-label="Bibliothèque"
+          disabled={!engine || !hasMeta}
           whileTap={{ scale: 0.88 }}
           onClick={() => {
-            setImportPhoto(null);
-            setImportOpen(true);
+            setLibraryOpen(true);
           }}
         >
           <svg
@@ -338,9 +375,10 @@ export function PlayScreen() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <rect x="3.5" y="4.5" width="17" height="15" rx="3.5" />
-            <circle cx="9" cy="10" r="1.6" />
-            <path d="M4 17.6l4.8-4.8a1.5 1.5 0 012.1 0l3.2 3.2 2-2a1.5 1.5 0 012.1 0l2.3 2.3" />
+            <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
+            <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
+            <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
+            <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
           </svg>
         </motion.button>
         <motion.button
@@ -466,6 +504,24 @@ export function PlayScreen() {
           }}
         />
       )}
+      <LibrarySheet
+        open={libraryOpen}
+        index={library}
+        onClose={() => {
+          setLibraryOpen(false);
+        }}
+        onPlay={(entry, difficulty) => {
+          if (library) void openArtwork(libraryRef(entry, difficulty, library));
+        }}
+        onDaily={() => {
+          if (meta.current) void openArtwork(dailyRef(meta.current.day));
+        }}
+        onImport={() => {
+          setLibraryOpen(false);
+          setImportPhoto(null);
+          setImportOpen(true);
+        }}
+      />
       <ImportSheet
         open={importOpen}
         initialMode={mode}

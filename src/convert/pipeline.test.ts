@@ -149,3 +149,18 @@ describe('pipeline de conversion', () => {
     expect(ms).toBeLessThan(4000);
   });
 });
+
+describe('palette imposée', () => {
+  it('utilise exactement les couleurs données, sans en inventer', () => {
+    const px = image(90, 90, (x, y) => (x < 45 ? [240, 90, 60] : y < 45 ? [30, 60, 120] : [250, 230, 200]));
+    const palette = [
+      [240, 90, 60],
+      [30, 60, 120],
+      [250, 230, 200],
+      [10, 200, 10],
+    ] as const;
+    const { grid } = convertPixels(px, 90, 90, params({ width: 30, height: 30, palette }));
+    expect(grid.palette.length).toBe(3); // la couleur inutilisée disparaît
+    for (const c of grid.palette) expect(palette.some((p) => p.every((v, i) => v === c[i]))).toBe(true);
+  });
+});

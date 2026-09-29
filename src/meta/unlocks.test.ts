@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG, catalogItem, STARTER_UNLOCKS, unlockKind, type UnlockKey } from './catalog';
 import { CATEGORY_IDS } from '@/content/categories';
+import { EVENTS } from '@/content/events';
 import { LAST_SCHEDULED_LEVEL, LEVEL_UNLOCKS, levelRewards, unlockLevel } from './unlocks';
 
 describe('déblocages', () => {
@@ -36,6 +37,7 @@ describe('déblocages', () => {
       'frame:prisme',
       'wall:atelier',
       'wall:musee',
+      ...EVENTS.map((e) => e.frame),
     ];
     for (const c of CATALOG) {
       const obtainable = c.starter === true || unlockLevel(c.key) !== undefined || special.includes(c.key);

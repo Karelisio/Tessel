@@ -62,6 +62,18 @@ function content(n: MetaNotice): Content {
         ),
         rewards,
       };
+    case 'collection':
+      return {
+        tone: 'quest',
+        icon: <IconChest size={20} />,
+        kicker: tr(
+          n.event
+            ? t('Collection d’événement', 'Event collection')
+            : t('Collection terminée', 'Collection complete'),
+        ),
+        title: tr(n.name),
+        rewards,
+      };
     case 'streak': {
       const u = n.update;
       const days = u.state.current;

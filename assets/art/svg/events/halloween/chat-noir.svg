@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#5b4a99"/>
+  <circle cx="240" cy="230" r="190" fill="#6a58ab"/>
+  <circle cx="400" cy="80" r="46" fill="#fff0b8"/>
+  <circle cx="388" cy="68" r="9" fill="#f3dc94"/>
+  <circle cx="60" cy="90" r="8" fill="#fff0b8"/>
+  <circle cx="130" cy="150" r="7" fill="#fff0b8"/>
+  <circle cx="440" cy="240" r="7" fill="#fff0b8"/>
+  <circle cx="45" cy="270" r="7" fill="#fff0b8"/>
+  <path d="M0 400 Q140 370 260 395 T480 385 V480 H0 Z" fill="#8a76c8"/>
+  <path d="M0 450 Q160 430 300 450 T480 440 V480 H0 Z" fill="#7462b4"/>
+  <path d="M300 420 Q430 420 415 340 Q408 300 375 315" stroke="#1d1838" stroke-width="32" stroke-linecap="round" fill="none"/>
+  <path d="M155 430 Q145 320 190 300 L290 300 Q335 320 325 430 Z" fill="#1d1838"/>
+  <ellipse cx="190" cy="428" rx="32" ry="20" fill="#1d1838"/>
+  <ellipse cx="290" cy="428" rx="32" ry="20" fill="#1d1838"/>
+  <polygon points="168,262 168,190 216,236" fill="#1d1838"/>
+  <polygon points="312,262 312,190 264,236" fill="#1d1838"/>
+  <ellipse cx="240" cy="280" rx="82" ry="66" fill="#1d1838"/>
+  <ellipse cx="208" cy="276" rx="20" ry="24" fill="#9be45a"/>
+  <ellipse cx="272" cy="276" rx="20" ry="24" fill="#9be45a"/>
+  <ellipse cx="208" cy="278" rx="7" ry="17" fill="#1d1838"/>
+  <ellipse cx="272" cy="278" rx="7" ry="17" fill="#1d1838"/>
+  <polygon points="228,304 252,304 240,318" fill="#f28ab0"/>
+  <path d="M215 330 Q240 344 265 330" stroke="#5b4a99" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M120 240 Q80 232 60 244 M120 262 Q80 268 60 282 M360 240 Q400 232 420 244 M360 262 Q400 268 420 282" stroke="#c9b8f0" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <ellipse cx="240" cy="228" rx="118" ry="24" fill="#f28a2e"/>
+  <polygon points="170,228 240,20 310,228" fill="#8a4fc0" transform="rotate(8 240 228)"/>
+  <path d="M145 232 Q240 265 335 232 L330 214 Q240 246 150 214 Z" fill="#f28a2e"/>
+  <rect x="216" y="214" width="46" height="34" rx="6" fill="#ffd95a" transform="translate(-4 0)"/>
+</svg>

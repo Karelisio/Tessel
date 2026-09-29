@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#cfe6f5"/>
+  <ellipse cx="90" cy="90" rx="70" ry="30" fill="#ffffff"/>
+  <ellipse cx="130" cy="72" rx="40" ry="28" fill="#ffffff"/>
+  <ellipse cx="400" cy="380" rx="80" ry="30" fill="#ffffff"/>
+  <ellipse cx="360" cy="362" rx="40" ry="26" fill="#ffffff"/>
+  <ellipse cx="60" cy="420" rx="60" ry="26" fill="#ffffff"/>
+  <path d="M0 450 Q120 420 240 445 T480 435 V480 H0 Z" fill="#b8d8a8"/>
+  <path d="M110 309.0 Q149.0 389.0 240 400" stroke="#6b5a70" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M370 303.0 Q331.0 383.0 240 400" stroke="#6b5a70" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M240 234.0 Q240.0 314.0 240 400" stroke="#6b5a70" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <g transform="translate(110 235) scale(1.5)"><path d="M0 40 C-70 -10 -60 -60 -30 -60 C-12 -60 0 -45 0 -38 C0 -45 12 -60 30 -60 C60 -60 70 -10 0 40 Z" fill="#f28ab0"/><path d="M0 40 C60 0 62 -40 40 -56 C55 -30 45 0 0 40 Z" fill="#d96a95"/><ellipse cx="-28" cy="-30" rx="10" ry="16" fill="#ffd0dc" transform="rotate(35 -28 -30)"/></g>
+  <polygon points="101,309.0 119,309.0 110,293.0" fill="#d96a95"/>
+  <g transform="translate(370 225) scale(1.6)"><path d="M0 40 C-70 -10 -60 -60 -30 -60 C-12 -60 0 -45 0 -38 C0 -45 12 -60 30 -60 C60 -60 70 -10 0 40 Z" fill="#ff8f6b"/><path d="M0 40 C60 0 62 -40 40 -56 C55 -30 45 0 0 40 Z" fill="#e2695a"/><ellipse cx="-28" cy="-30" rx="10" ry="16" fill="#ffd0b8" transform="rotate(35 -28 -30)"/></g>
+  <polygon points="361,303.0 379,303.0 370,287.0" fill="#e2695a"/>
+  <g transform="translate(240 140) scale(2.0)"><path d="M0 40 C-70 -10 -60 -60 -30 -60 C-12 -60 0 -45 0 -38 C0 -45 12 -60 30 -60 C60 -60 70 -10 0 40 Z" fill="#e2463a"/><path d="M0 40 C60 0 62 -40 40 -56 C55 -30 45 0 0 40 Z" fill="#b83030"/><ellipse cx="-28" cy="-30" rx="10" ry="16" fill="#ff9a8a" transform="rotate(35 -28 -30)"/></g>
+  <polygon points="231,234.0 249,234.0 240,218.0" fill="#b83030"/>
+  <polygon points="240,398 190,378 190,426" fill="#7d6bc0"/>
+  <polygon points="240,398 290,378 290,426" fill="#7d6bc0"/>
+  <circle cx="240" cy="400" r="14" fill="#5b4a9a"/>
+  <path d="M240 410 L215 462 M240 410 L265 462" stroke="#7d6bc0" stroke-width="12" stroke-linecap="round" fill="none"/>
+</svg>

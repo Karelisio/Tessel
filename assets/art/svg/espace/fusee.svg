@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#222d70"/>
+  <circle cx="60" cy="60" r="10" fill="#fff0b8"/>
+  <circle cx="160" cy="40" r="8" fill="#fff0b8"/>
+  <circle cx="420" cy="50" r="10" fill="#fff0b8"/>
+  <circle cx="440" cy="250" r="9" fill="#fff0b8"/>
+  <circle cx="40" cy="250" r="9" fill="#fff0b8"/>
+  <circle cx="330" cy="440" r="9" fill="#fff0b8"/>
+  <circle cx="210" cy="450" r="8" fill="#fff0b8"/>
+  <polygon points="110,120 122,150 152,150 128,168 138,198 110,180 82,198 92,168 68,150 98,150" fill="#ffd95a"/>
+  <polygon points="400,330 408,350 428,350 412,362 418,382 400,370 382,382 388,362 372,350 392,350" fill="#ffd95a"/>
+  <!-- planete -->
+  <circle cx="90" cy="400" r="62" fill="#f4a261"/>
+  <circle cx="70" cy="380" r="16" fill="#e8874a"/>
+  <circle cx="110" cy="422" r="12" fill="#e8874a"/>
+  <path d="M10 430 Q90 470 175 390" stroke="#c9a6f0" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <!-- lune -->
+  <circle cx="405" cy="140" r="30" fill="#d9d3ee"/>
+  <circle cx="415" cy="132" r="9" fill="#b7aedc"/>
+  <!-- fusee -->
+  <g transform="translate(250 235) rotate(35)">
+    <path d="M-34 38 Q-40 110 0 155 Q40 110 34 38 Z" fill="#f28a2e"/>
+    <path d="M-18 40 Q-20 90 0 125 Q20 90 18 40 Z" fill="#ffd95a"/>
+    <path d="M-52 -10 Q-108 30 -100 95 L-52 55 Z" fill="#e2463a"/>
+    <path d="M52 -10 Q108 30 100 95 L52 55 Z" fill="#e2463a"/>
+    <path d="M0 -170 Q60 -100 55 40 L-55 40 Q-60 -100 0 -170 Z" fill="#fff6ea"/>
+    <path d="M0 -170 Q24 -142 37.6 -102.8 L-37.6 -102.8 Q-24 -142 0 -170 Z" fill="#e2463a"/>
+    <rect x="-55" y="14" width="110" height="26" fill="#e2463a"/>
+    <circle cx="0" cy="-42" r="40" fill="#8a9ab0"/>
+    <circle cx="0" cy="-42" r="30" fill="#6fb3e0"/>
+    <circle cx="-9" cy="-52" r="9" fill="#d6eefc"/>
+  </g>
+</svg>

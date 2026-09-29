@@ -1,0 +1,10 @@
+{
+  "coccinelle": { "fr": "Coccinelle sur sa feuille", "en": "Ladybug on a leaf" },
+  "papillon": { "fr": "Papillon butineur", "en": "Butterfly on a flower" },
+  "abeille": { "fr": "Abeille et rayon de miel", "en": "Bee and honeycomb" },
+  "libellule": { "fr": "Libellule sur l’étang", "en": "Dragonfly over the pond" },
+  "escargot": { "fr": "Escargot après la pluie", "en": "Snail after the rain" },
+  "luciole": { "fr": "Lucioles du soir", "en": "Evening fireflies" },
+  "scarabee": { "fr": "Scarabée scintillant", "en": "Jewel beetle" },
+  "chenille": { "fr": "Chenille gourmande", "en": "Hungry caterpillar" }
+}

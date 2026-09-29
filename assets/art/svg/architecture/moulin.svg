@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#cfe8f4"/>
+  <circle cx="90" cy="90" r="44" fill="#f9d58a"/>
+  <ellipse cx="380" cy="80" rx="56" ry="20" fill="#ffffff"/>
+  <ellipse cx="420" cy="62" rx="34" ry="16" fill="#ffffff"/>
+  <path d="M0 330 Q120 290 240 320 T480 310 V480 H0 Z" fill="#b8d8a8"/>
+  <path d="M0 400 Q140 370 260 395 T480 385 V480 H0 Z" fill="#f2d067"/>
+  <path d="M0 440 Q140 420 260 440 T480 430 V480 H0 Z" fill="#e0b84a"/>
+  <!-- tour -->
+  <path d="M170 400 L195 240 L285 240 L310 400 Z" fill="#f4e6d8"/>
+  <path d="M255 240 L285 240 L310 400 L270 400 Z" fill="#e2d0bc"/>
+  <rect x="224" y="335" width="32" height="65" rx="14" fill="#7a3a2a"/>
+  <rect x="226" y="270" width="28" height="34" rx="12" fill="#3b5a7a"/>
+  <path d="M185 240 Q240 150 295 240 Z" fill="#c8402f"/>
+  <!-- ailes -->
+  <g transform="translate(240 200)">
+    <g fill="#8a5a3a">
+      <rect x="-12" y="-150" width="24" height="150" rx="6"/>
+      <rect x="-12" y="0" width="24" height="150" rx="6"/>
+      <rect x="-150" y="-12" width="150" height="24" rx="6"/>
+      <rect x="0" y="-12" width="150" height="24" rx="6"/>
+    </g>
+    <g fill="#fff6ea" transform="rotate(45)">
+      <rect x="10" y="-142" width="48" height="112" rx="6"/>
+      <rect x="-58" y="30" width="48" height="112" rx="6"/>
+      <rect x="-142" y="-58" width="112" height="48" rx="6"/>
+      <rect x="30" y="10" width="112" height="48" rx="6"/>
+    </g>
+  </g>
+  <circle cx="240" cy="200" r="20" fill="#7a3a2a"/>
+  <circle cx="60" cy="440" r="12" fill="#e2463a"/>
+  <circle cx="430" cy="450" r="12" fill="#e2463a"/>
+</svg>

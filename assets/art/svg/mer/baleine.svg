@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f7ecd6"/>
+  <circle cx="90" cy="60" r="34" fill="#f9c784"/>
+  <path d="M0 100 Q60 70 120 100 T240 100 T360 100 T480 100 V480 H0 Z" fill="#9fd3e6"/>
+  <path d="M0 250 Q120 220 240 250 T480 240 V480 H0 Z" fill="#78b8d6"/>
+  <path d="M0 400 Q140 370 260 400 T480 390 V480 H0 Z" fill="#5c9dc4"/>
+  <!-- queue -->
+  <path d="M400 300 Q385 250 405 205 Q432 235 440 285 Q468 250 462 205 Q495 250 462 312 Q440 332 405 328 Z" fill="#2f5c94"/>
+  <!-- corps -->
+  <path d="M35 285 Q42 185 190 180 Q330 176 392 262 Q404 290 425 298 L425 330 Q385 335 345 342 Q225 395 115 362 Q40 340 35 285 Z" fill="#3f73ad"/>
+  <path d="M58 312 Q150 352 250 336 Q340 328 384 290 Q365 342 305 362 Q205 395 112 362 Q66 342 58 312 Z" fill="#d6e6f2"/>
+  <!-- nageoire -->
+  <path d="M215 335 Q240 390 292 398 Q296 352 262 326 Z" fill="#2f5c94"/>
+  <!-- oeil et sourire -->
+  <circle cx="105" cy="270" r="19" fill="#2e2230"/>
+  <circle cx="111" cy="263" r="6" fill="#ffffff"/>
+  <path d="M55 300 Q100 322 150 308" stroke="#2f5c94" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <circle cx="150" cy="292" r="12" fill="#f2a28a"/>
+  <!-- jet et bulles -->
+  <circle cx="160" cy="150" r="14" fill="#e4f5fb"/>
+  <circle cx="200" cy="120" r="10" fill="#e4f5fb"/>
+  <circle cx="60" cy="200" r="12" fill="#e4f5fb"/>
+  <circle cx="420" cy="150" r="14" fill="#e4f5fb"/>
+  <!-- petit poisson et algues -->
+  <ellipse cx="380" cy="430" rx="30" ry="18" fill="#f4c542"/>
+  <path d="M405 430 L432 412 L432 448 Z" fill="#f4c542"/>
+  <circle cx="366" cy="426" r="5" fill="#2e2230"/>
+  <path d="M60 480 Q40 430 70 400 Q80 440 100 480 Z" fill="#4f8f6a"/>
+  <path d="M110 480 Q120 440 150 430 Q140 460 150 480 Z" fill="#6bb08a"/>
+</svg>

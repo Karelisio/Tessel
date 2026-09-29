@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#b9e4ea"/>
+  <circle cx="60" cy="70" r="40" fill="#d3f0f2"/>
+  <circle cx="430" cy="110" r="26" fill="#d3f0f2"/>
+  <path d="M0 420 Q120 390 240 415 T480 400 V480 H0 Z" fill="#f0dcae"/>
+  <!-- corail -->
+  <path d="M40 470 L50 350 M50 400 L20 350 M50 380 L90 340" stroke="#f27c8d" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M440 470 L430 340 M430 390 L465 350 M432 370 L400 335" stroke="#f5a25d" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <circle cx="110" cy="450" r="26" fill="#e46a9a"/>
+  <circle cx="370" cy="452" r="24" fill="#c98bd6"/>
+  <!-- nageoires -->
+  <g transform="rotate(-25 110 190)"><ellipse cx="110" cy="190" rx="78" ry="34" fill="#7fb864"/></g>
+  <g transform="rotate(25 370 190)"><ellipse cx="370" cy="190" rx="78" ry="34" fill="#7fb864"/></g>
+  <g transform="rotate(35 160 355)"><ellipse cx="160" cy="355" rx="50" ry="26" fill="#7fb864"/></g>
+  <g transform="rotate(-35 320 355)"><ellipse cx="320" cy="355" rx="50" ry="26" fill="#7fb864"/></g>
+  <path d="M225 385 L240 425 L255 385 Z" fill="#7fb864"/>
+  <!-- tete -->
+  <ellipse cx="240" cy="98" rx="52" ry="54" fill="#8fc870"/>
+  <circle cx="218" cy="90" r="15" fill="#2e2230"/>
+  <circle cx="262" cy="90" r="15" fill="#2e2230"/>
+  <circle cx="222" cy="85" r="4" fill="#ffffff"/>
+  <circle cx="266" cy="85" r="4" fill="#ffffff"/>
+  <path d="M222 118 Q240 132 258 118" stroke="#3f6a3a" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- carapace -->
+  <ellipse cx="240" cy="250" rx="115" ry="132" fill="#a06a3a"/>
+  <ellipse cx="240" cy="250" rx="92" ry="110" fill="#c98a48"/>
+  <polygon points="240,196 284,222 284,276 240,304 196,276 196,222" fill="#e8b466"/>
+  <polygon points="196,222 150,206 140,256 196,276" fill="#e8b466"/>
+  <polygon points="284,222 330,206 340,256 284,276" fill="#e8b466"/>
+  <polygon points="196,276 152,290 170,336 218,330 240,304" fill="#e8b466"/>
+  <polygon points="284,276 328,290 310,336 262,330 240,304" fill="#e8b466"/>
+  <polygon points="240,196 196,222 170,170 210,156" fill="#e8b466"/>
+  <polygon points="240,196 284,222 310,170 270,156" fill="#e8b466"/>
+</svg>

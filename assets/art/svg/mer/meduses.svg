@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#26397a"/>
+  <path d="M0 330 Q140 290 260 320 T480 300 V480 H0 Z" fill="#1c2c66"/>
+  <!-- tentacules -->
+  <g stroke-width="14" stroke-linecap="round" fill="none">
+    <path d="M150 230 Q120 300 155 350 Q180 390 150 440" stroke="#ff9cc4"/>
+    <path d="M190 235 Q170 320 200 370 Q215 400 195 450" stroke="#ff9cc4"/>
+    <path d="M230 232 Q250 310 225 360" stroke="#ff9cc4"/>
+    <path d="M350 300 Q320 350 350 400 Q365 430 345 470" stroke="#8ff0f0"/>
+    <path d="M400 295 Q420 350 395 400" stroke="#8ff0f0"/>
+    <path d="M90 355 Q70 390 90 420" stroke="#c8b0f5"/>
+    <path d="M125 358 Q140 395 118 430" stroke="#c8b0f5"/>
+  </g>
+  <!-- grande meduse rose -->
+  <path d="M105 235 Q105 100 190 100 Q275 100 275 235 Q190 255 105 235 Z" fill="#f47fb0"/>
+  <path d="M130 200 Q135 140 190 132 Q245 140 250 200 Q190 215 130 200 Z" fill="#ffb3d1"/>
+  <circle cx="160" cy="170" r="12" fill="#ffffff"/>
+  <circle cx="215" cy="165" r="10" fill="#ffffff"/>
+  <!-- meduse cyan -->
+  <path d="M290 305 Q290 205 355 205 Q420 205 420 305 Q355 322 290 305 Z" fill="#4fd6d6"/>
+  <path d="M312 282 Q316 236 355 230 Q394 236 398 282 Q355 292 312 282 Z" fill="#a8f2f0"/>
+  <!-- meduse violette -->
+  <path d="M50 360 Q50 290 100 290 Q150 290 150 360 Q100 374 50 360 Z" fill="#a880e8"/>
+  <path d="M68 348 Q72 316 100 312 Q128 316 132 348 Q100 356 68 348 Z" fill="#d6c0fa"/>
+  <!-- plancton -->
+  <circle cx="400" cy="90" r="14" fill="#c9e8ff"/>
+  <circle cx="330" cy="140" r="10" fill="#c9e8ff"/>
+  <circle cx="440" cy="190" r="10" fill="#c9e8ff"/>
+  <circle cx="60" cy="90" r="12" fill="#c9e8ff"/>
+  <circle cx="60" cy="220" r="10" fill="#c9e8ff"/>
+  <circle cx="420" cy="420" r="14" fill="#c9e8ff"/>
+  <circle cx="280" cy="430" r="10" fill="#c9e8ff"/>
+</svg>

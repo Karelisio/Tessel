@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d3e9f7"/>
+  <circle cx="290" cy="380" r="240" fill="#e2463a"/>
+  <circle cx="290" cy="380" r="212" fill="#ff9f43"/>
+  <circle cx="290" cy="380" r="184" fill="#ffd95a"/>
+  <circle cx="290" cy="380" r="156" fill="#7fc98a"/>
+  <circle cx="290" cy="380" r="128" fill="#6fb6e8"/>
+  <circle cx="290" cy="380" r="100" fill="#d3e9f7"/>
+  <ellipse cx="90" cy="80" rx="60" ry="22" fill="#ffffff"/>
+  <ellipse cx="125" cy="64" rx="32" ry="22" fill="#ffffff"/>
+  <rect y="390" width="480" height="90" fill="#8a5a3a"/>
+  <path d="M0 390 Q60 375 120 390 T240 390 T360 390 T480 390 V405 H0 Z" fill="#6f4530"/>
+  <g transform="rotate(18 150 200)">
+    <path d="M232 170 L340 118" stroke="#3b8fb0" stroke-width="20" stroke-linecap="round" fill="none"/>
+    <path d="M330 90 L385 128 L345 150 Z" fill="#5fb8d6"/>
+    <path d="M75 120 Q150 60 225 120" stroke="#3b8fb0" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <rect x="60" y="120" width="180" height="140" rx="26" fill="#5fb8d6"/>
+    <rect x="60" y="120" width="180" height="34" rx="14" fill="#3b8fb0"/>
+    <ellipse cx="150" cy="200" rx="30" ry="34" fill="#8ed3e6"/>
+  </g>
+  <path d="M336 160 Q346 250 336 340 M356 176 Q372 260 366 340 M320 172 Q320 250 302 340" stroke="#2f7fc0" stroke-width="13" stroke-linecap="round" fill="none"/>
+  <ellipse cx="322" cy="352" rx="9" ry="14" fill="#2f7fc0"/>
+  <ellipse cx="368" cy="352" rx="9" ry="14" fill="#2f7fc0"/>
+  <ellipse cx="300" cy="356" rx="9" ry="14" fill="#2f7fc0"/>
+  <path d="M60 445 V405 M140 448 V405 M220 445 V405 M300 448 V405 M380 445 V405 M450 448 V405" stroke="#3f8f4f" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <circle cx="60" cy="392" r="26" fill="#f28ab0"/><circle cx="60" cy="392" r="10" fill="#ffd95a"/>
+  <circle cx="140" cy="388" r="22" fill="#e2463a"/><circle cx="140" cy="388" r="8" fill="#ffd95a"/>
+  <circle cx="220" cy="392" r="20" fill="#ffd95a"/><circle cx="220" cy="392" r="8" fill="#e2792a"/>
+  <circle cx="300" cy="388" r="22" fill="#b79cf0"/><circle cx="300" cy="388" r="8" fill="#ffd95a"/>
+  <circle cx="380" cy="392" r="20" fill="#f28ab0"/><circle cx="380" cy="392" r="8" fill="#ffd95a"/>
+  <circle cx="450" cy="388" r="22" fill="#ffffff"/><circle cx="450" cy="388" r="8" fill="#ffb035"/>
+</svg>

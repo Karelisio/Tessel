@@ -1,0 +1,12 @@
+{
+  "fraises": { "fr": "Bol de fraises", "en": "Bowl of strawberries" },
+  "gateau": { "fr": "Part de gâteau", "en": "Slice of cake" },
+  "the": { "fr": "Heure du thé", "en": "Tea time" },
+  "croissant": { "fr": "Croissant et café", "en": "Croissant and coffee" },
+  "pasteque": { "fr": "Pastèque d’été", "en": "Summer watermelon" },
+  "cupcake": { "fr": "Cupcake givré", "en": "Frosted cupcake" },
+  "glace": { "fr": "Glace à deux boules", "en": "Double scoop" },
+  "macarons": { "fr": "Tour de macarons", "en": "Macaron tower" },
+  "pommes": { "fr": "Panier de pommes", "en": "Basket of apples" },
+  "citrons": { "fr": "Citrons en branche", "en": "Lemon branch" }
+}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fbeccb"/>
+  <circle cx="90" cy="90" r="52" fill="#f9d98a"/>
+  <path d="M0 370 Q120 330 240 360 T480 350 V480 H0 Z" fill="#b9d69a"/>
+  <path d="M0 430 Q160 400 300 425 T480 415 V480 H0 Z" fill="#9dc47a"/>
+  <!-- oreilles -->
+  <circle cx="162" cy="112" r="38" fill="#a8703f"/>
+  <circle cx="318" cy="112" r="38" fill="#a8703f"/>
+  <circle cx="162" cy="112" r="20" fill="#e8c79a"/>
+  <circle cx="318" cy="112" r="20" fill="#e8c79a"/>
+  <!-- corps -->
+  <ellipse cx="240" cy="350" rx="135" ry="120" fill="#a8703f"/>
+  <ellipse cx="240" cy="360" rx="92" ry="92" fill="#cc9560"/>
+  <ellipse cx="150" cy="445" rx="52" ry="30" fill="#8a5a30"/>
+  <ellipse cx="330" cy="445" rx="52" ry="30" fill="#8a5a30"/>
+  <!-- tête -->
+  <circle cx="240" cy="195" r="92" fill="#a8703f"/>
+  <ellipse cx="240" cy="232" rx="48" ry="38" fill="#e8c79a"/>
+  <circle cx="196" cy="180" r="14" fill="#2e2230"/>
+  <circle cx="284" cy="180" r="14" fill="#2e2230"/>
+  <circle cx="200" cy="175" r="5" fill="#ffffff"/>
+  <circle cx="288" cy="175" r="5" fill="#ffffff"/>
+  <ellipse cx="240" cy="214" rx="20" ry="13" fill="#2e2230"/>
+  <path d="M240 226 V240 M240 240 Q224 254 210 244 M240 240 Q256 254 270 244" stroke="#2e2230" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <circle cx="168" cy="222" r="14" fill="#f2a28a"/>
+  <circle cx="312" cy="222" r="14" fill="#f2a28a"/>
+  <!-- pot de miel -->
+  <path d="M170 335 Q158 400 190 432 H290 Q322 400 310 335 Z" fill="#c9683a"/>
+  <ellipse cx="240" cy="335" rx="72" ry="22" fill="#a4502c"/>
+  <ellipse cx="240" cy="333" rx="60" ry="15" fill="#f7c948"/>
+  <path d="M182 336 Q190 372 208 350 Q214 336 220 334 Z M262 334 Q272 338 274 380 Q294 370 298 336 Z" fill="#f7c948"/>
+  <ellipse cx="240" cy="388" rx="40" ry="26" fill="#fff0d0"/>
+  <circle cx="240" cy="388" r="12" fill="#f0b13a"/>
+  <!-- pattes -->
+  <circle cx="176" cy="366" r="30" fill="#a8703f"/>
+  <circle cx="304" cy="366" r="30" fill="#a8703f"/>
+  <!-- abeille -->
+  <ellipse cx="400" cy="200" rx="26" ry="20" fill="#f4c542"/>
+  <rect x="392" y="182" width="10" height="36" fill="#2e2230"/>
+  <ellipse cx="392" cy="176" rx="18" ry="12" fill="#ffffff"/>
+</svg>

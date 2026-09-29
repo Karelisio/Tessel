@@ -6,7 +6,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'android', 'node_modules', 'coverage', 'assets'] },
+  { ignores: ['dist', 'android', 'node_modules', 'coverage', 'assets', 'public'] },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [js.configs.recommended, ...tseslint.configs.strictTypeChecked, prettier],

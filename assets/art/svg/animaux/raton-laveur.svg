@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#b9c6e4"/>
+  <circle cx="90" cy="90" r="50" fill="#fdf2c4"/>
+  <circle cx="380" cy="70" r="12" fill="#fdf2c4"/>
+  <circle cx="290" cy="40" r="12" fill="#fdf2c4"/>
+  <circle cx="440" cy="150" r="12" fill="#fdf2c4"/>
+  <circle cx="210" cy="60" r="12" fill="#fdf2c4"/>
+  <path d="M0 300 Q120 260 240 290 T480 270 V480 H0 Z" fill="#9fb0d6"/>
+  <!-- queue rayée -->
+  <path d="M400 340 Q470 300 450 200 Q440 150 400 140 Q380 190 400 340 Z" fill="#8d939e"/>
+  <path d="M388 210 Q420 200 452 214 L448 250 Q420 240 392 250 Z" fill="#3a3540"/>
+  <path d="M392 290 Q425 280 458 292 Q452 322 400 340 Q392 315 392 290 Z" fill="#3a3540"/>
+  <path d="M400 150 Q420 140 440 160 Q420 170 396 176 Z" fill="#3a3540"/>
+  <!-- oreilles -->
+  <circle cx="128" cy="140" r="44" fill="#8d939e"/>
+  <circle cx="352" cy="140" r="44" fill="#8d939e"/>
+  <circle cx="128" cy="140" r="22" fill="#3a3540"/>
+  <circle cx="352" cy="140" r="22" fill="#3a3540"/>
+  <!-- tête -->
+  <ellipse cx="240" cy="230" rx="140" ry="108" fill="#8d939e"/>
+  <path d="M215 130 Q240 160 265 130 L260 200 H220 Z" fill="#f3efe9"/>
+  <path d="M100 215 Q170 172 240 205 Q310 172 380 215 Q372 282 305 274 Q262 268 240 240 Q218 268 175 274 Q108 282 100 215 Z" fill="#3a3540"/>
+  <circle cx="178" cy="222" r="20" fill="#f3efe9"/>
+  <circle cx="302" cy="222" r="20" fill="#f3efe9"/>
+  <circle cx="182" cy="224" r="11" fill="#2e2230"/>
+  <circle cx="298" cy="224" r="11" fill="#2e2230"/>
+  <circle cx="186" cy="219" r="4" fill="#ffffff"/>
+  <circle cx="302" cy="219" r="4" fill="#ffffff"/>
+  <ellipse cx="240" cy="290" rx="66" ry="46" fill="#f3efe9"/>
+  <ellipse cx="240" cy="266" rx="26" ry="17" fill="#2e2230"/>
+  <path d="M240 280 V296 M240 296 Q224 310 210 300 M240 296 Q256 310 270 300" stroke="#2e2230" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- tronc -->
+  <rect x="-20" y="345" width="520" height="160" rx="30" fill="#a06a3e"/>
+  <rect x="-20" y="345" width="520" height="26" rx="13" fill="#b98050"/>
+  <path d="M60 400 V470 M170 410 V480 M300 400 V470 M420 410 V480" stroke="#7a4a2a" stroke-width="12" stroke-linecap="round"/>
+  <!-- pattes -->
+  <ellipse cx="160" cy="352" rx="46" ry="30" fill="#8d939e"/>
+  <ellipse cx="320" cy="352" rx="46" ry="30" fill="#8d939e"/>
+  <path d="M136 340 V362 M160 336 V364 M184 340 V362 M296 340 V362 M320 336 V364 M344 340 V362" stroke="#3a3540" stroke-width="6" stroke-linecap="round"/>
+</svg>

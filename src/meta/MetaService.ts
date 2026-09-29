@@ -45,6 +45,7 @@ import {
   type StreakStatus,
   type StreakUpdate,
 } from './streak';
+import type { I18nText } from '@/i18n/text';
 import { dayKey, weekOf, systemClock, type DayKey, type MetaClock } from './time';
 import { levelRewards } from './unlocks';
 
@@ -54,7 +55,8 @@ export type MetaNotice =
   | { type: 'achievement'; def: AchievementDef; rewards: Reward[] }
   | { type: 'quest'; quest: Quest; rewards: Reward[] }
   | { type: 'questsAll'; period: QuestPeriod; rewards: Reward[] }
-  | { type: 'streak'; update: StreakUpdate; rewards: Reward[] };
+  | { type: 'streak'; update: StreakUpdate; rewards: Reward[] }
+  | { type: 'collection'; name: I18nText; event: boolean; rewards: Reward[] };
 
 /** Ce que la méta-progression doit savoir d'une partie. */
 export interface ArtworkContext {
@@ -411,6 +413,20 @@ export class MetaService {
     this.rollover();
     this.gauge(metric, value);
     this.touched();
+  }
+
+  /**
+   * Collection terminée (thématique ou d'événement) : récompense versée une seule fois par clé,
+   * compteur et notification. Renvoie false si elle l'était déjà.
+   */
+  completeCollection(key: string, name: I18nText, rewards: readonly Reward[], event: boolean): boolean {
+    this.rollover();
+    if (!this.claim(key)) return false;
+    this.emit({ type: 'collection', name, event, rewards: [...rewards] });
+    this.bump(event ? 'events.collections' : 'collections');
+    this.grant(rewards);
+    this.touched();
+    return true;
   }
 
   /** Récompense unique (collection terminée…) : versée une seule fois par clé. */

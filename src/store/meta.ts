@@ -11,6 +11,8 @@ export interface MetaSnapshot {
   level: LevelInfo;
   /** Modes débloqués. */
   modes: ModeId[];
+  /** Catégories débloquées. */
+  categories: string[];
   tools: Record<ToolId, number>;
   chests: Record<ChestSize, number>;
   freezes: number;
@@ -19,6 +21,8 @@ export interface MetaSnapshot {
   canReroll: boolean;
   achievements: number;
   unseen: number;
+  /** Jour courant de la méta-progression. */
+  day: string;
   /** Jours restants avant les nouvelles quêtes de la semaine. */
   weekDaysLeft: number;
 }
@@ -41,6 +45,7 @@ function snapshot(m: MetaService): MetaSnapshot {
   return {
     level: m.levelInfo,
     modes: m.unlockedModes,
+    categories: m.unlockedCategories,
     tools: { loupe: m.tools('loupe'), bucket: m.tools('bucket'), wand: m.tools('wand') },
     chests: { small: m.chests('small'), medium: m.chests('medium'), large: m.chests('large') },
     freezes: m.freezes,
@@ -49,6 +54,7 @@ function snapshot(m: MetaService): MetaSnapshot {
     canReroll: m.canReroll,
     achievements: m.achievementCount,
     unseen: m.unseen().length,
+    day: m.day,
     weekDaysLeft: daysBetween(m.day, nextWeekStart(m.day)),
   };
 }

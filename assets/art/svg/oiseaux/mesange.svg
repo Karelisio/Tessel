@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d8ecf5"/>
+  <circle cx="90" cy="380" r="70" fill="#eaf5fa"/>
+  <circle cx="410" cy="410" r="60" fill="#eaf5fa"/>
+  <!-- branche -->
+  <path d="M-10 150 Q140 130 260 260 T500 340" stroke="#7a5238" stroke-width="30" fill="none"/>
+  <path d="M120 140 Q100 90 140 60" stroke="#7a5238" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M360 300 Q420 270 440 200" stroke="#7a5238" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <!-- fleurs -->
+  <g fill="#f8c1d0">
+    <circle cx="70" cy="130" r="30"/><circle cx="110" cy="100" r="30"/><circle cx="150" cy="135" r="30"/>
+    <circle cx="140" cy="56" r="26"/><circle cx="105" cy="150" r="26"/>
+    <circle cx="440" cy="196" r="28"/><circle cx="410" cy="240" r="28"/><circle cx="460" cy="250" r="26"/>
+    <circle cx="450" cy="320" r="28"/><circle cx="420" cy="350" r="26"/>
+  </g>
+  <g fill="#f5a3bb">
+    <circle cx="90" cy="112" r="16"/><circle cx="128" cy="118" r="16"/><circle cx="430" cy="226" r="16"/><circle cx="438" cy="332" r="14"/>
+  </g>
+  <circle cx="110" cy="128" r="10" fill="#f4c542"/>
+  <circle cx="436" cy="222" r="10" fill="#f4c542"/>
+  <path d="M40 180 Q60 200 90 190 Q70 170 40 180 Z" fill="#7fb07a"/>
+  <path d="M380 340 Q400 380 440 380 Q430 350 380 340 Z" fill="#7fb07a"/>
+  <!-- queue -->
+  <polygon points="300,320 380,420 350,440 270,350" fill="#4f8fd6"/>
+  <!-- corps -->
+  <g transform="rotate(-20 240 300)"><ellipse cx="240" cy="300" rx="92" ry="78" fill="#f5d442"/></g>
+  <g transform="rotate(-40 280 290)"><ellipse cx="280" cy="290" rx="52" ry="72" fill="#4f8fd6"/></g>
+  <path d="M262 232 Q320 240 330 290 Q300 300 262 232 Z" fill="#8fae5a"/>
+  <path d="M240 320 V335" stroke="#2e2230" stroke-width="10" stroke-linecap="round"/>
+  <!-- tête -->
+  <circle cx="190" cy="220" r="70" fill="#ffffff"/>
+  <path d="M120 215 Q120 145 190 145 Q260 145 260 205 Q220 180 190 180 Q150 180 120 215 Z" fill="#4f8fd6"/>
+  <rect x="176" y="209" width="70" height="16" rx="8" fill="#2e2230"/>
+  <circle cx="172" cy="218" r="16" fill="#2e2230"/>
+  <circle cx="177" cy="212" r="6" fill="#ffffff"/>
+  <polygon points="118,226 146,214 146,240" fill="#4a3a30"/>
+  <!-- pattes -->
+  <rect x="225" y="360" width="10" height="34" fill="#4a3a30"/>
+  <rect x="265" y="368" width="10" height="34" fill="#4a3a30"/>
+</svg>

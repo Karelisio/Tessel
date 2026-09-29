@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#a9dcd8"/>
+  <circle cx="240" cy="240" r="220" fill="#b8e6df"/>
+  <!-- nénuphars -->
+  <ellipse cx="70" cy="420" rx="70" ry="42" fill="#6fb383"/>
+  <polygon points="70,420 140,400 140,440" fill="#a9dcd8"/>
+  <circle cx="60" cy="410" r="18" fill="#f8b6c8"/>
+  <circle cx="60" cy="410" r="8" fill="#f4c542"/>
+  <ellipse cx="410" cy="60" rx="66" ry="40" fill="#6fb383"/>
+  <polygon points="410,60 476,42 476,80" fill="#a9dcd8"/>
+  <ellipse cx="420" cy="410" rx="60" ry="36" fill="#6fb383"/>
+  <polygon points="420,410 480,394 480,428" fill="#a9dcd8"/>
+  <path d="M30 100 H110 M370 250 H450 M60 300 H130" stroke="#d6f3ee" stroke-width="12" stroke-linecap="round"/>
+  <!-- ailes -->
+  <g transform="rotate(-14 128 195)"><ellipse cx="128" cy="195" rx="112" ry="38" fill="#f2fbff" stroke="#7fc4d6" stroke-width="8"/></g>
+  <g transform="rotate(14 352 195)"><ellipse cx="352" cy="195" rx="112" ry="38" fill="#f2fbff" stroke="#7fc4d6" stroke-width="8"/></g>
+  <g transform="rotate(12 134 255)"><ellipse cx="134" cy="255" rx="105" ry="34" fill="#e2f4fb" stroke="#7fc4d6" stroke-width="8"/></g>
+  <g transform="rotate(-12 346 255)"><ellipse cx="346" cy="255" rx="105" ry="34" fill="#e2f4fb" stroke="#7fc4d6" stroke-width="8"/></g>
+  <!-- corps -->
+  <ellipse cx="240" cy="268" rx="22" ry="34" fill="#1e6fa8"/>
+  <ellipse cx="240" cy="325" rx="20" ry="30" fill="#2f8fc8"/>
+  <ellipse cx="240" cy="378" rx="19" ry="30" fill="#1e6fa8"/>
+  <ellipse cx="240" cy="428" rx="17" ry="30" fill="#2f8fc8"/>
+  <ellipse cx="240" cy="205" rx="34" ry="52" fill="#2f8fc8"/>
+  <ellipse cx="240" cy="205" rx="12" ry="40" fill="#5fb4e0"/>
+  <circle cx="240" cy="140" r="34" fill="#1e6fa8"/>
+  <circle cx="212" cy="128" r="26" fill="#3f9f5a"/>
+  <circle cx="268" cy="128" r="26" fill="#3f9f5a"/>
+  <circle cx="218" cy="122" r="9" fill="#ffffff"/>
+  <circle cx="274" cy="122" r="9" fill="#ffffff"/>
+</svg>

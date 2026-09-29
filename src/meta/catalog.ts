@@ -124,6 +124,14 @@ export const CATALOG: readonly CatalogItem[] = [
   item('frame:prisme', t('Prisme', 'Prism')),
   item('wall:atelier', t('Atelier d’artiste', 'Artist’s studio')),
   item('wall:musee', t('Salle de musée', 'Museum hall')),
+
+  // collections des événements saisonniers (voir content/events.ts)
+  item('frame:nouvel-an', t('Cotillons', 'Streamers')),
+  item('frame:saint-valentin', t('Cœurs tendres', 'Sweethearts')),
+  item('frame:printemps', t('Guirlande fleurie', 'Flower garland')),
+  item('frame:ete', t('Coquillages', 'Seashells')),
+  item('frame:halloween', t('Potiron', 'Pumpkin patch')),
+  item('frame:noel', t('Houx et flocons', 'Holly and snowflakes')),
 ];
 
 const BY_KEY = new Map(CATALOG.map((c) => [c.key, c]));

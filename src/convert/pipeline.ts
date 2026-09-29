@@ -1,9 +1,10 @@
-import { createGrid, TRANSPARENT, type Grid } from '@/content/grid';
+import { createGrid, TRANSPARENT, type Grid, type Rgb } from '@/content/grid';
 import { applyAdjustments, type Adjustments } from './adjust';
 import { assignDithered, assignNearest } from './assign';
 import { detectBackground } from './background';
 import { mergeSmallRegions, minRegionSize } from './cleanup';
 import { finalizePalette } from './palette';
+import { srgb8ToOklab } from './color';
 import { histogram, quantize } from './quantize';
 import { resampleToCells, type CropRect } from './resample';
 
@@ -23,6 +24,11 @@ export interface ConvertParams extends Adjustments {
   mergeDistance?: number;
   /** Poids des petites plages de couleur (0,5 = favorise les accents, 1 = proportionnel à la surface). */
   importance?: number;
+  /**
+   * Palette imposée (illustrations à aplats, palettes du catalogue) : utilisée telle quelle si elle
+   * tient dans `colors`, sinon réduite par quantification comme une photo.
+   */
+  palette?: readonly Rgb[];
 }
 
 export const DEFAULT_PARAMS: Omit<ConvertParams, 'width' | 'height'> = {
@@ -76,11 +82,15 @@ export function convertPixels(
   // image entièrement transparente : on garde tout plutôt qu'une grille vide
   if (!include.includes(1)) include.fill(1);
 
-  const points = histogram(img.lab, include, params.importance ?? 0.55);
-  const paletteLab = quantize(points, {
-    colors: Math.max(2, Math.min(64, Math.round(params.colors))),
-    mergeDistance: params.mergeDistance ?? 0.035,
-  });
+  const colors = Math.max(2, Math.min(64, Math.round(params.colors)));
+  const fixed = params.palette;
+  const paletteLab =
+    fixed && fixed.length <= colors
+      ? Float32Array.from(fixed.flatMap(([r, g, b]) => srgb8ToOklab(r, g, b)))
+      : quantize(histogram(img.lab, include, params.importance ?? 0.55), {
+          colors,
+          mergeDistance: params.mergeDistance ?? 0.035,
+        });
   let cells = params.dither
     ? assignDithered(img.lab, include, width, height, paletteLab, 0.75)
     : assignNearest(img.lab, include, paletteLab);

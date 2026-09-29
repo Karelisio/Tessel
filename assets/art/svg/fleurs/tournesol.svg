@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#cfe7f6"/>
+  <circle cx="90" cy="90" r="30" fill="#ffffff"/><circle cx="130" cy="82" r="38" fill="#ffffff"/><circle cx="172" cy="96" r="28" fill="#ffffff"/><rect x="90" y="92" width="82" height="32" rx="16" fill="#ffffff"/>
+  <circle cx="400" cy="60" r="22" fill="#ffffff"/><circle cx="432" cy="66" r="26" fill="#ffffff"/><rect x="400" y="66" width="60" height="20" rx="10" fill="#ffffff"/>
+  <path d="M0 400 Q120 350 240 385 T480 370 V480 H0 Z" fill="#a9d48c"/>
+  <path d="M0 440 Q160 410 300 435 T480 425 V480 H0 Z" fill="#83bd6a"/>
+  <path d="M240 320 Q232 400 240 480" stroke="#4f8a3c" stroke-width="26" fill="none"/>
+  <path d="M236 420 Q150 420 100 350 Q180 340 236 390 Z" fill="#5fa04a"/>
+  <path d="M244 440 Q330 440 385 375 Q300 365 244 410 Z" fill="#6fb058"/>
+  <path d="M298 206 Q317 267 393 231 Q345 162 298 206 Z" fill="#f0a12e"/>
+  <path d="M282 232 Q268 295 352 302 Q345 218 282 232 Z" fill="#f0a12e"/>
+  <path d="M256 248 Q212 295 281 343 Q317 267 256 248 Z" fill="#f0a12e"/>
+  <path d="M224 248 Q163 267 199 343 Q268 295 224 248 Z" fill="#f0a12e"/>
+  <path d="M198 232 Q135 218 128 302 Q212 295 198 232 Z" fill="#f0a12e"/>
+  <path d="M182 206 Q135 162 87 231 Q163 267 182 206 Z" fill="#f0a12e"/>
+  <path d="M182 174 Q163 113 87 149 Q135 218 182 174 Z" fill="#f0a12e"/>
+  <path d="M198 148 Q212 85 128 78 Q135 162 198 148 Z" fill="#f0a12e"/>
+  <path d="M224 132 Q268 85 199 37 Q163 113 224 132 Z" fill="#f0a12e"/>
+  <path d="M256 132 Q317 113 281 37 Q212 85 256 132 Z" fill="#f0a12e"/>
+  <path d="M282 148 Q345 162 352 78 Q268 85 282 148 Z" fill="#f0a12e"/>
+  <path d="M298 174 Q345 218 393 149 Q317 113 298 174 Z" fill="#f0a12e"/>
+  <path d="M300 190 Q332 246 390 190 Q332 134 300 190 Z" fill="#fbd04a"/>
+  <path d="M292 220 Q291 284 370 265 Q347 187 292 220 Z" fill="#fbd04a"/>
+  <path d="M270 242 Q237 297 315 320 Q334 241 270 242 Z" fill="#fbd04a"/>
+  <path d="M240 250 Q184 282 240 340 Q296 282 240 250 Z" fill="#fbd04a"/>
+  <path d="M210 242 Q146 241 165 320 Q243 297 210 242 Z" fill="#fbd04a"/>
+  <path d="M188 220 Q133 187 110 265 Q189 284 188 220 Z" fill="#fbd04a"/>
+  <path d="M180 190 Q148 134 90 190 Q148 246 180 190 Z" fill="#fbd04a"/>
+  <path d="M188 160 Q189 96 110 115 Q133 193 188 160 Z" fill="#fbd04a"/>
+  <path d="M210 138 Q243 83 165 60 Q146 139 210 138 Z" fill="#fbd04a"/>
+  <path d="M240 130 Q296 98 240 40 Q184 99 240 130 Z" fill="#fbd04a"/>
+  <path d="M270 138 Q334 139 315 60 Q237 83 270 138 Z" fill="#fbd04a"/>
+  <path d="M292 160 Q347 193 370 115 Q291 96 292 160 Z" fill="#fbd04a"/>
+  <circle cx="240" cy="190" r="74" fill="#8a5530"/>
+  <circle cx="240" cy="190" r="54" fill="#5e3520"/>
+  <circle cx="240" cy="190" r="22" fill="#8a5530"/>
+</svg>

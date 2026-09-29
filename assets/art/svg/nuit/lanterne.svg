@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#4a4a8c"/>
+  <path d="M0 80 H480 M0 200 H480 M0 320 H480" stroke="#41417f" stroke-width="12" fill="none"/>
+  <!-- fenetre -->
+  <path d="M70 420 V170 Q70 40 240 40 Q410 40 410 170 V420 Z" fill="#e8d8c0"/>
+  <path d="M100 420 V175 Q100 68 240 68 Q380 68 380 175 V420 Z" fill="#1c2559"/>
+  <circle cx="240" cy="300" r="140" fill="#2b3778"/>
+  <circle cx="240" cy="300" r="90" fill="#3d4a92"/>
+  <rect x="228" y="68" width="24" height="352" fill="#e8d8c0"/>
+  <circle cx="160" cy="130" r="30" fill="#ffe9a0"/>
+  <circle cx="176" cy="122" r="26" fill="#1c2559"/>
+  <circle cx="320" cy="110" r="10" fill="#fff0b8"/>
+  <circle cx="340" cy="200" r="9" fill="#fff0b8"/>
+  <circle cx="130" cy="230" r="9" fill="#fff0b8"/>
+  <!-- rebord -->
+  <rect x="40" y="410" width="400" height="70" rx="16" fill="#b58a6a"/>
+  <rect x="40" y="410" width="400" height="20" rx="10" fill="#d0a684"/>
+  <!-- lanterne -->
+  <path d="M195 245 Q195 170 240 170 Q285 170 285 245" stroke="#2e2230" stroke-width="14" fill="none"/>
+  <rect x="180" y="240" width="120" height="26" rx="10" fill="#2e2230"/>
+  <rect x="192" y="262" width="96" height="120" rx="14" fill="#ffd95a"/>
+  <ellipse cx="240" cy="330" rx="30" ry="46" fill="#f28a2e"/>
+  <ellipse cx="240" cy="340" rx="14" ry="26" fill="#fff0b8"/>
+  <rect x="234" y="262" width="12" height="120" fill="#2e2230"/>
+  <rect x="172" y="378" width="136" height="34" rx="12" fill="#2e2230"/>
+</svg>

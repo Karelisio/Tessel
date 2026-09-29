@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f3dcae"/>
+  <path d="M0 0 H480 V70 Q420 100 360 70 T240 70 T120 70 T0 70 Z" fill="#4fb0c6"/>
+  <path d="M0 62 Q60 92 120 62 T240 62 T360 62 T480 62" stroke="#ffffff" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <circle cx="40" cy="170" r="7" fill="#e0c088"/>
+  <circle cx="440" cy="150" r="7" fill="#e0c088"/>
+  <circle cx="60" cy="300" r="7" fill="#e0c088"/>
+  <circle cx="430" cy="270" r="7" fill="#e0c088"/>
+  <circle cx="230" cy="440" r="7" fill="#e0c088"/>
+  <circle cx="300" cy="120" r="7" fill="#e0c088"/>
+  <path d="M0 420 Q120 400 240 415 T480 405 V480 H0 Z" fill="#e8c58a"/>
+  <path d="M240 330 L76 286 A170 170 0 0 1 404 286 Z" fill="#f4a08c"/>
+  <path d="M240 330 L76 286 A170 170 0 0 1 120 210 Z" fill="#ffc9b8"/>
+  <path d="M240 330 L196 166 A170 170 0 0 1 284 166 Z" fill="#ffc9b8"/>
+  <path d="M240 330 L360 210 A170 170 0 0 1 404 286 Z" fill="#ffc9b8"/>
+  <path d="M240 330 L124 214 M240 330 L198 172 M240 330 L282 172 M240 330 L356 214 " stroke="#d9705a" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <rect x="200" y="324" width="80" height="36" rx="14" fill="#e8846c"/>
+  <polygon points="105,337 121,372 160,377 132,404 139,442 105,423 71,442 78,404 50,377 89,372" fill="#ff9f43" stroke="#ff9f43" stroke-width="16" stroke-linejoin="round"/>
+  <circle cx="105" cy="361" r="7" fill="#ffd95a"/>
+  <circle cx="137" cy="384" r="7" fill="#ffd95a"/>
+  <circle cx="125" cy="423" r="7" fill="#ffd95a"/>
+  <circle cx="85" cy="423" r="7" fill="#ffd95a"/>
+  <circle cx="73" cy="384" r="7" fill="#ffd95a"/>
+  <g transform="translate(375 385) rotate(-25)">
+    <path d="M-70 40 Q-90 -30 -20 -50 Q50 -70 75 -10 Q90 50 30 60 Q-20 70 -70 40 Z" fill="#fff0d8"/>
+    <path d="M-60 30 Q-70 -20 -15 -36 Q40 -50 60 -5" stroke="#d9a878" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M-30 35 Q-35 0 0 -12 Q32 -20 42 8" stroke="#d9a878" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <circle cx="-4" cy="14" r="10" fill="#f0b9a0"/>
+    <polygon points="70,-16 108,-40 96,6" fill="#fff0d8"/>
+  </g>
+  <circle cx="60" cy="230" r="26" fill="#b79cf0"/>
+  <circle cx="60" cy="230" r="10" fill="#8a72d0"/>
+  <ellipse cx="425" cy="215" rx="30" ry="20" fill="#8ec5f2" transform="rotate(-20 425 215)"/>
+  <path d="M410 222 L445 205" stroke="#5a9fd8" stroke-width="8" stroke-linecap="round" fill="none"/>
+</svg>

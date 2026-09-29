@@ -86,7 +86,14 @@ Le moteur vit hors de React (classes TS + bus d'événements). React reçoit au 
 
 ## Contenu & conversion
 
-- Grilles figées : bibliothèque précalculée au build ; grilles photo/procédurales/partagées figées en base au 1er lancement.
+- Grilles figées : bibliothèque précalculée par `scripts/art/build-library.ts` (commitée dans `public/art/` :
+  `library.json` + `grids/<id>/<difficulté>.tgrid`) ; grilles photo/du jour/partagées figées en base à la création.
+- Sources : illustrations SVG (`assets/art/svg`, guide `docs/ART.md`), générateurs procéduraux
+  (`src/content/generators` : mandalas, motifs, paysages, espace, nuit, saisons), domaine public CC0
+  (`assets/art/public-domain.json`, `scripts/art/import-pd.ts`, crédits dans `assets/art/CREDITS.md`).
+- Œuvre du jour : générateur + graine tirés de la date (`src/content/daily.ts`), hors ligne, identique pour tous.
+- Événements annuels selon la date du téléphone (`src/content/events.ts`) : collection limitée, cadre offert.
+- Collections thématiques (`src/content/collections.ts`) : récompense unique à la complétion.
 - Difficultés : Facile ≤ 50² / 8–12 c. · Moyen ~100² / 16–24 · Difficile ~150² / 24–36 · Expert 200–300² / 36–64.
 - Conversion : OKLab, median cut → k-means pondéré, fusion ΔE, Floyd-Steinberg serpentin, nettoyage des îlots, fond par remplissage depuis les bords.
 

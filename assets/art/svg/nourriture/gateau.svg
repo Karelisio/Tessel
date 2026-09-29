@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fbe0e6"/>
+  <rect y="390" width="480" height="90" fill="#f0c3cd"/>
+  <ellipse cx="240" cy="412" rx="215" ry="42" fill="#ffffff"/>
+  <ellipse cx="240" cy="404" rx="150" ry="24" fill="#e6eef3"/>
+  <g transform="translate(240 415) scale(1.15) translate(-240 -415)">
+  <polygon points="110,222 322,222 402,180 190,180" fill="#f8a5bc"/>
+  <polygon points="322,222 402,180 402,330 322,378" fill="#e0b26a"/>
+  <rect x="110" y="222" width="212" height="156" fill="#f2c987"/>
+  <rect x="110" y="270" width="212" height="24" fill="#fff4e4"/>
+  <rect x="110" y="294" width="212" height="18" fill="#dc4a66"/>
+  <rect x="110" y="312" width="212" height="24" fill="#fff4e4"/>
+  <polygon points="322,270 402,236 402,260 322,294" fill="#fff4e4"/>
+  <polygon points="322,294 402,260 402,278 322,312" fill="#dc4a66"/>
+  <polygon points="322,312 402,278 402,300 322,336" fill="#fff4e4"/>
+  <path d="M110 214 L322 214 L322 236 Q310 262 296 236 Q284 250 270 236 Q250 268 230 236 Q206 254 190 236 Q170 258 150 236 Q130 250 110 236 Z" fill="#f8a5bc"/>
+  <circle cx="250" cy="176" r="36" fill="#e2404f"/>
+  <circle cx="238" cy="166" r="10" fill="#f47a86"/>
+  <path d="M252 142 Q262 120 282 116" stroke="#4f9a3c" stroke-width="10" fill="none"/>
+  </g>
+  <ellipse cx="60" cy="440" rx="20" ry="12" fill="#f8a5bc"/>
+</svg>

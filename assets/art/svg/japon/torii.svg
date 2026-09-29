@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fbe6e6"/>
+  <ellipse cx="90" cy="70" rx="56" ry="18" fill="#ffffff"/>
+  <ellipse cx="400" cy="100" rx="50" ry="16" fill="#ffffff"/>
+  <path d="M0 330 Q100 260 200 320 Q300 250 480 320 V480 H0 Z" fill="#c9dcc9"/>
+  <path d="M0 390 Q140 360 260 385 T480 375 V480 H0 Z" fill="#a8cc98"/>
+  <!-- chemin -->
+  <path d="M190 480 L215 330 L265 330 L290 480 Z" fill="#e2d2bc"/>
+  <!-- torii -->
+  <rect x="140" y="200" width="40" height="200" rx="6" fill="#d8402f"/>
+  <rect x="300" y="200" width="40" height="200" rx="6" fill="#d8402f"/>
+  <rect x="128" y="380" width="64" height="26" rx="8" fill="#2e2230"/>
+  <rect x="288" y="380" width="64" height="26" rx="8" fill="#2e2230"/>
+  <rect x="160" y="262" width="160" height="28" fill="#d8402f"/>
+  <rect x="110" y="188" width="260" height="34" fill="#d8402f"/>
+  <path d="M70 150 Q240 185 410 150 L398 186 Q240 218 82 186 Z" fill="#2e2230"/>
+  <!-- cerisier gauche -->
+  <path d="M-10 480 Q30 350 60 250 M40 340 Q90 300 110 240" stroke="#6f4a3a" stroke-width="28" stroke-linecap="round" fill="none"/>
+  <circle cx="50" cy="200" r="60" fill="#f7b6c8"/>
+  <circle cx="110" cy="240" r="46" fill="#f28fb0"/>
+  <circle cx="30" cy="290" r="44" fill="#f28fb0"/>
+  <circle cx="100" cy="150" r="36" fill="#ffd6e0"/>
+  <!-- cerisier droit -->
+  <path d="M490 480 Q450 350 425 260 M445 350 Q400 310 380 250" stroke="#6f4a3a" stroke-width="28" stroke-linecap="round" fill="none"/>
+  <circle cx="435" cy="200" r="62" fill="#f7b6c8"/>
+  <circle cx="380" cy="245" r="44" fill="#f28fb0"/>
+  <circle cx="455" cy="290" r="42" fill="#f28fb0"/>
+  <circle cx="385" cy="150" r="36" fill="#ffd6e0"/>
+  <!-- petales -->
+  <circle cx="220" cy="90" r="12" fill="#f7b6c8"/>
+  <circle cx="290" cy="60" r="12" fill="#f28fb0"/>
+  <circle cx="250" cy="330" r="12" fill="#f7b6c8"/>
+  <circle cx="180" cy="430" r="12" fill="#f28fb0"/>
+  <circle cx="320" cy="440" r="12" fill="#f7b6c8"/>
+  <circle cx="130" cy="330" r="10" fill="#ffd6e0"/>
+</svg>

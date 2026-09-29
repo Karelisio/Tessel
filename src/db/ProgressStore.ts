@@ -271,6 +271,14 @@ export class ProgressStore {
     await this.db.run(`UPDATE projects SET ${counter} = ${counter} + ? WHERE id = ?`, [by, id]);
   }
 
+  /** Identifiants des œuvres terminées au moins une fois (tous modes et difficultés). */
+  async completedArtworkIds(): Promise<string[]> {
+    const rows = await this.db.query<{ artwork_id: string }>(
+      'SELECT DISTINCT artwork_id FROM projects WHERE completed_at IS NOT NULL',
+    );
+    return rows.map((r) => r.artwork_id);
+  }
+
   /** Modes dans lesquels cette œuvre a déjà été terminée. */
   async completedModes(artworkId: string): Promise<ModeId[]> {
     const rows = await this.db.query<{ mode: ModeId }>(

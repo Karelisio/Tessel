@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#c4e6c6"/>
+  <g transform="rotate(-25 60 90)"><ellipse cx="60" cy="90" rx="90" ry="60" fill="#8fcb95"/></g>
+  <g transform="rotate(30 430 110)"><ellipse cx="430" cy="110" rx="100" ry="55" fill="#8fcb95"/></g>
+  <g transform="rotate(35 60 400)"><ellipse cx="60" cy="400" rx="100" ry="50" fill="#5fa877"/></g>
+  <g transform="rotate(-30 440 420)"><ellipse cx="440" cy="420" rx="90" ry="50" fill="#5fa877"/></g>
+  <circle cx="420" cy="250" r="26" fill="#f08ba0"/>
+  <circle cx="420" cy="250" r="10" fill="#f4c542"/>
+  <circle cx="60" cy="260" r="22" fill="#f08ba0"/>
+  <circle cx="60" cy="260" r="8" fill="#f4c542"/>
+  <!-- branche -->
+  <rect x="-20" y="392" width="520" height="34" rx="17" fill="#7a5238"/>
+  <!-- queue -->
+  <polygon points="300,340 350,440 390,410 340,300" fill="#2e2230"/>
+  <!-- corps -->
+  <g transform="rotate(12 270 290)"><ellipse cx="270" cy="290" rx="92" ry="112" fill="#2e2230"/></g>
+  <ellipse cx="250" cy="330" rx="26" ry="14" fill="#d9433a"/>
+  <rect x="215" y="380" width="24" height="22" rx="8" fill="#5b9cc4"/>
+  <rect x="275" y="380" width="24" height="22" rx="8" fill="#5b9cc4"/>
+  <!-- tête -->
+  <circle cx="235" cy="195" r="66" fill="#2e2230"/>
+  <circle cx="218" cy="245" r="56" fill="#fff6ea"/>
+  <path d="M170 215 Q190 240 230 236 Q262 230 268 200 Q250 180 215 190 Z" fill="#fff6ea"/>
+  <!-- bec -->
+  <path d="M205 150 Q110 120 36 190 Q60 220 120 240 Q180 245 214 228 Z" fill="#f6b93b"/>
+  <path d="M36 190 Q60 220 120 240 Q180 245 214 228 L214 205 Q120 225 36 190 Z" fill="#ee7b30"/>
+  <path d="M36 190 Q40 170 68 158 Q76 190 62 214 Q44 208 36 190 Z" fill="#d9433a"/>
+  <circle cx="220" cy="180" r="30" fill="#5bb8d8"/>
+  <circle cx="220" cy="180" r="15" fill="#2e2230"/>
+  <circle cx="225" cy="175" r="5" fill="#ffffff"/>
+</svg>

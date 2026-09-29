@@ -6,6 +6,7 @@ import type { ArtworkTracker, MetaService } from '@/meta/MetaService';
 import type { ToolId } from '@/meta/rewards';
 import { getMode } from '@/modes';
 import type { ModeId } from '@/modes/types';
+import { grantCollections } from '@/content/progressRewards';
 import { AutoSaver } from './AutoSaver';
 import type { ProgressStore, ProjectCounter, ProjectMeta, ProjectSource } from './ProgressStore';
 
@@ -13,11 +14,15 @@ export interface ArtworkRef {
   artworkId: string;
   source: ProjectSource;
   /** Fabrique la grille ; appelée seulement à la création (la grille est ensuite figée en base). */
-  grid: () => Grid;
+  grid: () => Grid | Promise<Grid>;
   title?: string;
   category?: CategoryId;
   /** Œuvre d'un événement saisonnier. */
   eventId?: string;
+  /** Œuvre de la bibliothèque (identifiant sans difficulté) : collections à vérifier en fin d'œuvre. */
+  libraryId?: string;
+  /** Toutes les œuvres de l'événement (collection saisonnière). */
+  eventArtworks?: readonly string[];
 }
 
 export interface PlaySession {
@@ -51,7 +56,7 @@ export async function openSession(
       artworkId: artwork.artworkId,
       source: artwork.source,
       mode,
-      grid: artwork.grid(),
+      grid: await artwork.grid(),
       ...(artwork.title !== undefined && { title: artwork.title }),
       ...(artwork.category !== undefined && { category: artwork.category }),
     }));
@@ -157,6 +162,7 @@ export async function openSession(
       const modes = await store.completedModes(info.artworkId);
       const bonus = tracker?.complete(modes.length) ?? 0;
       session.onCompleted?.(bonus);
+      if (meta && artwork.libraryId !== undefined) await grantCollections(store, meta, artwork);
       await meta?.flush();
     })().catch((e: unknown) => {
       console.error('Fin d’œuvre non enregistrée', e);

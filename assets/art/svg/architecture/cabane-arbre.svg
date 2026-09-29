@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#e2f0d0"/>
+  <circle cx="80" cy="80" r="40" fill="#fbe3a8"/>
+  <path d="M0 410 Q140 385 260 405 T480 395 V480 H0 Z" fill="#8fbf7f"/>
+  <!-- tronc -->
+  <path d="M195 440 Q215 330 205 200 L280 200 Q270 330 295 440 Z" fill="#8a5a3a"/>
+  <path d="M255 200 L280 200 Q270 330 295 440 L268 440 Q255 330 255 200 Z" fill="#6f4529"/>
+  <path d="M215 440 Q170 430 150 450 M280 440 Q330 430 350 450" stroke="#8a5a3a" stroke-width="22" stroke-linecap="round" fill="none"/>
+  <!-- feuillage -->
+  <circle cx="110" cy="190" r="80" fill="#5f9f5a"/>
+  <circle cx="370" cy="190" r="84" fill="#5f9f5a"/>
+  <circle cx="240" cy="90" r="90" fill="#6fb066"/>
+  <circle cx="150" cy="110" r="62" fill="#7cc072"/>
+  <circle cx="335" cy="100" r="62" fill="#7cc072"/>
+  <!-- plateforme -->
+  <rect x="120" y="345" width="240" height="24" rx="8" fill="#a8783e"/>
+  <!-- cabane -->
+  <rect x="150" y="235" width="180" height="112" fill="#d8a05a"/>
+  <path d="M150 265 H330 M150 305 H330" stroke="#b9803e" stroke-width="10" fill="none"/>
+  <polygon points="130,242 240,160 350,242" fill="#c8402f"/>
+  <circle cx="240" cy="290" r="30" fill="#fff6ea"/>
+  <circle cx="240" cy="290" r="18" fill="#7fb5d0"/>
+  <rect x="164" y="290" width="40" height="57" rx="6" fill="#7a4a2e"/>
+  <rect x="282" y="294" width="34" height="34" rx="6" fill="#fff6ea"/>
+  <!-- garde-corps -->
+  <path d="M120 345 V316 M360 345 V316" stroke="#a8783e" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- echelle -->
+  <path d="M348 370 L392 445 M380 366 L424 441" stroke="#a8783e" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M362 396 L395 388 M376 420 L410 412" stroke="#a8783e" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- drapeau et balancoire -->
+  <rect x="236" y="130" width="8" height="34" fill="#7a5a3e"/>
+  <polygon points="244,130 284,142 244,156" fill="#f4c542"/>
+  <path d="M60 300 V380" stroke="#7a5a3e" stroke-width="10" fill="none"/>
+  <rect x="42" y="380" width="52" height="16" rx="8" fill="#e2463a"/>
+  <circle cx="120" cy="442" r="14" fill="#f2a2c0"/>
+  <circle cx="420" cy="455" r="12" fill="#f4c542"/>
+</svg>
