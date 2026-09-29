@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f8e6cc"/>
+  <circle cx="380" cy="90" r="46" fill="#f9c784"/>
+  <ellipse cx="100" cy="80" rx="52" ry="18" fill="#ffffff"/>
+  <path d="M0 250 Q120 210 240 240 T480 230 V330 H0 Z" fill="#b8d8a8"/>
+  <!-- riviere -->
+  <rect x="0" y="345" width="480" height="135" fill="#7fb5d0"/>
+  <path d="M0 440 Q60 425 120 440 T240 440 T360 440 T480 440 V480 H0 Z" fill="#5f9fc4"/>
+  <!-- saules -->
+  <circle cx="50" cy="180" r="64" fill="#6aa060"/>
+  <circle cx="110" cy="250" r="40" fill="#7aae6f"/>
+  <circle cx="430" cy="170" r="66" fill="#6aa060"/>
+  <circle cx="380" cy="252" r="38" fill="#7aae6f"/>
+  <!-- pont -->
+  <path d="M20 345 L20 235 Q240 150 460 235 L460 345 Z" fill="#c9b79c"/>
+  <path d="M20 235 Q240 150 460 235 L460 262 Q240 177 20 262 Z" fill="#e4d5bd"/>
+  <path d="M175 345 V292 Q175 226 240 226 Q305 226 305 292 V345 Z" fill="#4d7f9c"/>
+  <path d="M50 345 V308 Q50 274 92 274 Q134 274 134 308 V345 Z" fill="#4d7f9c"/>
+  <path d="M346 345 V308 Q346 274 388 274 Q430 274 430 308 V345 Z" fill="#4d7f9c"/>
+  <rect x="138" y="270" width="28" height="22" fill="#b4a084"/>
+  <rect x="314" y="270" width="28" height="22" fill="#b4a084"/>
+  <rect x="216" y="184" width="48" height="22" rx="6" fill="#b4a084"/>
+  <rect x="20" y="340" width="440" height="16" rx="8" fill="#a8927a"/>
+  <!-- reflets et nenuphars -->
+  <ellipse cx="90" cy="400" rx="34" ry="12" fill="#b6dce8"/>
+  <ellipse cx="380" cy="380" rx="40" ry="12" fill="#b6dce8"/>
+  <ellipse cx="240" cy="405" rx="28" ry="14" fill="#6aa060"/>
+  <circle cx="246" cy="398" r="8" fill="#f2a2c0"/>
+</svg>

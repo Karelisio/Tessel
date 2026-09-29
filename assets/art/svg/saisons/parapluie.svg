@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#cdd9e0"/>
+  <path d="M60 40 L48 96 M130 20 L118 76 M400 40 L388 96 M450 150 L438 206 M40 200 L28 256 M430 300 L418 356 M60 330 L48 386 M340 20 L328 76" stroke="#8fb0c8" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M0 400 Q140 380 260 398 T480 390 V480 H0 Z" fill="#c9a06a"/>
+  <ellipse cx="240" cy="445" rx="150" ry="26" fill="#8fb0c8"/>
+  <ellipse cx="240" cy="445" rx="70" ry="10" fill="#a9c6da"/>
+  <!-- manche -->
+  <rect x="232" y="240" width="16" height="185" rx="6" fill="#7a4a2e"/>
+  <path d="M240 420 Q240 450 200 445" stroke="#7a4a2e" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- toile -->
+  <path d="M240 60 Q100 100 70 235 Q112 262 155 250 Q160 130 240 60 Z" fill="#d8502f"/>
+  <path d="M240 60 Q160 130 155 250 Q198 268 240 255 Q225 140 240 60 Z" fill="#f0a03a"/>
+  <path d="M240 60 Q255 140 240 255 Q282 268 325 250 Q320 130 240 60 Z" fill="#d8502f"/>
+  <path d="M240 60 Q320 130 325 250 Q368 262 410 235 Q380 100 240 60 Z" fill="#f0a03a"/>
+  <circle cx="240" cy="52" r="12" fill="#7a4a2e"/>
+  <!-- feuilles -->
+  <path d="M60 440 Q80 400 120 410 Q110 450 60 440 Z" fill="#e2463a"/>
+  <path d="M370 425 Q400 385 440 400 Q425 440 370 425 Z" fill="#f28a2e"/>
+  <path d="M20 380 Q40 350 75 360 Q65 395 20 380 Z" fill="#f4c542"/>
+  <path d="M400 370 Q420 340 455 350 Q445 385 400 370 Z" fill="#c8402f"/>
+  <path d="M290 450 Q310 425 340 435 Q330 462 290 450 Z" fill="#f4c542"/>
+  <path d="M130 300 Q150 270 185 280 Q175 315 130 300 Z" fill="#f28a2e"/>
+  <path d="M360 300 Q380 270 415 280 Q405 315 360 300 Z" fill="#e2463a"/>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f6e7d0"/>
+  <circle cx="360" cy="120" r="62" fill="#f9c784"/>
+  <path d="M0 360 Q120 300 240 340 T480 320 V480 H0 Z" fill="#b8d8a8"/>
+  <path d="M0 410 Q160 370 300 400 T480 390 V480 H0 Z" fill="#8fbf7f"/>
+  <!-- queue -->
+  <path d="M300 330 Q420 320 430 230 Q440 170 400 160 Q420 240 330 280 Z" fill="#e0773a"/>
+  <path d="M430 230 Q440 170 400 160 Q405 200 395 222 Z" fill="#fff6ea"/>
+  <!-- corps -->
+  <path d="M150 380 Q140 280 200 240 L300 240 Q350 300 330 380 Z" fill="#e0773a"/>
+  <path d="M205 300 Q240 270 275 300 L270 380 L210 380 Z" fill="#fff6ea"/>
+  <!-- pattes -->
+  <rect x="170" y="360" width="40" height="36" rx="14" fill="#5a3a2e"/>
+  <rect x="280" y="360" width="40" height="36" rx="14" fill="#5a3a2e"/>
+  <!-- tête -->
+  <path d="M150 150 L175 60 L215 125 Z" fill="#e0773a"/>
+  <path d="M330 150 L305 60 L265 125 Z" fill="#e0773a"/>
+  <path d="M168 138 L180 88 L203 124 Z" fill="#5a3a2e"/>
+  <path d="M312 138 L300 88 L277 124 Z" fill="#5a3a2e"/>
+  <path d="M140 170 Q150 110 240 110 Q330 110 340 170 Q330 230 240 262 Q150 230 140 170 Z" fill="#e0773a"/>
+  <path d="M170 190 Q205 200 240 262 Q275 200 310 190 Q300 232 240 262 Q180 232 170 190 Z" fill="#fff6ea"/>
+  <circle cx="200" cy="172" r="13" fill="#2e2230"/>
+  <circle cx="280" cy="172" r="13" fill="#2e2230"/>
+  <circle cx="204" cy="167" r="4" fill="#ffffff"/>
+  <circle cx="284" cy="167" r="4" fill="#ffffff"/>
+  <ellipse cx="240" cy="236" rx="16" ry="12" fill="#2e2230"/>
+  <circle cx="178" cy="206" r="11" fill="#f2a28a"/>
+  <circle cx="302" cy="206" r="11" fill="#f2a28a"/>
+</svg>

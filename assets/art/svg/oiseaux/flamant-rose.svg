@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fde3d3"/>
+  <circle cx="380" cy="130" r="70" fill="#fbc99a"/>
+  <path d="M0 330 H480 V480 H0 Z" fill="#9fd6d0"/>
+  <path d="M0 330 Q60 318 120 330 T240 330 T360 330 T480 330 V345 H0 Z" fill="#c5ece6"/>
+  <g transform="translate(-29 -36) scale(1.12)">
+  <!-- pattes -->
+  <path d="M240 330 L240 430" stroke="#e0647f" stroke-width="12" fill="none"/>
+  <path d="M285 320 L300 380 L262 440" stroke="#e0647f" stroke-width="12" fill="none" stroke-linejoin="round"/>
+  <!-- corps -->
+  <polygon points="340,270 440,290 350,320" fill="#e0647f"/>
+  <ellipse cx="270" cy="285" rx="108" ry="62" fill="#f08ba0"/>
+  <path d="M230 285 Q290 250 360 280 Q320 335 250 330 Q220 315 230 285 Z" fill="#e0647f"/>
+  <!-- cou -->
+  <path d="M190 275 C120 265 120 170 185 165 C240 160 250 105 200 95" stroke="#f08ba0" stroke-width="36" fill="none" stroke-linecap="round"/>
+  <circle cx="200" cy="95" r="36" fill="#f08ba0"/>
+  <path d="M176 84 Q120 86 118 138 L156 128 Q170 112 196 112 Z" fill="#fff0e6"/>
+  <path d="M118 138 L156 128 Q140 100 118 100 Q108 118 118 138 Z" fill="#2e2230"/>
+  <circle cx="206" cy="88" r="12" fill="#2e2230"/>
+  <circle cx="210" cy="84" r="4" fill="#ffffff"/>
+  </g>
+  <!-- eau devant -->
+  <path d="M0 405 Q60 390 120 405 T240 405 T360 405 T480 405 V480 H0 Z" fill="#82c5c2"/>
+  <path d="M40 440 H140" stroke="#c5ece6" stroke-width="12" stroke-linecap="round"/>
+  <path d="M300 450 H420" stroke="#c5ece6" stroke-width="12" stroke-linecap="round"/>
+  <path d="M170 422 H250" stroke="#c5ece6" stroke-width="12" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,36 @@
+.dbg {
+  display: grid;
+  gap: 8px;
+  padding: 4px 2px 12px;
+}
+
+.dbg h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.dbg h4 {
+  margin: 8px 0 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--on-surface-muted);
+}
+
+.dbg__info,
+.dbg__note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--on-surface-muted);
+}
+
+.dbg__note {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.dbg__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

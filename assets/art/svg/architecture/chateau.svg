@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#dfd6f4"/>
+  <circle cx="30" cy="36" r="42" fill="#fbe3a8"/>
+  <ellipse cx="450" cy="30" rx="46" ry="18" fill="#ffffff"/>
+  <ellipse cx="410" cy="20" rx="30" ry="14" fill="#ffffff"/>
+  <path d="M0 410 Q140 370 260 400 T480 380 V480 H0 Z" fill="#b8d8a8"/>
+  <!-- tours de cote -->
+  <rect x="50" y="210" width="90" height="200" fill="#f4e6d8"/>
+  <polygon points="40,214 95,90 150,214" fill="#e58fbd"/>
+  <rect x="340" y="210" width="90" height="200" fill="#f4e6d8"/>
+  <polygon points="330,214 385,90 440,214" fill="#e58fbd"/>
+  <!-- mur -->
+  <rect x="120" y="290" width="240" height="130" fill="#e6d4bf"/>
+  <rect x="120" y="274" width="34" height="26" fill="#e6d4bf"/>
+  <rect x="173" y="274" width="34" height="26" fill="#e6d4bf"/>
+  <rect x="273" y="274" width="34" height="26" fill="#e6d4bf"/>
+  <rect x="326" y="274" width="34" height="26" fill="#e6d4bf"/>
+  <!-- donjon -->
+  <rect x="195" y="150" width="90" height="270" fill="#f4e6d8"/>
+  <polygon points="183,154 240,30 297,154" fill="#7a5ac8"/>
+  <rect x="237" y="10" width="6" height="30" fill="#7a5a3e"/>
+  <polygon points="243,10 275,20 243,32" fill="#e2463a"/>
+  <rect x="90" y="52" width="6" height="42" fill="#7a5a3e"/>
+  <polygon points="96,52 124,62 96,74" fill="#f4c542"/>
+  <rect x="380" y="52" width="6" height="42" fill="#7a5a3e"/>
+  <polygon points="386,52 414,62 386,74" fill="#f4c542"/>
+  <!-- ouvertures -->
+  <path d="M212 420 V360 Q240 320 268 360 V420 Z" fill="#6a3f8a"/>
+  <rect x="226" y="190" width="28" height="44" rx="13" fill="#6a3f8a"/>
+  <rect x="226" y="262" width="28" height="44" rx="13" fill="#6a3f8a"/>
+  <rect x="80" y="240" width="30" height="46" rx="14" fill="#6a3f8a"/>
+  <rect x="370" y="240" width="30" height="46" rx="14" fill="#6a3f8a"/>
+  <rect x="80" y="320" width="30" height="46" rx="14" fill="#6a3f8a"/>
+  <rect x="370" y="320" width="30" height="46" rx="14" fill="#6a3f8a"/>
+  <path d="M215 480 L225 420 L255 420 L265 480 Z" fill="#c9b79c"/>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f6ead2"/>
+  <rect y="420" width="480" height="60" fill="#a9d48c"/>
+  <path d="M100 310 Q100 90 240 90 Q380 90 380 310" stroke="#a86c38" stroke-width="18" fill="none"/>
+  <circle cx="185" cy="235" r="58" fill="#b6d858"/>
+  <g transform="rotate(25 162 218)"><ellipse cx="162" cy="218" rx="13" ry="20" fill="#d9ec8e"/></g>
+  <ellipse cx="185" cy="186" rx="13" ry="8" fill="#8a3a2a"/>
+  <path d="M185 183 Q189 165 197 157" stroke="#6b4226" stroke-width="10" fill="none"/>
+  <path d="M193 171 Q225 151 237 171 Q215 183 193 171 Z" fill="#4f9a3c"/>
+  <circle cx="295" cy="232" r="58" fill="#e14b4b"/>
+  <g transform="rotate(25 272 215)"><ellipse cx="272" cy="215" rx="13" ry="20" fill="#f27a7a"/></g>
+  <ellipse cx="295" cy="183" rx="13" ry="8" fill="#8a3a2a"/>
+  <path d="M295 180 Q299 162 307 154" stroke="#6b4226" stroke-width="10" fill="none"/>
+  <path d="M303 168 Q335 148 347 168 Q325 180 303 168 Z" fill="#4f9a3c"/>
+  <circle cx="140" cy="290" r="62" fill="#e14b4b"/>
+  <g transform="rotate(25 115 271)"><ellipse cx="115" cy="271" rx="14" ry="21" fill="#f27a7a"/></g>
+  <ellipse cx="140" cy="237" rx="14" ry="8" fill="#8a3a2a"/>
+  <path d="M140 234 Q144 216 152 206" stroke="#6b4226" stroke-width="10" fill="none"/>
+  <circle cx="240" cy="275" r="62" fill="#8fc750"/>
+  <g transform="rotate(25 215 256)"><ellipse cx="215" cy="256" rx="14" ry="21" fill="#b5e07a"/></g>
+  <ellipse cx="240" cy="222" rx="14" ry="8" fill="#8a3a2a"/>
+  <path d="M240 219 Q244 201 252 191" stroke="#6b4226" stroke-width="10" fill="none"/>
+  <path d="M248 207 Q280 185 292 207 Q270 219 248 207 Z" fill="#4f9a3c"/>
+  <circle cx="340" cy="290" r="62" fill="#f0803c"/>
+  <g transform="rotate(25 315 271)"><ellipse cx="315" cy="271" rx="14" ry="21" fill="#f8a86a"/></g>
+  <ellipse cx="340" cy="237" rx="14" ry="8" fill="#8a3a2a"/>
+  <path d="M340 234 Q344 216 352 206" stroke="#6b4226" stroke-width="10" fill="none"/>
+  <path d="M80 306 L400 306 L370 428 Q240 448 110 428 Z" fill="#c98f52"/>
+  <path d="M80 306 L400 306 L392 340 L88 340 Z" fill="#b57a3f"/>
+  <line x1="130" y1="318" x2="130" y2="358" stroke="#a86c38" stroke-width="8"/>
+  <line x1="190" y1="318" x2="190" y2="358" stroke="#a86c38" stroke-width="8"/>
+  <line x1="250" y1="318" x2="250" y2="358" stroke="#a86c38" stroke-width="8"/>
+  <line x1="310" y1="318" x2="310" y2="358" stroke="#a86c38" stroke-width="8"/>
+  <line x1="370" y1="318" x2="370" y2="358" stroke="#a86c38" stroke-width="8"/>
+  <line x1="160" y1="358" x2="160" y2="398" stroke="#a86c38" stroke-width="8"/>
+  <line x1="220" y1="358" x2="220" y2="398" stroke="#a86c38" stroke-width="8"/>
+  <line x1="280" y1="358" x2="280" y2="398" stroke="#a86c38" stroke-width="8"/>
+  <line x1="340" y1="358" x2="340" y2="398" stroke="#a86c38" stroke-width="8"/>
+  <line x1="130" y1="398" x2="130" y2="438" stroke="#a86c38" stroke-width="8"/>
+  <line x1="190" y1="398" x2="190" y2="438" stroke="#a86c38" stroke-width="8"/>
+  <line x1="250" y1="398" x2="250" y2="438" stroke="#a86c38" stroke-width="8"/>
+  <line x1="310" y1="398" x2="310" y2="438" stroke="#a86c38" stroke-width="8"/>
+  <line x1="370" y1="398" x2="370" y2="438" stroke="#a86c38" stroke-width="8"/>
+  <rect x="70" y="290" width="340" height="30" rx="14" fill="#a86c38"/>
+</svg>

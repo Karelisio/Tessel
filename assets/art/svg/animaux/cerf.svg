@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d6ecd0"/>
+  <circle cx="290" cy="90" r="80" fill="#eef5c8"/>
+  <rect x="20" y="0" width="52" height="400" fill="#8fb58a"/>
+  <rect x="410" y="0" width="52" height="400" fill="#8fb58a"/>
+  <rect x="120" y="0" width="30" height="400" fill="#a9cba0"/>
+  <ellipse cx="46" cy="40" rx="70" ry="60" fill="#7fb07a"/>
+  <ellipse cx="436" cy="50" rx="70" ry="60" fill="#7fb07a"/>
+  <path d="M0 370 Q120 335 240 365 T480 350 V480 H0 Z" fill="#b7dba0"/>
+  <path d="M0 430 Q160 400 300 425 T480 415 V480 H0 Z" fill="#9ccf86"/>
+  <!-- antlers -->
+  <path d="M175 110 L190 50 M190 74 L150 40 M190 60 L230 32 M205 105 L245 70 M232 80 L268 78" stroke="#7a5238" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- pattes -->
+  <rect x="150" y="340" width="30" height="100" rx="12" fill="#a06a3e"/>
+  <rect x="196" y="340" width="30" height="100" rx="12" fill="#b87a4a"/>
+  <rect x="308" y="340" width="30" height="100" rx="12" fill="#a06a3e"/>
+  <rect x="352" y="340" width="30" height="100" rx="12" fill="#b87a4a"/>
+  <rect x="150" y="424" width="30" height="20" rx="8" fill="#4a3a30"/>
+  <rect x="196" y="424" width="30" height="20" rx="8" fill="#4a3a30"/>
+  <rect x="308" y="424" width="30" height="20" rx="8" fill="#4a3a30"/>
+  <rect x="352" y="424" width="30" height="20" rx="8" fill="#4a3a30"/>
+  <!-- corps -->
+  <ellipse cx="410" cy="292" rx="22" ry="32" fill="#fff6ea"/>
+  <ellipse cx="270" cy="320" rx="145" ry="74" fill="#b87a4a"/>
+  <ellipse cx="270" cy="366" rx="105" ry="26" fill="#f0d9b5"/>
+  <circle cx="230" cy="290" r="11" fill="#fff6ea"/>
+  <circle cx="290" cy="270" r="11" fill="#fff6ea"/>
+  <circle cx="340" cy="310" r="11" fill="#fff6ea"/>
+  <circle cx="290" cy="330" r="11" fill="#fff6ea"/>
+  <circle cx="240" cy="335" r="11" fill="#fff6ea"/>
+  <!-- cou et tête -->
+  <path d="M130 310 Q160 220 150 150 L215 150 Q215 240 250 290 Z" fill="#b87a4a"/>
+  <path d="M170 250 Q200 270 215 240 L215 150 L190 150 Z" fill="#f0d9b5"/>
+  <g transform="rotate(35 212 122)"><ellipse cx="212" cy="122" rx="20" ry="46" fill="#b87a4a"/></g>
+  <g transform="rotate(35 212 124)"><ellipse cx="212" cy="124" rx="10" ry="30" fill="#f2a28a"/></g>
+  <g transform="rotate(-25 140 148)"><ellipse cx="140" cy="148" rx="72" ry="44" fill="#b87a4a"/></g>
+  <g transform="rotate(-25 86 176)"><ellipse cx="86" cy="176" rx="30" ry="24" fill="#f0d9b5"/></g>
+  <circle cx="70" cy="180" r="14" fill="#2e2230"/>
+  <circle cx="142" cy="134" r="14" fill="#2e2230"/>
+  <circle cx="146" cy="129" r="5" fill="#ffffff"/>
+  <!-- fleurs -->
+  <circle cx="60" cy="450" r="14" fill="#ffffff"/>
+  <circle cx="60" cy="450" r="6" fill="#f4c542"/>
+  <circle cx="430" cy="455" r="14" fill="#f8b6c8"/>
+  <circle cx="430" cy="455" r="6" fill="#f4c542"/>
+</svg>

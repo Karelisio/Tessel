@@ -1,0 +1,240 @@
+.set-group > * + * {
+  box-shadow: inset 0 1px 0 var(--outline);
+}
+
+.set-group .kit-row {
+  min-height: 60px;
+}
+
+.set-block {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.set-block__head {
+  display: grid;
+  gap: 2px;
+}
+
+.set-block__head strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.set-block__head small {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--on-surface-muted);
+}
+
+.set-block .imp-seg--segmented {
+  background: var(--surface-3);
+  box-shadow: none;
+}
+
+.set-block .imp-seg__btn {
+  flex: 1;
+  min-height: 44px;
+}
+
+.set-block .imp-seg__text {
+  padding: 12px 6px;
+  font-size: 13.5px;
+  text-align: center;
+}
+
+.set-range {
+  padding: 4px 10px 6px;
+}
+
+.set-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 16px 12px;
+  padding: 14px 8px;
+  min-height: 64px;
+  border-radius: var(--radius-m);
+  background: var(--surface-3);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Thèmes -------------------------------------------------------------------------------------- */
+
+.set-themes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.set-theme {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 20px;
+  text-align: left;
+  box-shadow: inset 0 0 0 1.5px var(--outline);
+  transition: box-shadow 0.2s;
+}
+
+.set-theme[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 3px var(--primary);
+}
+
+.set-theme__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  padding: 0 4px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.set-theme__check {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.set-mini {
+  display: grid;
+  gap: 6px;
+  height: 92px;
+  padding: 8px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--on-surface);
+  box-shadow: inset 0 0 0 1px var(--outline);
+}
+
+.set-mini__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10px;
+}
+
+.set-mini__bar i {
+  width: 34%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--on-surface);
+}
+
+.set-mini__bar b {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.set-mini__card {
+  display: grid;
+  gap: 5px;
+  align-content: center;
+  padding: 7px 8px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.set-mini__card i {
+  height: 5px;
+  border-radius: 3px;
+  background: var(--on-surface-muted);
+  opacity: 0.5;
+}
+
+.set-mini__card i:first-child {
+  width: 70%;
+  opacity: 0.9;
+  background: var(--on-surface);
+}
+
+.set-mini__card em {
+  width: 38%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--primary);
+}
+
+.set-mini__dots {
+  display: flex;
+  gap: 5px;
+}
+
+.set-mini__dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-container);
+}
+
+.set-mini__dots i:nth-child(2) {
+  background: var(--secondary-container);
+}
+
+.set-mini__dots i:nth-child(3) {
+  background: var(--tertiary);
+}
+
+/* --- Divers -------------------------------------------------------------------------------------- */
+
+.set-credits {
+  margin: 0;
+  padding: 12px 20px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--on-surface-muted);
+}
+
+.set-reset {
+  margin-top: 22px;
+  justify-items: stretch;
+}
+
+.set-reset .kit-btn {
+  min-height: 48px;
+}
+
+.set-confirm {
+  display: grid;
+  gap: 10px;
+  padding: 4px 4px 8px;
+}
+
+.set-confirm h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.set-confirm p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--on-surface-muted);
+}
+
+.set-confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.set-confirm__actions .kit-btn {
+  min-height: 46px;
+}

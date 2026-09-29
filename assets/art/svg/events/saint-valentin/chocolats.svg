@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f7d5df"/>
+  <path d="M40 60 C25 35 60 20 68 42 C76 20 110 35 96 60 L68 88 Z" fill="#f2a5bd"/>
+  <path d="M400 400 C385 378 415 365 420 385 C428 365 455 378 440 400 L420 420 Z" fill="#f2a5bd"/>
+  <path d="M400 60 C388 40 415 28 421 45 C427 28 454 40 442 60 L421 82 Z" fill="#f2a5bd"/>
+  <rect x="40" y="130" width="400" height="300" rx="30" fill="#e2463a"/>
+  <rect x="64" y="154" width="352" height="252" rx="18" fill="#4a2a24"/>
+  <ellipse cx="135" cy="249" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(135 245) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#9c6a44"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#c99566" transform="rotate(35 -22 -24)"/></g>
+  <ellipse cx="240" cy="249" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(240 245) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#f28ab0"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#ffd0dc" transform="rotate(35 -22 -24)"/></g>
+  <ellipse cx="345" cy="249" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(345 245) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#f2dcc4"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#ffffff" transform="rotate(35 -22 -24)"/></g>
+  <ellipse cx="135" cy="344" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(135 340) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#f2dcc4"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#ffffff" transform="rotate(35 -22 -24)"/></g>
+  <ellipse cx="240" cy="344" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(240 340) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#9c6a44"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#c99566" transform="rotate(35 -22 -24)"/></g>
+  <ellipse cx="345" cy="344" rx="50" ry="44" fill="#e9b44c"/>
+  <g transform="translate(345 340) scale(1.2)"><path d="M0 34 C-56 -8 -48 -46 -24 -46 C-10 -46 0 -36 0 -30 C0 -36 10 -46 24 -46 C48 -46 56 -8 0 34 Z" fill="#f28ab0"/><ellipse cx="-22" cy="-24" rx="6" ry="9" fill="#ffd0dc" transform="rotate(35 -22 -24)"/></g>
+  <rect x="215" y="100" width="50" height="60" fill="#ffd95a" transform="rotate(0)"/>
+  <polygon points="240,120 180,84 180,150" fill="#ffd95a"/>
+  <polygon points="240,120 300,84 300,150" fill="#ffd95a"/>
+  <circle cx="240" cy="120" r="20" fill="#e9b44c"/>
+</svg>

@@ -1,0 +1,6 @@
+dist
+android
+node_modules
+assets
+package-lock.json
+public/art

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#cfe9ee"/>
+  <circle cx="60" cy="410" r="60" fill="#e0f2d8"/>
+  <path d="M-10 70 Q120 40 240 78 T490 60" stroke="#8a5a38" stroke-width="18" fill="none"/>
+  <path d="M130 88 L124 150 M270 92 L274 170 M390 78 L388 130" stroke="#8a5a38" stroke-width="12" fill="none"/>
+  <path d="M60 70 Q30 30 70 18 Q100 40 60 70 Z" fill="#4f9a3c"/>
+  <path d="M190 90 Q160 130 200 145 Q225 115 190 90 Z" fill="#5fae48"/>
+  <path d="M330 92 Q300 120 335 140 Q360 115 330 92 Z" fill="#4f9a3c"/>
+  <path d="M430 66 Q470 30 470 90 Q450 100 430 66 Z" fill="#5fae48"/>
+  <g transform="translate(125 235) rotate(80) scale(1.35)">
+  <path d="M-80 0 Q-66 -6 -60 -18 Q-40 -58 0 -58 Q40 -58 60 -18 Q66 -6 80 0 Q66 6 60 18 Q40 58 0 58 Q-40 58 -60 18 Q-66 6 -80 0 Z" fill="#f6d941"/>
+  <path d="M-60 18 Q-40 58 0 58 Q40 58 60 18 Q66 6 80 0 Q70 34 40 46 Q0 60 -40 46 Q-56 36 -60 18 Z" fill="#e5bd2e"/>
+  <g transform="rotate(-15 -22 -24)"><ellipse cx="-22" cy="-24" rx="24" ry="10" fill="#fbee8a"/></g>
+  </g>
+  <g transform="translate(275 270) rotate(100) scale(1.35)">
+  <path d="M-80 0 Q-66 -6 -60 -18 Q-40 -58 0 -58 Q40 -58 60 -18 Q66 -6 80 0 Q66 6 60 18 Q40 58 0 58 Q-40 58 -60 18 Q-66 6 -80 0 Z" fill="#f6d941"/>
+  <path d="M-60 18 Q-40 58 0 58 Q40 58 60 18 Q66 6 80 0 Q70 34 40 46 Q0 60 -40 46 Q-56 36 -60 18 Z" fill="#e5bd2e"/>
+  <g transform="rotate(-15 -22 -24)"><ellipse cx="-22" cy="-24" rx="24" ry="10" fill="#fbee8a"/></g>
+  </g>
+  <g transform="translate(392 190) rotate(70) scale(1.0)">
+  <path d="M-80 0 Q-66 -6 -60 -18 Q-40 -58 0 -58 Q40 -58 60 -18 Q66 -6 80 0 Q66 6 60 18 Q40 58 0 58 Q-40 58 -60 18 Q-66 6 -80 0 Z" fill="#f6d941"/>
+  <path d="M-60 18 Q-40 58 0 58 Q40 58 60 18 Q66 6 80 0 Q70 34 40 46 Q0 60 -40 46 Q-56 36 -60 18 Z" fill="#e5bd2e"/>
+  <g transform="rotate(-15 -22 -24)"><ellipse cx="-22" cy="-24" rx="24" ry="10" fill="#fbee8a"/></g>
+  </g>
+  <circle cx="370" cy="380" r="72" fill="#f6d941"/>
+  <circle cx="370" cy="380" r="62" fill="#fff6cf"/>
+  <circle cx="370" cy="380" r="54" fill="#fbe57a"/>
+  <line x1="370" y1="380" x2="414" y2="380" stroke="#fff6cf" stroke-width="9"/>
+  <line x1="370" y1="380" x2="392" y2="418" stroke="#fff6cf" stroke-width="9"/>
+  <line x1="370" y1="380" x2="348" y2="418" stroke="#fff6cf" stroke-width="9"/>
+  <line x1="370" y1="380" x2="326" y2="380" stroke="#fff6cf" stroke-width="9"/>
+  <line x1="370" y1="380" x2="348" y2="342" stroke="#fff6cf" stroke-width="9"/>
+  <line x1="370" y1="380" x2="392" y2="342" stroke="#fff6cf" stroke-width="9"/>
+  <circle cx="370" cy="380" r="9" fill="#fff6cf"/>
+</svg>

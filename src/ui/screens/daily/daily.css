@@ -1,0 +1,1055 @@
+/* Onglet « Du jour » et page des quêtes. Couleurs : jetons du thème ; seuls les deux tons de lumière
+   (cœur de flamme, éclat) sont propres à l'illustration et identiques dans tous les thèmes. */
+
+.daily,
+.daily-portal {
+  --daily-flame-core: #ffe9b0;
+  --daily-flame-mid: #ffb75e;
+}
+
+.daily-page {
+  padding-bottom: 8px;
+}
+
+.daily-block {
+  padding: 0 20px;
+}
+
+.daily-skeleton {
+  display: grid;
+  gap: 14px;
+  padding: 0 20px;
+}
+
+.daily-muted {
+  color: var(--on-surface-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.daily-note {
+  margin: 14px 20px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--on-surface-muted);
+}
+
+.daily-note--center {
+  text-align: center;
+  margin-top: 22px;
+}
+
+/* --- Barres de progression ------------------------------------------------------------------- */
+
+.daily-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.daily-bar__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  background: var(--primary);
+}
+
+.daily-bar--warm .daily-bar__fill {
+  background: var(--tertiary);
+}
+
+/* --- Événements -------------------------------------------------------------------------------- */
+
+.daily-events {
+  display: grid;
+  gap: 8px;
+  padding: 0 20px 16px;
+}
+
+.daily-event {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 14px;
+  border-radius: var(--radius-m);
+  text-align: left;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.daily-event__glyph {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--on-primary-container) 12%, transparent);
+}
+
+.daily-event__text {
+  flex: 1;
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.daily-event__text strong {
+  font-size: 15px;
+}
+
+.daily-event__text small {
+  font-size: 12.5px;
+  opacity: 0.85;
+}
+
+.daily-next-event {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 26px 20px 4px;
+  font-size: 13px;
+  color: var(--on-surface-muted);
+  text-align: center;
+}
+
+.daily-next-event__glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+.daily-next-event__glyph svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* --- Carte héros ------------------------------------------------------------------------------- */
+
+.daily-hero {
+  padding: 16px 16px 20px;
+  overflow: hidden;
+}
+
+.daily-hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.daily-pill {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 800;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.daily-hero__date {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.daily-hero__date::first-letter {
+  text-transform: uppercase;
+}
+
+.daily-hero__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 252px;
+  margin-top: 6px;
+}
+
+.daily-hero__stage > * {
+  grid-area: 1 / 1;
+}
+
+.daily-hero__halo {
+  width: 270px;
+  height: 270px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-container) 0%, transparent 68%);
+  opacity: 0.9;
+}
+
+.daily-hero__art {
+  position: relative;
+  z-index: 1;
+  border-radius: 14px;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+
+.daily-hero__art .thumb {
+  box-shadow: var(--shadow-lift);
+}
+
+.daily-hero__done {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: var(--tertiary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.daily-hero__info {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.daily-hero__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.daily-hero__meta {
+  margin: 0;
+  font-size: 14px;
+  color: var(--on-surface-muted);
+}
+
+.daily-hero__progress {
+  display: grid;
+  gap: 6px;
+  width: min(280px, 100%);
+  margin-top: 10px;
+}
+
+.daily-hero__pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.daily-cta {
+  margin-top: 14px;
+}
+
+.daily-cta .kit-btn {
+  min-height: 48px;
+  min-width: 200px;
+  font-size: 16px;
+}
+
+/* --- Boîte cadeau ------------------------------------------------------------------------------ */
+
+.daily-gift {
+  position: relative;
+  z-index: 2;
+  width: 216px;
+  height: 216px;
+  display: grid;
+  place-items: center;
+}
+
+.daily-gift__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.daily-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.daily-burst__p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: -4px 0 0 -4px;
+  border-radius: 2px;
+}
+
+.daily-burst__p[data-round='true'] {
+  border-radius: 50%;
+}
+
+/* --- Série ------------------------------------------------------------------------------------- */
+
+.daily-streak {
+  display: grid;
+  gap: 16px;
+}
+
+.daily-streak__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.daily-streak__flame {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 78px;
+}
+
+.daily-flame {
+  display: block;
+}
+
+.daily-streak__count {
+  display: grid;
+  gap: 0;
+  min-width: 0;
+}
+
+.daily-streak__num {
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.daily-streak__label {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.daily-streak__best {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--on-surface-muted);
+}
+
+.daily-freezes {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.daily-freezes__row {
+  display: flex;
+  gap: 4px;
+}
+
+.daily-freezes__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-3);
+  color: var(--on-surface-muted);
+  opacity: 0.6;
+}
+
+.daily-freezes__icon[data-on='true'] {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  opacity: 1;
+}
+
+.daily-freezes__label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.daily-streak__today {
+  display: grid;
+  gap: 8px;
+}
+
+.daily-streak__today-text {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.daily-streak__cells {
+  flex: none;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.daily-week {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.daily-week__day {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 36px;
+}
+
+.daily-week__letter {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.daily-week__day[data-today='true'] .daily-week__letter {
+  color: var(--primary);
+}
+
+.daily-week__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--outline-strong);
+}
+
+.daily-week__dot[data-ok='true'] {
+  border: 0;
+  background: var(--tertiary);
+  color: var(--on-primary);
+}
+
+.daily-streak__next {
+  margin: -4px 0 0;
+  font-size: 13px;
+  color: var(--on-surface-muted);
+  text-align: center;
+}
+
+/* --- Quêtes ------------------------------------------------------------------------------------ */
+
+.daily-quests {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.daily-quest-wrap {
+  perspective: 900px;
+}
+
+.daily-quest {
+  display: grid;
+  gap: 10px;
+  padding: 14px 8px 14px 16px;
+  border-radius: var(--radius-l);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.daily-quest[data-done='true'] {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.daily-quest__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+}
+
+.daily-quest__mark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--outline-strong);
+}
+
+.daily-quest__mark[data-done='true'] {
+  border: 0;
+  background: var(--on-secondary-container);
+  color: var(--secondary-container);
+}
+
+.daily-quest__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.daily-quest__reroll {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -8px 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+}
+
+.daily-quest .daily-bar {
+  margin-right: 8px;
+}
+
+.daily-quest[data-done='true'] .daily-bar {
+  background: color-mix(in srgb, var(--on-secondary-container) 16%, transparent);
+}
+
+.daily-quest[data-done='true'] .daily-bar__fill {
+  background: var(--on-secondary-container);
+}
+
+.daily-quest__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-right: 8px;
+}
+
+.daily-quest__count {
+  flex: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.daily-quest[data-done='true'] .daily-quest__count {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.daily-quest__rewards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.daily-quest__got {
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.daily-reward-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.daily-quest[data-done='true'] .daily-reward-chip {
+  background: color-mix(in srgb, var(--on-secondary-container) 14%, transparent);
+  color: inherit;
+}
+
+.daily-reward-chip--bonus {
+  background: color-mix(in srgb, var(--tertiary) 24%, var(--surface-2));
+  color: var(--on-surface);
+}
+
+.daily-bonus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 4px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.daily-bonus[data-complete='true'] {
+  color: var(--on-surface);
+}
+
+.daily-summary {
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.daily-summary__item {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* --- Jours précédents --------------------------------------------------------------------------- */
+
+.daily-past-row {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 4px 20px 10px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.daily-past-row::-webkit-scrollbar {
+  display: none;
+}
+
+.daily-past {
+  flex: none;
+}
+
+.daily-past__btn {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 76px;
+  min-height: 44px;
+}
+
+.daily-past__thumb {
+  position: relative;
+  display: block;
+  border-radius: 14px;
+}
+
+.daily-past__btn[data-status='none'] .thumb {
+  opacity: 0.7;
+}
+
+.daily-past__btn[data-status='started'] .daily-past__thumb {
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.daily-past__check {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--tertiary);
+  color: var(--on-primary);
+  box-shadow: 0 0 0 2px var(--surface-2);
+}
+
+.daily-past__label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--on-surface-muted);
+}
+
+.daily-past__label::first-letter {
+  text-transform: uppercase;
+}
+
+/* --- Coffres ------------------------------------------------------------------------------------- */
+
+.daily-chests__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.daily-chest {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-height: 132px;
+  padding: 10px 6px 8px;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  color: var(--on-surface);
+}
+
+.daily-chest[data-empty='true'] {
+  opacity: 0.7;
+}
+
+.daily-chest[data-empty='true'] .daily-chest-art {
+  filter: grayscale(0.7);
+}
+
+.daily-chest__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.daily-chest__art .daily-chest-art {
+  width: 84px;
+  height: 78px;
+}
+
+.daily-chest__ping {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--daily-flame-core) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.daily-chest__art .daily-chest-art {
+  position: relative;
+  z-index: 1;
+}
+
+.daily-chest__name {
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.daily-chest__count {
+  min-width: 34px;
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.daily-chest[data-empty='true'] .daily-chest__count {
+  background: var(--surface-3);
+  color: var(--on-surface-muted);
+}
+
+.daily-chests__empty {
+  margin: 12px 0 0;
+  font-size: 13px;
+  text-align: center;
+  color: var(--on-surface-muted);
+}
+
+.daily-chest-art {
+  display: block;
+  overflow: visible;
+}
+
+.daily-chest__body,
+.daily-chest__lid {
+  stroke: color-mix(in srgb, var(--on-surface) 28%, transparent);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.daily-chest__shade {
+  fill: var(--on-surface);
+  opacity: 0.08;
+}
+
+.daily-chest__lock {
+  fill: var(--tertiary);
+  stroke: color-mix(in srgb, var(--on-surface) 28%, transparent);
+  stroke-width: 1.4;
+}
+
+.daily-chest__keyhole {
+  fill: var(--on-surface);
+  opacity: 0.55;
+}
+
+.daily-chest-art[data-size='small'] .daily-chest__body {
+  fill: var(--secondary-container);
+}
+.daily-chest-art[data-size='small'] .daily-chest__lid {
+  fill: color-mix(in srgb, var(--secondary-container) 86%, var(--on-secondary-container));
+}
+.daily-chest-art[data-size='small'] .daily-chest__band {
+  fill: var(--on-secondary-container);
+  opacity: 0.75;
+}
+
+.daily-chest-art[data-size='medium'] .daily-chest__body {
+  fill: var(--primary-container);
+}
+.daily-chest-art[data-size='medium'] .daily-chest__lid {
+  fill: color-mix(in srgb, var(--primary-container) 84%, var(--primary));
+}
+.daily-chest-art[data-size='medium'] .daily-chest__band {
+  fill: var(--primary);
+}
+
+.daily-chest-art[data-size='large'] .daily-chest__body {
+  fill: var(--primary);
+}
+.daily-chest-art[data-size='large'] .daily-chest__lid {
+  fill: color-mix(in srgb, var(--primary) 86%, var(--surface-2));
+}
+.daily-chest-art[data-size='large'] .daily-chest__band {
+  fill: var(--tertiary);
+}
+.daily-chest-art[data-size='large'] .daily-chest__lock {
+  fill: var(--daily-flame-core);
+}
+
+/* --- Ouverture d'un coffre ----------------------------------------------------------------------- */
+
+.daily-opener {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  color: var(--on-surface);
+  font-family: var(--font);
+}
+
+.daily-opener__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 50% 28%,
+      color-mix(in srgb, var(--tertiary) 26%, transparent) 0%,
+      transparent 60%
+    ),
+    color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.daily-opener__close {
+  position: absolute;
+  top: calc(var(--safe-top) + 8px);
+  right: 10px;
+  z-index: 2;
+}
+
+.daily-opener__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 440px;
+  padding: calc(var(--safe-top) + 40px) 20px calc(var(--safe-bottom) + 28px);
+}
+
+.daily-opener__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 240px;
+  height: 210px;
+}
+
+.daily-opener__stage > * {
+  grid-area: 1 / 1;
+}
+
+.daily-opener__chest {
+  position: relative;
+  z-index: 2;
+  width: 210px;
+  height: 194px;
+  display: grid;
+  place-items: center;
+}
+
+.daily-opener__chest .daily-chest-art {
+  width: 100%;
+  height: 100%;
+}
+
+.daily-opener__glow {
+  position: absolute;
+  inset: -30px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--daily-flame-core) 0%, transparent 62%);
+  animation: daily-glow 0.9s ease-in forwards;
+}
+
+@keyframes daily-glow {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
+}
+
+.daily-opener__rays {
+  position: absolute;
+  z-index: 0;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--daily-flame-core) 46%, transparent) 0deg 10deg,
+    transparent 10deg 30deg
+  );
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+  animation: daily-spin 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes daily-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.daily-opener__hint,
+.daily-opener__result {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
+}
+
+.daily-opener__hint p {
+  margin: 0;
+  color: var(--on-surface-muted);
+  font-size: 15px;
+}
+
+.daily-opener__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.daily-loot-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.daily-loot {
+  width: 104px;
+  height: 128px;
+  perspective: 700px;
+}
+
+.daily-loot__flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.daily-loot__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--radius-m);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--shadow-lift);
+}
+
+.daily-loot__face--front {
+  background: var(--surface-2);
+  border: 1px solid var(--outline);
+}
+
+.daily-loot__face--back {
+  transform: rotateY(180deg);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.daily-loot__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.daily-loot__face[data-kind='xp'] .daily-loot__icon,
+.daily-loot__face[data-kind='chest'] .daily-loot__icon {
+  background: color-mix(in srgb, var(--tertiary) 28%, var(--surface-2));
+  color: var(--on-surface);
+}
+
+.daily-loot__face[data-kind='freeze'] .daily-loot__icon {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.daily-loot__label {
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.daily-opener__actions {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.daily-opener__actions .kit-btn--filled {
+  min-width: 180px;
+  min-height: 48px;
+  font-size: 16px;
+}
+
+/* --- Réduire les animations ---------------------------------------------------------------------- */
+
+[data-motion='reduced'] .daily-opener__rays,
+[data-motion='reduced'] .daily-opener__glow {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-opener__rays,
+  .daily-opener__glow {
+    animation: none;
+  }
+}

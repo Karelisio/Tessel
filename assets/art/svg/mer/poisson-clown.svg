@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#a8dbe6"/>
+  <circle cx="80" cy="80" r="36" fill="#c9eaf0"/>
+  <circle cx="420" cy="60" r="24" fill="#c9eaf0"/>
+  <circle cx="400" cy="140" r="16" fill="#c9eaf0"/>
+  <!-- anemone arriere -->
+  <g stroke-width="30" stroke-linecap="round" fill="none">
+    <path d="M90 460 Q40 380 70 280" stroke="#9c4f9c"/>
+    <path d="M170 460 Q140 380 150 300" stroke="#b565a7"/>
+    <path d="M310 460 Q340 380 330 300" stroke="#b565a7"/>
+    <path d="M390 460 Q440 380 410 280" stroke="#9c4f9c"/>
+    <path d="M240 460 Q240 400 240 340" stroke="#9c4f9c"/>
+  </g>
+  <!-- poisson -->
+  <path d="M355 230 L440 160 Q460 230 440 300 Z" fill="#f28a2e"/>
+  <path d="M170 140 Q220 70 300 130 Z" fill="#f28a2e"/>
+  <ellipse cx="240" cy="230" rx="150" ry="100" fill="#f28a2e"/>
+  <path d="M180 132 Q205 132 215 137 L215 323 Q200 328 180 326 Q160 230 180 132 Z" fill="#fff6ea"/>
+  <path d="M280 132 Q300 132 318 148 L318 312 Q300 328 280 328 Q262 230 280 132 Z" fill="#fff6ea"/>
+  <path d="M385 200 L385 260 L408 245 L408 215 Z" fill="#fff6ea"/>
+  <g transform="rotate(20 240 330)"><ellipse cx="240" cy="330" rx="34" ry="18" fill="#e0701e"/></g>
+  <circle cx="122" cy="212" r="22" fill="#2e2230"/>
+  <circle cx="129" cy="204" r="7" fill="#ffffff"/>
+  <path d="M100 258 Q124 272 150 258" stroke="#a04a10" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- anemone avant -->
+  <ellipse cx="240" cy="470" rx="230" ry="40" fill="#e58fbd"/>
+  <g stroke-width="30" stroke-linecap="round" fill="none">
+    <path d="M60 470 Q20 420 50 380" stroke="#e58fbd"/>
+    <path d="M130 470 Q110 400 130 360" stroke="#f7b3d2"/>
+    <path d="M210 470 Q190 420 200 390" stroke="#e58fbd"/>
+    <path d="M280 470 Q300 420 290 390" stroke="#f7b3d2"/>
+    <path d="M350 470 Q370 400 350 360" stroke="#e58fbd"/>
+    <path d="M420 470 Q460 420 430 380" stroke="#f7b3d2"/>
+  </g>
+</svg>

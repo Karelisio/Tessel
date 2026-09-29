@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fbd9e3"/>
+  <path d="M40 60 C25 35 60 20 68 42 C76 20 110 35 96 60 L68 88 Z" fill="#f2a5bd"/>
+  <path d="M390 50 C378 30 405 18 411 35 C417 18 444 30 432 50 L411 72 Z" fill="#f2a5bd"/>
+  <path d="M30 230 C20 215 42 205 47 218 C52 205 74 215 64 230 L47 246 Z" fill="#f2a5bd"/>
+  <path d="M415 200 C405 185 427 175 432 188 C437 175 459 185 449 200 L432 216 Z" fill="#f2a5bd"/>
+  <path d="M240 372 C80 260 80 120 165 120 C205 120 240 140 240 150 C240 140 275 120 315 120 C400 120 400 260 240 372 Z" fill="#f79fba"/>
+  <rect y="372" width="480" height="108" fill="#9fd0e0"/>
+  <g>
+    <path d="M50 330 L96 350 L60 372 Z" fill="#ffffff"/>
+    <ellipse cx="145" cy="360" rx="95" ry="46" fill="#ffffff"/>
+    <path d="M85 350 Q140 320 200 350 Q160 392 100 382 Q80 370 85 350 Z" fill="#dbe4f0"/>
+    <path d="M205 350 C110 340 60 240 105 165 C135 118 190 105 208 118" stroke="#ffffff" stroke-width="40" stroke-linecap="round" fill="none"/>
+    <circle cx="208" cy="118" r="33" fill="#ffffff"/>
+    <polygon points="230,104 252,122 230,138" fill="#ff9f43"/>
+    <circle cx="205" cy="112" r="12" fill="#2e2230"/>
+  </g>
+  <g transform="translate(480 0) scale(-1 1)">
+    <path d="M50 330 L96 350 L60 372 Z" fill="#ffffff"/>
+    <ellipse cx="145" cy="360" rx="95" ry="46" fill="#ffffff"/>
+    <path d="M85 350 Q140 320 200 350 Q160 392 100 382 Q80 370 85 350 Z" fill="#dbe4f0"/>
+    <path d="M205 350 C110 340 60 240 105 165 C135 118 190 105 208 118" stroke="#ffffff" stroke-width="40" stroke-linecap="round" fill="none"/>
+    <circle cx="208" cy="118" r="33" fill="#ffffff"/>
+    <polygon points="230,104 252,122 230,138" fill="#ff9f43"/>
+    <circle cx="205" cy="112" r="12" fill="#2e2230"/>
+  </g>
+  <path d="M0 372 Q30 356 60 372 T120 372 T180 372 T240 372 T300 372 T360 372 T420 372 T480 372 V392 H0 Z" fill="#9fd0e0"/>
+  <path d="M0 372 Q30 356 60 372 T120 372 T180 372 T240 372 T300 372 T360 372 T420 372 T480 372" stroke="#c4e6ef" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M0 430 Q60 415 120 430 T240 430 T360 430 T480 430" stroke="#7fb8ce" stroke-width="12" stroke-linecap="round" fill="none"/>
+</svg>

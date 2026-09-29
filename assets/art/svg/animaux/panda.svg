@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#dcefd2"/>
+  <rect x="40" y="0" width="34" height="480" fill="#a9d495"/>
+  <rect x="34" y="120" width="46" height="12" rx="6" fill="#8fc07a"/>
+  <rect x="34" y="300" width="46" height="12" rx="6" fill="#8fc07a"/>
+  <rect x="410" y="0" width="34" height="480" fill="#a9d495"/>
+  <rect x="404" y="80" width="46" height="12" rx="6" fill="#8fc07a"/>
+  <rect x="404" y="250" width="46" height="12" rx="6" fill="#8fc07a"/>
+  <path d="M74 150 Q130 120 150 70 Q100 90 74 150 Z" fill="#8fc07a"/>
+  <path d="M410 200 Q360 180 340 130 Q390 140 410 200 Z" fill="#8fc07a"/>
+  <path d="M0 410 Q140 380 280 405 T480 395 V480 H0 Z" fill="#b9dca0"/>
+  <!-- bambou tenu -->
+  <line x1="350" y1="450" x2="266" y2="268" stroke="#5fa04a" stroke-width="38" stroke-linecap="round"/>
+  <line x1="318" y1="352" x2="346" y2="336" stroke="#3f7a3a" stroke-width="12" stroke-linecap="round"/>
+  <line x1="296" y1="300" x2="324" y2="286" stroke="#3f7a3a" stroke-width="12" stroke-linecap="round"/>
+  <path d="M350 400 Q420 380 440 320 Q400 330 350 400 Z" fill="#7fb86a"/>
+  <!-- corps -->
+  <ellipse cx="240" cy="355" rx="130" ry="115" fill="#ffffff"/>
+  <ellipse cx="150" cy="440" rx="58" ry="38" fill="#2e2230"/>
+  <ellipse cx="330" cy="440" rx="58" ry="38" fill="#2e2230"/>
+  <g transform="rotate(12 140 335)"><ellipse cx="140" cy="335" rx="40" ry="80" fill="#2e2230"/></g>
+  <!-- tête -->
+  <circle cx="160" cy="115" r="38" fill="#2e2230"/>
+  <circle cx="320" cy="115" r="38" fill="#2e2230"/>
+  <circle cx="240" cy="200" r="92" fill="#ffffff"/>
+  <g transform="rotate(20 192 192)"><ellipse cx="192" cy="192" rx="30" ry="38" fill="#2e2230"/></g>
+  <g transform="rotate(-20 288 192)"><ellipse cx="288" cy="192" rx="30" ry="38" fill="#2e2230"/></g>
+  <circle cx="196" cy="192" r="14" fill="#ffffff"/>
+  <circle cx="284" cy="192" r="14" fill="#ffffff"/>
+  <circle cx="198" cy="194" r="8" fill="#2e2230"/>
+  <circle cx="282" cy="194" r="8" fill="#2e2230"/>
+  <ellipse cx="240" cy="228" rx="18" ry="12" fill="#2e2230"/>
+  <path d="M240 240 Q226 256 210 246 M240 240 Q254 256 270 246" stroke="#2e2230" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- patte -->
+  <circle cx="290" cy="320" r="36" fill="#2e2230"/>
+  <ellipse cx="248" cy="280" rx="30" ry="24" fill="#2e2230"/>
+</svg>

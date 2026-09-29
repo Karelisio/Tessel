@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#bcd6ec"/>
+  <circle cx="90" cy="80" r="34" fill="#fbe3a8"/>
+  <polygon points="40,340 85,220 130,340" fill="#3f7a6a"/>
+  <polygon points="360,350 410,210 460,350" fill="#3f7a6a"/>
+  <polygon points="52,290 85,190 118,290" fill="#4f8f7a"/>
+  <polygon points="372,300 410,180 448,300" fill="#4f8f7a"/>
+  <path d="M0 370 Q140 340 260 365 T480 355 V480 H0 Z" fill="#f4f8fb"/>
+  <path d="M0 430 Q140 410 260 430 T480 420 V480 H0 Z" fill="#e2edf6"/>
+  <!-- neige qui tombe -->
+  <circle cx="40" cy="160" r="9" fill="#ffffff"/>
+  <circle cx="150" cy="60" r="9" fill="#ffffff"/>
+  <circle cx="330" cy="70" r="10" fill="#ffffff"/>
+  <circle cx="440" cy="120" r="9" fill="#ffffff"/>
+  <circle cx="60" cy="260" r="8" fill="#ffffff"/>
+  <circle cx="430" cy="270" r="9" fill="#ffffff"/>
+  <circle cx="270" cy="30" r="8" fill="#ffffff"/>
+  <!-- bras -->
+  <path d="M170 290 L90 240 L70 200 M90 240 L60 250" stroke="#7a5a3e" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M310 290 L390 245 L410 205 M390 245 L420 255" stroke="#7a5a3e" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- corps -->
+  <circle cx="240" cy="350" r="110" fill="#ffffff"/>
+  <path d="M290 260 Q350 330 300 425 Q345 380 335 330 Q330 290 290 260 Z" fill="#dbe8f3"/>
+  <circle cx="240" cy="235" r="80" fill="#ffffff"/>
+  <path d="M290 180 Q315 235 275 300 Q320 260 305 215 Q300 195 290 180 Z" fill="#dbe8f3"/>
+  <circle cx="240" cy="130" r="62" fill="#ffffff"/>
+  <!-- chapeau -->
+  <rect x="150" y="90" width="180" height="24" rx="10" fill="#3a3350"/>
+  <rect x="180" y="26" width="120" height="74" rx="14" fill="#3a3350"/>
+  <rect x="180" y="72" width="120" height="20" fill="#e2463a"/>
+  <!-- visage -->
+  <circle cx="216" cy="125" r="12" fill="#2e2230"/>
+  <circle cx="264" cy="125" r="12" fill="#2e2230"/>
+  <polygon points="240,140 240,164 296,156" fill="#f28a2e"/>
+  <circle cx="200" cy="150" r="11" fill="#f2a28a"/>
+  <circle cx="280" cy="150" r="11" fill="#f2a28a"/>
+  <!-- echarpe -->
+  <path d="M182 182 Q240 218 298 182 L302 214 Q240 250 178 214 Z" fill="#e2463a"/>
+  <path d="M270 214 L300 214 L306 292 L270 296 Z" fill="#c8402f"/>
+  <!-- boutons -->
+  <circle cx="240" cy="280" r="13" fill="#2e2230"/>
+  <circle cx="240" cy="335" r="13" fill="#2e2230"/>
+  <circle cx="240" cy="390" r="13" fill="#2e2230"/>
+</svg>

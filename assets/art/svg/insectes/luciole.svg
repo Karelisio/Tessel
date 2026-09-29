@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#2c3466"/>
+  <circle cx="240" cy="240" r="230" fill="#343f78"/>
+  <circle cx="60" cy="60" r="12" fill="#f0eaa0"/>
+  <circle cx="430" cy="60" r="12" fill="#f0eaa0"/>
+  <circle cx="250" cy="26" r="12" fill="#f0eaa0"/>
+  <circle cx="40" cy="240" r="12" fill="#f5f06a"/>
+  <circle cx="450" cy="250" r="12" fill="#f5f06a"/>
+  <circle cx="420" cy="360" r="12" fill="#f5f06a"/>
+  <circle cx="70" cy="340" r="12" fill="#f5f06a"/>
+  <g transform="translate(110 150) rotate(-25) scale(0.62)">
+    <circle r="112" cy="40" fill="#4a5a94"/>
+    <circle r="82" cy="40" fill="#6577b0"/>
+    <g transform="rotate(-22 -50 -10)"><ellipse cx="-50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <g transform="rotate(22 50 -10)"><ellipse cx="50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <ellipse cy="58" rx="38" ry="66" fill="#f5f06a"/>
+    <ellipse cy="64" rx="20" ry="40" fill="#fbfab0"/>
+    <ellipse cy="-20" rx="36" ry="46" fill="#7a4a34"/>
+    <path d="M-14 -70 Q-30 -110 -56 -112 M14 -70 Q30 -110 56 -112" stroke="#2e2230" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cy="-72" r="34" fill="#f0c090"/>
+    <circle cx="-15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="-11" cy="-78" r="4" fill="#ffffff"/>
+    <circle cx="19" cy="-78" r="4" fill="#ffffff"/>
+  </g>
+  <g transform="translate(380 140) rotate(25) scale(0.6)">
+    <circle r="112" cy="40" fill="#4a5a94"/>
+    <circle r="82" cy="40" fill="#6577b0"/>
+    <g transform="rotate(-22 -50 -10)"><ellipse cx="-50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <g transform="rotate(22 50 -10)"><ellipse cx="50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <ellipse cy="58" rx="38" ry="66" fill="#f5f06a"/>
+    <ellipse cy="64" rx="20" ry="40" fill="#fbfab0"/>
+    <ellipse cy="-20" rx="36" ry="46" fill="#7a4a34"/>
+    <path d="M-14 -70 Q-30 -110 -56 -112 M14 -70 Q30 -110 56 -112" stroke="#2e2230" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cy="-72" r="34" fill="#f0c090"/>
+    <circle cx="-15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="-11" cy="-78" r="4" fill="#ffffff"/>
+    <circle cx="19" cy="-78" r="4" fill="#ffffff"/>
+  </g>
+  <g transform="translate(240 290) rotate(8) scale(1.05)">
+    <circle r="112" cy="40" fill="#4a5a94"/>
+    <circle r="82" cy="40" fill="#6577b0"/>
+    <g transform="rotate(-22 -50 -10)"><ellipse cx="-50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <g transform="rotate(22 50 -10)"><ellipse cx="50" cy="-10" rx="26" ry="74" fill="#d5def5"/></g>
+    <ellipse cy="58" rx="38" ry="66" fill="#f5f06a"/>
+    <ellipse cy="64" rx="20" ry="40" fill="#fbfab0"/>
+    <ellipse cy="-20" rx="36" ry="46" fill="#7a4a34"/>
+    <path d="M-14 -70 Q-30 -110 -56 -112 M14 -70 Q30 -110 56 -112" stroke="#2e2230" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cy="-72" r="34" fill="#f0c090"/>
+    <circle cx="-15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="15" cy="-74" r="12" fill="#2e2230"/>
+    <circle cx="-11" cy="-78" r="4" fill="#ffffff"/>
+    <circle cx="19" cy="-78" r="4" fill="#ffffff"/>
+  </g>
+  <path d="M0 480 V400 Q40 330 60 300 Q80 350 100 420 Q120 330 150 290 Q170 360 190 480 Z" fill="#1f5f5a"/>
+  <path d="M480 480 V390 Q440 320 420 290 Q400 350 380 420 Q360 340 330 300 Q310 370 290 480 Z" fill="#1f5f5a"/>
+  <path d="M0 480 V445 Q120 425 240 450 T480 440 V480 Z" fill="#174a48"/>
+  <circle cx="230" cy="450" r="12" fill="#f0eaa0"/>
+</svg>

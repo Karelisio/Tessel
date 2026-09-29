@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d5ebe6"/>
+  <circle cx="90" cy="90" r="50" fill="#fdf2c4"/>
+  <path d="M0 380 Q120 340 240 370 T480 355 V480 H0 Z" fill="#b8d9a0"/>
+  <path d="M0 440 Q160 410 300 435 T480 425 V480 H0 Z" fill="#9dc47a"/>
+  <!-- feuilles -->
+  <path d="M340 60 Q380 30 420 60 Q380 100 340 60 Z" fill="#e0773a"/>
+  <path d="M40 200 Q70 170 100 200 Q70 230 40 200 Z" fill="#d9a441"/>
+  <path d="M400 150 Q430 120 460 150 Q430 180 400 150 Z" fill="#d9a441"/>
+  <path d="M30 400 Q60 370 90 400 Q60 430 30 400 Z" fill="#e0773a"/>
+  <!-- queue -->
+  <path d="M290 430 Q470 420 440 250 Q420 120 330 100 Q380 190 350 270 Q330 330 280 350 Z" fill="#d9773a"/>
+  <path d="M400 240 Q410 170 350 130 Q380 190 360 260 Q340 320 300 350 Q380 330 400 240 Z" fill="#f0a063"/>
+  <!-- corps -->
+  <ellipse cx="230" cy="345" rx="95" ry="110" fill="#d9773a"/>
+  <ellipse cx="240" cy="360" rx="62" ry="80" fill="#fff0d8"/>
+  <ellipse cx="185" cy="445" rx="48" ry="24" fill="#b85e2c"/>
+  <ellipse cx="290" cy="445" rx="48" ry="24" fill="#b85e2c"/>
+  <!-- tête -->
+  <polygon points="170,150 168,60 222,118" fill="#d9773a"/>
+  <polygon points="310,150 312,60 258,118" fill="#d9773a"/>
+  <polygon points="184,130 184,86 208,116" fill="#f2a28a"/>
+  <polygon points="296,130 296,86 272,116" fill="#f2a28a"/>
+  <circle cx="240" cy="195" r="82" fill="#d9773a"/>
+  <ellipse cx="240" cy="225" rx="50" ry="40" fill="#fff0d8"/>
+  <circle cx="198" cy="180" r="14" fill="#2e2230"/>
+  <circle cx="282" cy="180" r="14" fill="#2e2230"/>
+  <circle cx="202" cy="175" r="5" fill="#ffffff"/>
+  <circle cx="286" cy="175" r="5" fill="#ffffff"/>
+  <ellipse cx="240" cy="210" rx="16" ry="11" fill="#2e2230"/>
+  <path d="M240 220 V232 M240 232 Q226 244 214 236 M240 232 Q254 244 266 236" stroke="#2e2230" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <circle cx="176" cy="220" r="12" fill="#f2a28a"/>
+  <circle cx="304" cy="220" r="12" fill="#f2a28a"/>
+  <!-- gland -->
+  <ellipse cx="240" cy="338" rx="30" ry="38" fill="#c98a3a"/>
+  <path d="M202 320 Q204 292 240 290 Q276 292 278 320 Q240 332 202 320 Z" fill="#7a5238"/>
+  <rect x="234" y="276" width="12" height="20" rx="5" fill="#7a5238"/>
+  <circle cx="200" cy="335" r="20" fill="#f0a063"/>
+  <circle cx="280" cy="335" r="20" fill="#f0a063"/>
+</svg>

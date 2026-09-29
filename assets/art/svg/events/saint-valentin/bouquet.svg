@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f8dfd0"/>
+  <circle cx="240" cy="220" r="190" fill="#fbe9dc"/>
+  <path d="M120 260 Q130 150 200 120 M360 260 Q350 150 280 120 M240 260 V110" stroke="#3f7a4f" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <ellipse cx="110" cy="220" rx="46" ry="22" fill="#4f9060" transform="rotate(-40 110 220)"/>
+  <ellipse cx="370" cy="220" rx="46" ry="22" fill="#4f9060" transform="rotate(40 370 220)"/>
+  <ellipse cx="160" cy="112" rx="40" ry="20" fill="#3f7a4f" transform="rotate(-30 160 112)"/>
+  <ellipse cx="320" cy="112" rx="40" ry="20" fill="#3f7a4f" transform="rotate(30 320 112)"/>
+  <polygon points="150,280 330,280 262,450 218,450" fill="#e8c7a0"/>
+  <polygon points="150,280 330,280 300,330 180,330" fill="#f5dfc0"/>
+  <path d="M155 285 L325 285 L305 335 L175 335 Z" fill="#f28ab0"/>
+  <polygon points="240,340 200,318 200,378" fill="#e2463a"/>
+  <polygon points="240,340 280,318 280,378" fill="#e2463a"/>
+  <circle cx="240" cy="342" r="14" fill="#b83030"/>
+  <g transform="translate(120 150)"><circle r="52" fill="#e2463a"/><circle r="34" fill="#c8302f"/><path d="M-12 -4 Q0 -20 14 -4 Q6 16 -10 10" stroke="#e2463a" stroke-width="10" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(360 150)"><circle r="52" fill="#f28ab0"/><circle r="34" fill="#d96a95"/><path d="M-12 -4 Q0 -20 14 -4 Q6 16 -10 10" stroke="#f28ab0" stroke-width="10" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(240 100)"><circle r="58" fill="#ff8f6b"/><circle r="38" fill="#e2695a"/><path d="M-12 -4 Q0 -20 14 -4 Q6 16 -10 10" stroke="#ff8f6b" stroke-width="10" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(180 235)"><circle r="50" fill="#e2463a"/><circle r="32" fill="#c8302f"/><path d="M-12 -4 Q0 -20 14 -4 Q6 16 -10 10" stroke="#e2463a" stroke-width="10" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(300 235)"><circle r="50" fill="#ffd0dc"/><circle r="32" fill="#f2a5bd"/><path d="M-12 -4 Q0 -20 14 -4 Q6 16 -10 10" stroke="#ffd0dc" stroke-width="10" stroke-linecap="round" fill="none"/></g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#c9e0f0"/>
+  <circle cx="60" cy="70" r="9" fill="#ffffff"/>
+  <circle cx="420" cy="60" r="10" fill="#ffffff"/>
+  <circle cx="440" cy="180" r="8" fill="#ffffff"/>
+  <circle cx="40" cy="180" r="8" fill="#ffffff"/>
+  <circle cx="240" cy="40" r="8" fill="#ffffff"/>
+  <path d="M0 390 Q140 360 260 385 T480 375 V480 H0 Z" fill="#f4f8fb"/>
+  <path d="M0 440 Q140 420 260 440 T480 430 V480 H0 Z" fill="#dbe8f3"/>
+  <g transform="translate(-24 -50) scale(1.1)">
+  <rect x="100" y="230" width="280" height="180" rx="10" fill="#b8703f"/>
+  <polygon points="70,240 240,90 410,240" fill="#8a4f34"/>
+  <path d="M70 240 Q95 275 120 240 Q145 275 170 240 Q195 275 220 240 Q245 275 270 240 Q295 275 320 240 Q345 275 370 240 Q395 275 410 240 L240 90 Z" fill="#fff6ea"/>
+  <rect x="300" y="105" width="44" height="70" rx="6" fill="#8a4f34"/>
+  <rect x="294" y="98" width="56" height="20" rx="8" fill="#fff6ea"/>
+  <rect x="200" y="300" width="80" height="110" rx="34" fill="#e2463a"/>
+  <circle cx="264" cy="360" r="8" fill="#ffd95a"/>
+  <rect x="122" y="280" width="52" height="52" rx="10" fill="#ffd95a"/>
+  <rect x="306" y="280" width="52" height="52" rx="10" fill="#ffd95a"/>
+  <rect x="140" y="298" width="16" height="34" fill="#b8703f"/>
+  <rect x="324" y="298" width="16" height="34" fill="#b8703f"/>
+  <circle cx="240" cy="200" r="26" fill="#ffd95a"/>
+  <circle cx="240" cy="200" r="11" fill="#e2463a"/>
+  <circle cx="118" cy="372" r="15" fill="#e2463a"/>
+  <circle cx="362" cy="372" r="15" fill="#3f9160"/>
+  <circle cx="160" cy="396" r="12" fill="#3f9160"/>
+  <circle cx="320" cy="396" r="12" fill="#e2463a"/>
+  <path d="M90 410 H150 M330 410 H390" stroke="#e2463a" stroke-width="14" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600">
+  <rect width="480" height="600" fill="#2a2f6e"/>
+  <circle cx="70" cy="70" r="8" fill="#fff0b8"/>
+  <circle cx="420" cy="40" r="8" fill="#fff0b8"/>
+  <circle cx="420" cy="290" r="7" fill="#fff0b8"/>
+  <circle cx="40" cy="300" r="7" fill="#fff0b8"/>
+  <circle cx="175" cy="40" r="7" fill="#fff0b8"/>
+  <circle cx="455" cy="150" r="7" fill="#fff0b8"/>
+  <circle cx="240" cy="240" r="200" fill="#3b3f8f"/>
+  <path d="M0 500 Q120 460 240 490 T480 480 V600 H0 Z" fill="#1c2050"/>
+  <path d="M0 560 Q160 530 300 555 T480 545 V600 H0 Z" fill="#141840"/>
+  <g transform="translate(240 230)">
+    <path d="M-80 -90 Q0 -115 80 -90 Q112 0 92 100 H-92 Q-112 0 -80 -90 Z" fill="#ff9f43"/>
+    <ellipse cx="0" cy="5" rx="52" ry="80" fill="#ffd95a"/>
+    <ellipse cx="0" cy="10" rx="24" ry="60" fill="#fff6d0"/>
+    <rect x="-96" y="-108" width="192" height="26" rx="12" fill="#e2463a"/>
+    <rect x="-100" y="92" width="200" height="24" rx="12" fill="#e2463a"/>
+    <path d="M0 116 V150" stroke="#e2463a" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <circle cx="0" cy="162" r="14" fill="#ffd95a"/>
+  </g>
+  <g transform="translate(95 410) scale(0.55)">
+    <path d="M-80 -90 Q0 -115 80 -90 Q112 0 92 100 H-92 Q-112 0 -80 -90 Z" fill="#ff8fb1"/>
+    <ellipse cx="0" cy="5" rx="52" ry="80" fill="#ffd0dc"/>
+    <rect x="-96" y="-108" width="192" height="26" rx="12" fill="#c8402f"/>
+    <rect x="-100" y="92" width="200" height="24" rx="12" fill="#c8402f"/>
+  </g>
+  <g transform="translate(385 430) scale(0.62)">
+    <path d="M-80 -90 Q0 -115 80 -90 Q112 0 92 100 H-92 Q-112 0 -80 -90 Z" fill="#7fe0d0"/>
+    <ellipse cx="0" cy="5" rx="52" ry="80" fill="#c9f5ec"/>
+    <rect x="-96" y="-108" width="192" height="26" rx="12" fill="#e2463a"/>
+    <rect x="-100" y="92" width="200" height="24" rx="12" fill="#e2463a"/>
+  </g>
+  <g transform="translate(385 100) scale(0.4)">
+    <path d="M-80 -90 Q0 -115 80 -90 Q112 0 92 100 H-92 Q-112 0 -80 -90 Z" fill="#ff9f43"/>
+    <ellipse cx="0" cy="5" rx="52" ry="80" fill="#ffd95a"/>
+    <rect x="-96" y="-108" width="192" height="26" rx="12" fill="#e2463a"/>
+    <rect x="-100" y="92" width="200" height="24" rx="12" fill="#e2463a"/>
+  </g>
+  <g transform="translate(90 120) scale(0.4)">
+    <path d="M-80 -90 Q0 -115 80 -90 Q112 0 92 100 H-92 Q-112 0 -80 -90 Z" fill="#ff8fb1"/>
+    <ellipse cx="0" cy="5" rx="52" ry="80" fill="#ffd0dc"/>
+    <rect x="-96" y="-108" width="192" height="26" rx="12" fill="#c8402f"/>
+    <rect x="-100" y="92" width="200" height="24" rx="12" fill="#c8402f"/>
+  </g>
+</svg>

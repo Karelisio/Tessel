@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d9eef0"/>
+  <rect y="255" width="480" height="225" fill="#f3dfae"/>
+  <g transform="translate(0 -48)">
+  <path d="M50 140 A190 190 0 0 0 430 140 Z" fill="#3f9a4a"/>
+  <path d="M68 140 A172 172 0 0 0 412 140 Z" fill="#f3f7dc"/>
+  <path d="M90 140 A150 150 0 0 0 390 140 Z" fill="#ef5a5f"/>
+  <path d="M90 140 H390 Q384 172 370 196 Q300 176 200 190 Q140 196 106 184 Q94 164 90 140 Z" fill="#f47a7c"/>
+  <g transform="rotate(-25 150 205)"><ellipse cx="150" cy="205" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <g transform="rotate(8 215 235)"><ellipse cx="215" cy="235" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <g transform="rotate(-10 285 215)"><ellipse cx="285" cy="215" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <g transform="rotate(0 240 170)"><ellipse cx="240" cy="170" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <path d="M240 335 L120 429 A152 152 0 0 0 360 429 Z" fill="#3f9a4a"/>
+  <path d="M240 335 L134 417 A134 134 0 0 0 346 417 Z" fill="#f3f7dc"/>
+  <path d="M240 335 L150 405 A114 114 0 0 0 330 405 Z" fill="#ef5a5f"/>
+  <g transform="rotate(-10 200 395)"><ellipse cx="200" cy="395" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <g transform="rotate(10 275 395)"><ellipse cx="275" cy="395" rx="7" ry="12" fill="#3a2a2e"/></g>
+  <g transform="rotate(0 240 430)"><ellipse cx="240" cy="430" rx="7" ry="12" fill="#3a2a2e"/></g>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d6ecf4"/>
+  <ellipse cx="90" cy="110" rx="56" ry="20" fill="#ffffff"/>
+  <ellipse cx="392" cy="70" rx="50" ry="18" fill="#ffffff"/>
+  <path d="M0 420 Q140 390 260 415 T480 400 V480 H0 Z" fill="#b8d8a8"/>
+  <!-- tour -->
+  <rect x="160" y="150" width="160" height="290" fill="#efd9bd"/>
+  <rect x="290" y="150" width="30" height="290" fill="#e0c6a4"/>
+  <rect x="146" y="425" width="188" height="30" rx="8" fill="#c9a880"/>
+  <!-- toit -->
+  <polygon points="140,160 240,20 340,160" fill="#4f8a8a"/>
+  <polygon points="140,160 240,20 190,160" fill="#3f7373"/>
+  <rect x="140" y="152" width="200" height="20" rx="8" fill="#3b5a5a"/>
+  <circle cx="240" cy="18" r="12" fill="#f4c542"/>
+  <!-- cadran -->
+  <circle cx="240" cy="245" r="84" fill="#7a5a3e"/>
+  <circle cx="240" cy="245" r="68" fill="#fff6ea"/>
+  <circle cx="240" cy="188" r="7" fill="#7a5a3e"/>
+  <circle cx="240" cy="302" r="7" fill="#7a5a3e"/>
+  <circle cx="183" cy="245" r="7" fill="#7a5a3e"/>
+  <circle cx="297" cy="245" r="7" fill="#7a5a3e"/>
+  <path d="M240 245 V196" stroke="#2e2230" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M240 245 L278 268" stroke="#c8402f" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <circle cx="240" cy="245" r="10" fill="#2e2230"/>
+  <!-- fenetres -->
+  <path d="M212 355 V385 H268 V355 Q240 320 212 355 Z" fill="#4d6a8a"/>
+  <path d="M206 440 V405 Q240 380 274 405 V440 Z" fill="#7a3a2a"/>
+</svg>

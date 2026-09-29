@@ -1,0 +1,13 @@
+{
+  "renard": { "fr": "Renard au soleil", "en": "Fox in the sun" },
+  "chat-endormi": { "fr": "Chat endormi", "en": "Sleeping cat" },
+  "lapin": { "fr": "Lapin dans l’herbe", "en": "Bunny in the grass" },
+  "ours": { "fr": "Ours gourmand", "en": "Honey bear" },
+  "panda": { "fr": "Panda gourmand", "en": "Bamboo panda" },
+  "herisson": { "fr": "Hérisson et sa pomme", "en": "Hedgehog with an apple" },
+  "cerf": { "fr": "Cerf dans la clairière", "en": "Deer in the clearing" },
+  "ecureuil": { "fr": "Écureuil et son gland", "en": "Squirrel with an acorn" },
+  "koala": { "fr": "Koala sur sa branche", "en": "Koala on a branch" },
+  "chiot": { "fr": "Chiot et sa balle", "en": "Puppy with a ball" },
+  "raton-laveur": { "fr": "Raton laveur curieux", "en": "Peeking raccoon" }
+}

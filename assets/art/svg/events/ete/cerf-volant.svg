@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#8fd0f0"/>
+  <ellipse cx="80" cy="120" rx="64" ry="24" fill="#ffffff"/>
+  <ellipse cx="116" cy="104" rx="34" ry="24" fill="#ffffff"/>
+  <ellipse cx="410" cy="300" rx="64" ry="24" fill="#ffffff"/>
+  <ellipse cx="380" cy="284" rx="34" ry="24" fill="#ffffff"/>
+  <ellipse cx="90" cy="330" rx="50" ry="18" fill="#ffffff"/>
+  <path d="M0 410 Q120 370 240 400 T480 385 V480 H0 Z" fill="#a8d59a"/>
+  <path d="M0 450 Q160 425 300 450 T480 440 V480 H0 Z" fill="#7fbb6d"/>
+  <path d="M215 285 Q170 335 220 370 Q270 405 225 445 Q205 462 232 472" stroke="#5a4a70" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <g transform="translate(196 335) rotate(30)">
+    <polygon points="0,0 -26,24 26,24" fill="#f28ab0"/>
+    <polygon points="0,48 -26,24 26,24" fill="#f28ab0"/>
+  </g>
+  <g transform="translate(248 395) rotate(-30)">
+    <polygon points="0,0 -26,24 26,24" fill="#7d6bc0"/>
+    <polygon points="0,48 -26,24 26,24" fill="#7d6bc0"/>
+  </g>
+  <g transform="translate(250 172) rotate(14) scale(1.22) translate(-250 -150)">
+    <polygon points="250,20 340,150 250,250" fill="#e2463a"/>
+    <polygon points="250,20 160,150 250,250" fill="#ffd95a"/>
+    <polygon points="250,20 340,150 250,150" fill="#ff7a5a"/>
+    <polygon points="250,250 160,150 250,150" fill="#ffb35a"/>
+    <path d="M250 20 V250 M160 150 H340" stroke="#fff6ea" stroke-width="8" fill="none"/>
+    <circle cx="250" cy="150" r="12" fill="#fff6ea"/>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d8ecf6"/>
+  <circle cx="380" cy="110" r="52" fill="#f9d58a"/>
+  <ellipse cx="90" cy="100" rx="54" ry="20" fill="#ffffff"/>
+  <ellipse cx="130" cy="82" rx="36" ry="20" fill="#ffffff"/>
+  <path d="M0 310 Q120 290 240 310 T480 305 V480 H0 Z" fill="#8fc6dc"/>
+  <!-- bateau -->
+  <rect x="234" y="90" width="12" height="270" rx="5" fill="#7a5a3e"/>
+  <path d="M250 100 Q350 220 370 320 L250 320 Z" fill="#fff6ea"/>
+  <path d="M230 130 Q150 230 100 320 L230 320 Z" fill="#f2a28a"/>
+  <path d="M246 90 L286 106 L246 122 Z" fill="#e2463a"/>
+  <path d="M80 340 L400 340 Q380 400 330 410 L150 410 Q100 400 80 340 Z" fill="#c8402f"/>
+  <rect x="86" y="338" width="308" height="20" rx="10" fill="#fff6ea"/>
+  <circle cx="160" cy="382" r="13" fill="#fff6ea"/>
+  <circle cx="240" cy="382" r="13" fill="#fff6ea"/>
+  <circle cx="320" cy="382" r="13" fill="#fff6ea"/>
+  <!-- vagues -->
+  <path d="M0 400 Q60 375 120 400 T240 400 T360 400 T480 400 V480 H0 Z" fill="#5f9fc4"/>
+  <path d="M0 450 Q80 425 160 450 T320 450 T480 450 V480 H0 Z" fill="#3f7fae"/>
+  <path d="M40 350 Q70 335 100 350" stroke="#ffffff" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M400 360 Q430 345 460 360" stroke="#ffffff" stroke-width="10" stroke-linecap="round" fill="none"/>
+</svg>

@@ -1,0 +1,7 @@
+.thumb {
+  display: block;
+  border-radius: 14px;
+  background: var(--surface-3);
+  image-rendering: pixelated;
+  box-shadow: var(--shadow-soft);
+}

@@ -1,0 +1,32 @@
+import { t, type I18nText } from '@/i18n/text';
+
+/** Noms des familles de succès (les groupes de achievements.data.ts). */
+export const FAMILY_NAMES: Readonly<Record<string, I18nText>> = {
+  cells: t('Cases posées', 'Cells placed'),
+  'cells-pixel': t('Pixels posés', 'Pixels placed'),
+  'cells-diamond': t('Diamants posés', 'Diamonds placed'),
+  'cells-crossstitch': t('Croix brodées', 'Stitches sewn'),
+  'cells-mosaic': t('Tesselles posées', 'Tiles set'),
+  artworks: t('Œuvres terminées', 'Artworks completed'),
+  'artworks-pixel': t('Pixel art', 'Pixel art'),
+  'artworks-diamond': t('Diamond painting', 'Diamond painting'),
+  'artworks-crossstitch': t('Point de croix', 'Cross-stitch'),
+  'artworks-mosaic': t('Mosaïque', 'Mosaic'),
+  large: t('Grandes œuvres', 'Large artworks'),
+  huge: t('Œuvres géantes', 'Huge artworks'),
+  colors: t('Couleurs terminées', 'Colors completed'),
+  photo: t('Tes photos', 'Your photos'),
+  daily: t('Œuvres du jour', 'Daily artworks'),
+  streak: t('Série', 'Streak'),
+  level: t('Niveau', 'Level'),
+  'quests-daily': t('Quêtes du jour', 'Daily quests'),
+  'quests-weekly': t('Quêtes de la semaine', 'Weekly quests'),
+  playtime: t('Temps de coloriage', 'Coloring time'),
+  collections: t('Collections', 'Collections'),
+  events: t('Événements de saison', 'Seasonal events'),
+  categories: t('Curiosité', 'Curiosity'),
+  days: t('Jours de coloriage', 'Coloring days'),
+  gallery: t('Galerie', 'Gallery'),
+  discover: t('Découvertes', 'Discoveries'),
+  secret: t('Secrets', 'Secrets'),
+};

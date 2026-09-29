@@ -1,0 +1,10 @@
+{
+  "maisons": { "fr": "Maisons colorées", "en": "Colorful houses" },
+  "moulin": { "fr": "Moulin dans les champs", "en": "Windmill in the fields" },
+  "chateau": { "fr": "Château de conte", "en": "Fairytale castle" },
+  "chalet": { "fr": "Chalet sous la neige", "en": "Chalet in the snow" },
+  "rosace": { "fr": "Rosace de vitrail", "en": "Stained-glass rose window" },
+  "pont": { "fr": "Vieux pont de pierre", "en": "Old stone bridge" },
+  "horloge": { "fr": "Tour de l’horloge", "en": "Clock tower" },
+  "cabane-arbre": { "fr": "Cabane dans l’arbre", "en": "Treehouse" }
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f7d9e4"/>
+  <path d="M20 40 Q100 90 190 40 T360 40 T480 60" stroke="#7fc8c0" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <circle cx="60" cy="60" r="12" fill="#ffd95a"/>
+  <circle cx="420" cy="120" r="12" fill="#7fc8c0"/>
+  <circle cx="50" cy="180" r="12" fill="#f28ab0"/>
+  <rect x="430" y="200" width="20" height="36" rx="4" fill="#ffd95a" transform="rotate(30 440 218)"/>
+  <rect x="30" y="260" width="20" height="36" rx="4" fill="#7fc8c0" transform="rotate(-30 40 278)"/>
+  <circle cx="440" cy="330" r="12" fill="#f28ab0"/>
+  <path d="M20 400 Q60 370 100 410 T190 400" stroke="#f28ab0" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M300 410 Q340 380 380 420 T470 400" stroke="#ffd95a" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <rect x="0" y="420" width="480" height="60" fill="#e9b7c9"/>
+  <rect x="60" y="360" width="360" height="30" rx="14" fill="#8a5a3a"/>
+  <ellipse cx="240" cy="290" rx="112" ry="110" fill="#b8804f"/>
+  <path d="M170 190 L150 110 L215 165 Z" fill="#b8804f"/>
+  <path d="M310 190 L330 110 L265 165 Z" fill="#b8804f"/>
+  <ellipse cx="240" cy="230" rx="115" ry="100" fill="#b8804f"/>
+  <path d="M180 320 Q240 290 300 320 Q300 370 240 375 Q180 370 180 320 Z" fill="#f2dcc4"/>
+  <path d="M212 320 Q220 335 228 320 M240 320 Q248 335 256 320 M266 320 Q274 335 282 320" stroke="#b8804f" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <circle cx="196" cy="225" r="46" fill="#fff6ea"/>
+  <circle cx="284" cy="225" r="46" fill="#fff6ea"/>
+  <circle cx="200" cy="228" r="24" fill="#2e2230"/>
+  <circle cx="280" cy="228" r="24" fill="#2e2230"/>
+  <circle cx="207" cy="220" r="8" fill="#ffffff"/>
+  <circle cx="287" cy="220" r="8" fill="#ffffff"/>
+  <polygon points="222,255 258,255 240,290" fill="#ffb035"/>
+  <ellipse cx="150" cy="265" rx="16" ry="11" fill="#f2a28a"/>
+  <ellipse cx="330" cy="265" rx="16" ry="11" fill="#f2a28a"/>
+  <polygon points="240,30 180,150 300,150" fill="#7d6bc0"/>
+  <path d="M212 90 L190 128 M244 70 L226 118" stroke="#ffd95a" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <path d="M270 100 L300 138" stroke="#ffd95a" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <circle cx="240" cy="30" r="17" fill="#f28ab0"/>
+  <ellipse cx="150" cy="360" rx="26" ry="14" fill="#ffb035"/>
+  <ellipse cx="330" cy="360" rx="26" ry="14" fill="#ffb035"/>
+</svg>

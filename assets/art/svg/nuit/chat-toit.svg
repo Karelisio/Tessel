@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#2f3d86"/>
+  <circle cx="345" cy="140" r="112" fill="#3d4d9b"/>
+  <circle cx="345" cy="140" r="78" fill="#fff0b8"/>
+  <circle cx="318" cy="118" r="16" fill="#f3dc94"/>
+  <circle cx="372" cy="170" r="12" fill="#f3dc94"/>
+  <circle cx="60" cy="70" r="10" fill="#fff0b8"/>
+  <circle cx="150" cy="130" r="8" fill="#fff0b8"/>
+  <circle cx="45" cy="190" r="9" fill="#fff0b8"/>
+  <circle cx="200" cy="50" r="9" fill="#fff0b8"/>
+  <circle cx="450" cy="300" r="9" fill="#fff0b8"/>
+  <!-- cheminee -->
+  <rect x="36" y="280" width="80" height="110" fill="#8a5f7a"/>
+  <rect x="26" y="264" width="100" height="26" rx="8" fill="#a8778f"/>
+  <!-- toit -->
+  <rect x="0" y="390" width="480" height="90" fill="#5b4a9a"/>
+  <path d="M0 425 H480 M0 462 H480" stroke="#463885" stroke-width="12" fill="none"/>
+  <path d="M60 390 V425 M180 390 V425 M300 390 V425 M420 390 V425 M120 425 V462 M240 425 V462 M360 425 V462 M60 462 V480 M180 462 V480 M300 462 V480 M420 462 V480" stroke="#463885" stroke-width="10" fill="none"/>
+  <rect x="0" y="376" width="480" height="24" rx="10" fill="#7d6bc0"/>
+  <!-- chat -->
+  <path d="M300 385 Q400 385 385 310 Q378 275 350 290" stroke="#1d1838" stroke-width="30" stroke-linecap="round" fill="none"/>
+  <path d="M170 385 Q165 300 200 285 L280 285 Q315 300 310 385 Z" fill="#1d1838"/>
+  <polygon points="172,222 176,150 218,190" fill="#1d1838"/>
+  <polygon points="308,222 304,150 262,190" fill="#1d1838"/>
+  <polygon points="184,208 186,172 206,192" fill="#c9788e"/>
+  <polygon points="296,208 294,172 274,192" fill="#c9788e"/>
+  <ellipse cx="240" cy="235" rx="72" ry="62" fill="#1d1838"/>
+  <ellipse cx="212" cy="228" rx="16" ry="19" fill="#ffd95a"/>
+  <ellipse cx="268" cy="228" rx="16" ry="19" fill="#ffd95a"/>
+  <ellipse cx="212" cy="229" rx="6" ry="14" fill="#1d1838"/>
+  <ellipse cx="268" cy="229" rx="6" ry="14" fill="#1d1838"/>
+  <polygon points="230,254 250,254 240,266" fill="#c9788e"/>
+  <path d="M196 300 Q240 320 284 300" stroke="#3b3468" stroke-width="10" stroke-linecap="round" fill="none"/>
+</svg>

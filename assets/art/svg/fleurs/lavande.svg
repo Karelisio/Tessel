@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fbe6cc"/>
+  <rect y="60" width="480" height="150" fill="#f5d3d0"/>
+  <circle cx="365" cy="120" r="48" fill="#fcefb6"/>
+  <path d="M0 215 Q100 150 200 200 Q300 130 400 190 Q450 170 480 190 V230 H0 Z" fill="#b8a3d8"/>
+  <ellipse cx="60" cy="192" rx="18" ry="46" fill="#4f8a5c"/>
+  <ellipse cx="420" cy="196" rx="18" ry="42" fill="#4f8a5c"/>
+  <rect x="215" y="180" width="60" height="38" fill="#fff4e0"/>
+  <polygon points="207,182 245,150 283,182" fill="#d9704a"/>
+  <rect y="212" width="480" height="268" fill="#a7c97e"/>
+  <polygon points="240,215 -140,480 -20,480" fill="#7449b0"/>
+<polygon points="240,215 20,480 140,480" fill="#7449b0"/>
+<polygon points="240,215 180,480 300,480" fill="#7449b0"/>
+<polygon points="240,215 340,480 460,480" fill="#7449b0"/>
+<polygon points="240,215 500,480 620,480" fill="#7449b0"/>
+<ellipse cx="-80" cy="465" rx="57" ry="37" fill="#8f66cc"/>
+<ellipse cx="-80" cy="453" rx="33" ry="18" fill="#b08ee6"/>
+<ellipse cx="10" cy="395" rx="41" ry="27" fill="#8f66cc"/>
+<ellipse cx="10" cy="386" rx="24" ry="13" fill="#b08ee6"/>
+<ellipse cx="86" cy="335" rx="27" ry="18" fill="#8f66cc"/>
+<ellipse cx="86" cy="329" rx="16" ry="9" fill="#b08ee6"/>
+<ellipse cx="80" cy="465" rx="57" ry="37" fill="#8f66cc"/>
+<ellipse cx="80" cy="453" rx="33" ry="18" fill="#b08ee6"/>
+<ellipse cx="125" cy="395" rx="41" ry="27" fill="#8f66cc"/>
+<ellipse cx="125" cy="386" rx="24" ry="13" fill="#b08ee6"/>
+<ellipse cx="163" cy="335" rx="27" ry="18" fill="#8f66cc"/>
+<ellipse cx="163" cy="329" rx="16" ry="9" fill="#b08ee6"/>
+<ellipse cx="240" cy="465" rx="57" ry="37" fill="#8f66cc"/>
+<ellipse cx="240" cy="453" rx="33" ry="18" fill="#b08ee6"/>
+<ellipse cx="240" cy="395" rx="41" ry="27" fill="#8f66cc"/>
+<ellipse cx="240" cy="386" rx="24" ry="13" fill="#b08ee6"/>
+<ellipse cx="240" cy="335" rx="27" ry="18" fill="#8f66cc"/>
+<ellipse cx="240" cy="329" rx="16" ry="9" fill="#b08ee6"/>
+<ellipse cx="400" cy="465" rx="57" ry="37" fill="#8f66cc"/>
+<ellipse cx="400" cy="453" rx="33" ry="18" fill="#b08ee6"/>
+<ellipse cx="355" cy="395" rx="41" ry="27" fill="#8f66cc"/>
+<ellipse cx="355" cy="386" rx="24" ry="13" fill="#b08ee6"/>
+<ellipse cx="317" cy="335" rx="27" ry="18" fill="#8f66cc"/>
+<ellipse cx="317" cy="329" rx="16" ry="9" fill="#b08ee6"/>
+<ellipse cx="560" cy="465" rx="57" ry="37" fill="#8f66cc"/>
+<ellipse cx="560" cy="453" rx="33" ry="18" fill="#b08ee6"/>
+<ellipse cx="470" cy="395" rx="41" ry="27" fill="#8f66cc"/>
+<ellipse cx="470" cy="386" rx="24" ry="13" fill="#b08ee6"/>
+<ellipse cx="394" cy="335" rx="27" ry="18" fill="#8f66cc"/>
+<ellipse cx="394" cy="329" rx="16" ry="9" fill="#b08ee6"/>
+</svg>

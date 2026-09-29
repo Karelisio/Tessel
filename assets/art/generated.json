@@ -1,0 +1,515 @@
+[
+ {
+  "id": "mandalas/mandala-01",
+  "generator": "mandala",
+  "seed": 2,
+  "title": {
+   "fr": "Mandala de jade",
+   "en": "Jade mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-02",
+  "generator": "mandala",
+  "seed": 3,
+  "title": {
+   "fr": "Mandala royal",
+   "en": "Royal mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-03",
+  "generator": "mandala",
+  "seed": 4,
+  "title": {
+   "fr": "Mandala aux perles",
+   "en": "Pearl mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-04",
+  "generator": "mandala",
+  "seed": 6,
+  "title": {
+   "fr": "Mandala de dentelle",
+   "en": "Lace mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-05",
+  "generator": "mandala",
+  "seed": 7,
+  "title": {
+   "fr": "Mandala pétale",
+   "en": "Petal mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-06",
+  "generator": "mandala",
+  "seed": 8,
+  "title": {
+   "fr": "Mandala lagon",
+   "en": "Lagoon mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-07",
+  "generator": "mandala",
+  "seed": 10,
+  "title": {
+   "fr": "Mandala d’ambre",
+   "en": "Amber mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-08",
+  "generator": "mandala",
+  "seed": 13,
+  "title": {
+   "fr": "Mandala corail",
+   "en": "Coral mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-09",
+  "generator": "mandala",
+  "seed": 14,
+  "title": {
+   "fr": "Mandala soleil",
+   "en": "Sun mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-10",
+  "generator": "mandala",
+  "seed": 16,
+  "title": {
+   "fr": "Mandala bonbon",
+   "en": "Candy mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-11",
+  "generator": "mandala",
+  "seed": 9,
+  "title": {
+   "fr": "Mandala givré",
+   "en": "Frosted mandala"
+  }
+ },
+ {
+  "id": "mandalas/mandala-12",
+  "generator": "mandala",
+  "seed": 12,
+  "title": {
+   "fr": "Mandala d’automne",
+   "en": "Autumn mandala"
+  }
+ },
+ {
+  "id": "motifs/patchwork-terre",
+  "generator": "quilt",
+  "seed": 1,
+  "title": {
+   "fr": "Patchwork terre cuite",
+   "en": "Terracotta patchwork"
+  }
+ },
+ {
+  "id": "motifs/patchwork-lagon",
+  "generator": "quilt",
+  "seed": 3,
+  "title": {
+   "fr": "Patchwork lagon",
+   "en": "Lagoon patchwork"
+  }
+ },
+ {
+  "id": "motifs/patchwork-rose",
+  "generator": "quilt",
+  "seed": 6,
+  "title": {
+   "fr": "Patchwork rose",
+   "en": "Pink patchwork"
+  }
+ },
+ {
+  "id": "motifs/patchwork-bleu",
+  "generator": "quilt",
+  "seed": 7,
+  "title": {
+   "fr": "Patchwork bleu",
+   "en": "Blue patchwork"
+  }
+ },
+ {
+  "id": "motifs/labyrinthe-foret",
+  "generator": "truchet",
+  "seed": 4,
+  "title": {
+   "fr": "Labyrinthe de la forêt",
+   "en": "Forest maze"
+  }
+ },
+ {
+  "id": "motifs/labyrinthe-cerise",
+  "generator": "truchet",
+  "seed": 7,
+  "title": {
+   "fr": "Labyrinthe cerise",
+   "en": "Cherry maze"
+  }
+ },
+ {
+  "id": "motifs/zellige-bleu",
+  "generator": "stars",
+  "seed": 4,
+  "title": {
+   "fr": "Zellige bleu",
+   "en": "Blue zellige"
+  }
+ },
+ {
+  "id": "motifs/zellige-cuivre",
+  "generator": "stars",
+  "seed": 7,
+  "title": {
+   "fr": "Zellige cuivré",
+   "en": "Copper zellige"
+  }
+ },
+ {
+  "id": "motifs/alveoles-rose",
+  "generator": "hexagons",
+  "seed": 1,
+  "title": {
+   "fr": "Alvéoles roses",
+   "en": "Pink honeycomb"
+  }
+ },
+ {
+  "id": "motifs/alveoles-sable",
+  "generator": "hexagons",
+  "seed": 4,
+  "title": {
+   "fr": "Alvéoles de sable",
+   "en": "Sand honeycomb"
+  }
+ },
+ {
+  "id": "motifs/losanges-nuit",
+  "generator": "argyle",
+  "seed": 5,
+  "title": {
+   "fr": "Losanges du soir",
+   "en": "Evening argyle"
+  }
+ },
+ {
+  "id": "motifs/losanges-corail",
+  "generator": "argyle",
+  "seed": 4,
+  "title": {
+   "fr": "Losanges corail",
+   "en": "Coral argyle"
+  }
+ },
+ {
+  "id": "motifs/fractale-prune",
+  "generator": "julia",
+  "seed": 2,
+  "title": {
+   "fr": "Fractale prune",
+   "en": "Plum fractal"
+  }
+ },
+ {
+  "id": "motifs/fractale-emeraude",
+  "generator": "julia",
+  "seed": 6,
+  "title": {
+   "fr": "Fractale émeraude",
+   "en": "Emerald fractal"
+  }
+ },
+ {
+  "id": "japon/seigaiha-glycine",
+  "generator": "seigaiha",
+  "seed": 2,
+  "title": {
+   "fr": "Vagues glycine",
+   "en": "Wisteria waves"
+  }
+ },
+ {
+  "id": "japon/seigaiha-nuit",
+  "generator": "seigaiha",
+  "seed": 7,
+  "title": {
+   "fr": "Vagues de nuit",
+   "en": "Night waves"
+  }
+ },
+ {
+  "id": "fleurs/soleil-spirale",
+  "generator": "phyllotaxis",
+  "seed": 4,
+  "title": {
+   "fr": "Soleil en spirale",
+   "en": "Spiral sunflower"
+  }
+ },
+ {
+  "id": "fleurs/fleur-lagon",
+  "generator": "phyllotaxis",
+  "seed": 6,
+  "title": {
+   "fr": "Fleur lagon",
+   "en": "Lagoon flower"
+  }
+ },
+ {
+  "id": "paysages/montagnes-matin",
+  "generator": "mountains",
+  "seed": 1,
+  "title": {
+   "fr": "Montagnes au matin",
+   "en": "Morning mountains"
+  }
+ },
+ {
+  "id": "paysages/montagnes-soir",
+  "generator": "mountains",
+  "seed": 2,
+  "title": {
+   "fr": "Lac du soir",
+   "en": "Evening lake"
+  }
+ },
+ {
+  "id": "paysages/montagnes-aube",
+  "generator": "mountains",
+  "seed": 4,
+  "title": {
+   "fr": "Cimes à l’aube",
+   "en": "Peaks at dawn"
+  }
+ },
+ {
+  "id": "paysages/dunes-midi",
+  "generator": "dunes",
+  "seed": 1,
+  "title": {
+   "fr": "Dunes à midi",
+   "en": "Midday dunes"
+  }
+ },
+ {
+  "id": "paysages/dunes-couchant",
+  "generator": "dunes",
+  "seed": 2,
+  "title": {
+   "fr": "Dunes au couchant",
+   "en": "Sunset dunes"
+  }
+ },
+ {
+  "id": "paysages/champs-fleurs",
+  "generator": "fields",
+  "seed": 1,
+  "title": {
+   "fr": "Champs fleuris",
+   "en": "Flower fields"
+  }
+ },
+ {
+  "id": "paysages/champs-soir",
+  "generator": "fields",
+  "seed": 2,
+  "title": {
+   "fr": "Champs du soir",
+   "en": "Evening fields"
+  }
+ },
+ {
+  "id": "paysages/foret-aube",
+  "generator": "forest",
+  "seed": 1,
+  "title": {
+   "fr": "Forêt à l’aube",
+   "en": "Forest at dawn"
+  }
+ },
+ {
+  "id": "paysages/foret-ete",
+  "generator": "forest",
+  "seed": 2,
+  "title": {
+   "fr": "Forêt d’été",
+   "en": "Summer forest"
+  }
+ },
+ {
+  "id": "paysages/lac-couchant",
+  "generator": "sunset-lake",
+  "seed": 1,
+  "title": {
+   "fr": "Lac au coucher du soleil",
+   "en": "Lake at sunset"
+  }
+ },
+ {
+  "id": "mer/bord-de-mer",
+  "generator": "seascape",
+  "seed": 1,
+  "title": {
+   "fr": "Bord de mer",
+   "en": "Seaside"
+  }
+ },
+ {
+  "id": "mer/phare-couchant",
+  "generator": "seascape",
+  "seed": 2,
+  "title": {
+   "fr": "Phare au couchant",
+   "en": "Lighthouse at sunset"
+  }
+ },
+ {
+  "id": "espace/planete-ambre",
+  "generator": "planet",
+  "seed": 1,
+  "title": {
+   "fr": "Planète d’ambre",
+   "en": "Amber planet"
+  }
+ },
+ {
+  "id": "espace/planete-bleue",
+  "generator": "planet",
+  "seed": 2,
+  "title": {
+   "fr": "Planète bleue",
+   "en": "Blue planet"
+  }
+ },
+ {
+  "id": "espace/planete-mauve",
+  "generator": "planet",
+  "seed": 4,
+  "title": {
+   "fr": "Planète mauve",
+   "en": "Mauve planet"
+  }
+ },
+ {
+  "id": "espace/nebuleuse-doree",
+  "generator": "nebula",
+  "seed": 2,
+  "title": {
+   "fr": "Nébuleuse dorée",
+   "en": "Golden nebula"
+  }
+ },
+ {
+  "id": "espace/nebuleuse-sable",
+  "generator": "nebula",
+  "seed": 3,
+  "title": {
+   "fr": "Nuage d’étoiles",
+   "en": "Star cloud"
+  }
+ },
+ {
+  "id": "espace/galaxie-spirale",
+  "generator": "galaxy",
+  "seed": 1,
+  "title": {
+   "fr": "Galaxie spirale",
+   "en": "Spiral galaxy"
+  }
+ },
+ {
+  "id": "espace/galaxie-jade",
+  "generator": "galaxy",
+  "seed": 3,
+  "title": {
+   "fr": "Galaxie de jade",
+   "en": "Jade galaxy"
+  }
+ },
+ {
+  "id": "nuit/nuit-etoilee",
+  "generator": "starry-night",
+  "seed": 1,
+  "title": {
+   "fr": "Nuit étoilée",
+   "en": "Starry night"
+  }
+ },
+ {
+  "id": "nuit/voie-lactee",
+  "generator": "starry-night",
+  "seed": 3,
+  "title": {
+   "fr": "Sous la Voie lactée",
+   "en": "Under the Milky Way"
+  }
+ },
+ {
+  "id": "nuit/aurore-boreale",
+  "generator": "aurora",
+  "seed": 1,
+  "title": {
+   "fr": "Aurore boréale",
+   "en": "Northern lights"
+  }
+ },
+ {
+  "id": "nuit/aurore-lac",
+  "generator": "aurora",
+  "seed": 3,
+  "title": {
+   "fr": "Aurore sur le lac",
+   "en": "Aurora over the lake"
+  }
+ },
+ {
+  "id": "saisons/arbre-printemps",
+  "generator": "season-tree",
+  "seed": 1,
+  "title": {
+   "fr": "Arbre au printemps",
+   "en": "Tree in spring"
+  }
+ },
+ {
+  "id": "saisons/arbre-ete",
+  "generator": "season-tree",
+  "seed": 2,
+  "title": {
+   "fr": "Arbre en été",
+   "en": "Tree in summer"
+  }
+ },
+ {
+  "id": "saisons/arbre-automne",
+  "generator": "season-tree",
+  "seed": 3,
+  "title": {
+   "fr": "Arbre en automne",
+   "en": "Tree in autumn"
+  }
+ },
+ {
+  "id": "saisons/arbre-hiver",
+  "generator": "season-tree",
+  "seed": 4,
+  "title": {
+   "fr": "Arbre en hiver",
+   "en": "Tree in winter"
+  }
+ }
+]

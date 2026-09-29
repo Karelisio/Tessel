@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d9eef0"/>
+  <circle cx="400" cy="80" r="44" fill="#fff0b8"/>
+  <path d="M0 250 Q120 200 240 240 T480 220 V480 H0 Z" fill="#bfe0a8"/>
+  <path d="M0 330 Q140 290 280 330 T480 310 V480 H0 Z" fill="#9fcf88"/>
+  <path d="M0 420 Q160 390 300 415 T480 400 V480 H0 Z" fill="#7fbb6d"/>
+  <g transform="translate(240 300)">
+    <path d="M-38 62 L-46 96 M-38 96 L-56 96 M-38 96 L-24 96 M38 62 L46 96 M38 96 L56 96 M38 96 L24 96" stroke="#ff9f43" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle r="90" fill="#ffd95a"/>
+    <ellipse cx="-72" cy="14" rx="26" ry="44" fill="#f2c03c" transform="rotate(20 -72 14)"/>
+    <ellipse cx="72" cy="14" rx="26" ry="44" fill="#f2c03c" transform="rotate(-20 72 14)"/>
+    <path d="M-10 -88 Q-8 -118 -26 -124 M6 -88 Q14 -122 34 -118" stroke="#ffd95a" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle cx="-34" cy="-14" r="14" fill="#2e2230"/>
+    <circle cx="34" cy="-14" r="14" fill="#2e2230"/>
+    <circle cx="-30" cy="-19" r="4" fill="#ffffff"/>
+    <circle cx="38" cy="-19" r="4" fill="#ffffff"/>
+    <polygon points="-16,12 16,12 0,34" fill="#ff9f43"/>
+    <circle cx="-62" cy="14" r="12" fill="#f9a88a"/>
+    <circle cx="62" cy="14" r="12" fill="#f9a88a"/>
+  </g>
+  <g transform="translate(82 382) scale(0.76)">
+    <circle r="90" fill="#ffd95a"/>
+    <circle cx="-26" cy="-14" r="14" fill="#2e2230"/>
+    <circle cx="34" cy="-14" r="14" fill="#2e2230"/>
+    <polygon points="-14,12 18,12 2,34" fill="#ff9f43"/>
+    <ellipse cx="60" cy="30" rx="28" ry="42" fill="#f2c03c" transform="rotate(-20 60 30)"/>
+    <path d="M-10 -88 Q-8 -118 -26 -124" stroke="#ffd95a" stroke-width="14" stroke-linecap="round" fill="none"/>
+  </g>
+  <g transform="translate(398 388) scale(0.76)">
+    <circle r="90" fill="#ffd95a"/>
+    <circle cx="-34" cy="-14" r="14" fill="#2e2230"/>
+    <circle cx="26" cy="-14" r="14" fill="#2e2230"/>
+    <polygon points="-18,12 14,12 -2,34" fill="#ff9f43"/>
+    <ellipse cx="-60" cy="30" rx="28" ry="42" fill="#f2c03c" transform="rotate(20 -60 30)"/>
+    <path d="M10 -88 Q8 -118 26 -124" stroke="#ffd95a" stroke-width="14" stroke-linecap="round" fill="none"/>
+  </g>
+  <path d="M60 440 V400 M420 448 V410 M470 300 V270" stroke="#4f9060" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <circle cx="60" cy="392" r="20" fill="#ffffff"/><circle cx="60" cy="392" r="9" fill="#ffb035"/>
+  <circle cx="420" cy="402" r="20" fill="#f28ab0"/><circle cx="420" cy="402" r="9" fill="#ffd95a"/>
+  <circle cx="440" cy="262" r="16" fill="#ffffff"/><circle cx="440" cy="262" r="7" fill="#ffb035"/>
+  <circle cx="45" cy="285" r="16" fill="#f28ab0"/><circle cx="45" cy="285" r="7" fill="#ffd95a"/>
+</svg>

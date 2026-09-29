@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#dcebd0"/>
+  <circle cx="380" cy="90" r="46" fill="#fbe7a1"/>
+  <rect y="405" width="480" height="75" fill="#c99e6f"/>
+  <rect y="405" width="480" height="14" fill="#a97d52"/>
+  <path d="M290 340 Q380 350 370 250" stroke="#3a7f9e" stroke-width="20" fill="none"/>
+  <path d="M150 232 Q215 130 300 232" stroke="#3a7f9e" stroke-width="20" fill="none"/>
+  <path d="M150 350 L60 245" stroke="#3a7f9e" stroke-width="32" fill="none"/>
+  <path d="M155 222 L310 222 Q325 320 300 405 L165 405 Q140 320 155 222 Z" fill="#5aa9c9"/>
+  <path d="M250 222 L310 222 Q325 320 300 405 L245 405 Q262 320 250 222 Z" fill="#4592b3"/>
+  <ellipse cx="232" cy="222" rx="78" ry="16" fill="#3a7f9e"/>
+  <ellipse cx="232" cy="222" rx="62" ry="10" fill="#2a5f7a"/>
+  <rect x="150" y="300" width="165" height="14" fill="#7cc0d8"/>
+  <g transform="rotate(-38 52 238)"><ellipse cx="52" cy="238" rx="20" ry="38" fill="#3a7f9e"/></g>
+  <ellipse cx="34" cy="262" rx="10" ry="16" fill="#8fd0e8"/>
+  <ellipse cx="24" cy="320" rx="10" ry="16" fill="#8fd0e8"/>
+  <ellipse cx="48" cy="365" rx="10" ry="16" fill="#8fd0e8"/>
+  <path d="M355 405 L440 405 L428 350 L367 350 Z" fill="#d9784a"/>
+  <rect x="350" y="336" width="96" height="24" rx="8" fill="#c4633a"/>
+  <path d="M398 336 Q396 290 380 270" stroke="#4f8a3c" stroke-width="12" fill="none"/>
+  <path d="M398 336 Q404 300 424 280" stroke="#4f8a3c" stroke-width="12" fill="none"/>
+  <path d="M378 252 Q407 243 378 226 Q349 243 378 252 Z" fill="#f28ba0"/>
+  <path d="M384 256 Q402 281 408 248 Q384 226 384 256 Z" fill="#f28ba0"/>
+  <path d="M382 263 Q364 287 397 284 Q410 253 382 263 Z" fill="#f28ba0"/>
+  <path d="M374 263 Q346 253 359 284 Q392 287 374 263 Z" fill="#f28ba0"/>
+  <path d="M372 256 Q372 226 348 248 Q354 281 372 256 Z" fill="#f28ba0"/>
+  <circle cx="378" cy="258" r="10" fill="#f7d54a"/>
+  <path d="M428 262 Q453 255 428 240 Q403 255 428 262 Z" fill="#fbd04a"/>
+  <path d="M433 266 Q449 288 455 259 Q433 240 433 266 Z" fill="#fbd04a"/>
+  <path d="M431 273 Q416 294 444 291 Q456 264 431 273 Z" fill="#fbd04a"/>
+  <path d="M425 273 Q400 264 412 291 Q440 294 425 273 Z" fill="#fbd04a"/>
+  <path d="M423 266 Q423 240 401 259 Q407 288 423 266 Z" fill="#fbd04a"/>
+  <circle cx="428" cy="268" r="8" fill="#e08a1e"/>
+</svg>

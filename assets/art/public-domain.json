@@ -1,0 +1,704 @@
+[
+  {
+    "id": "chefs-doeuvre/van-gogh-iris",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Les Iris",
+      "en": "Irises"
+    },
+    "museum": "met",
+    "objectId": 436528,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "Irises",
+      "date": "1890",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/436528",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/van-gogh-tournesols",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Les Tournesols",
+      "en": "Sunflowers"
+    },
+    "museum": "met",
+    "objectId": 436524,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "Sunflowers",
+      "date": "1887",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/436524",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/van-gogh-chambre-arles",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "La Chambre à Arles",
+      "en": "The Bedroom"
+    },
+    "museum": "aic",
+    "objectId": 28560,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "The Bedroom",
+      "date": "1889",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/28560",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/van-gogh-raisins-citrons",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Raisins, citrons, poires et pommes",
+      "en": "Grapes, Lemons, Pears, and Apples"
+    },
+    "museum": "aic",
+    "objectId": 64957,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "Grapes, Lemons, Pears, and Apples",
+      "date": "1887",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/64957",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/caillebotte-rue-de-paris",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Rue de Paris, temps de pluie",
+      "en": "Paris Street; Rainy Day"
+    },
+    "museum": "aic",
+    "objectId": 20684,
+    "credit": {
+      "artist": "Gustave Caillebotte",
+      "title": "Paris Street; Rainy Day",
+      "date": "1877",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/20684",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/seurat-grande-jatte",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Un dimanche après-midi à l’île de la Grande Jatte",
+      "en": "A Sunday on La Grande Jatte"
+    },
+    "museum": "aic",
+    "objectId": 27992,
+    "credit": {
+      "artist": "Georges Seurat",
+      "title": "A Sunday on La Grande Jatte — 1884",
+      "date": "1884–86, border added 1888–89",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/27992",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/cezanne-panier-de-pommes",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Le Panier de pommes",
+      "en": "The Basket of Apples"
+    },
+    "museum": "aic",
+    "objectId": 111436,
+    "credit": {
+      "artist": "Paul Cézanne",
+      "title": "The Basket of Apples",
+      "date": "c. 1893",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/111436",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/cezanne-pommes-primeveres",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Nature morte aux pommes et au pot de primevères",
+      "en": "Still Life with Apples and a Pot of Primroses"
+    },
+    "museum": "met",
+    "objectId": 435882,
+    "credit": {
+      "artist": "Paul Cézanne",
+      "title": "Still Life with Apples and a Pot of Primroses",
+      "date": "ca. 1890",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/435882",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/renoir-deux-soeurs",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Deux sœurs (Sur la terrasse)",
+      "en": "Two Sisters (On the Terrace)"
+    },
+    "museum": "aic",
+    "objectId": 14655,
+    "credit": {
+      "artist": "Pierre-Auguste Renoir",
+      "title": "Two Sisters (On the Terrace)",
+      "date": "1881",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/14655",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/renoir-fruits-du-midi",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Fruits du Midi",
+      "en": "Fruits of the Midi"
+    },
+    "museum": "aic",
+    "objectId": 16629,
+    "credit": {
+      "artist": "Pierre-Auguste Renoir",
+      "title": "Fruits of the Midi",
+      "date": "1881",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16629",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/monet-nympheas",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "Les Nymphéas",
+      "en": "Water Lilies"
+    },
+    "museum": "aic",
+    "objectId": 16568,
+    "credit": {
+      "artist": "Claude Monet",
+      "title": "Water Lilies",
+      "date": "1906",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16568",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "chefs-doeuvre/cezanne-baie-de-marseille",
+    "category": "chefs-doeuvre",
+    "title": {
+      "fr": "La Baie de Marseille vue de l’Estaque",
+      "en": "The Bay of Marseille, Seen from L’Estaque"
+    },
+    "museum": "aic",
+    "objectId": 16487,
+    "credit": {
+      "artist": "Paul Cézanne",
+      "title": "The Bay of Marseille, Seen from L'Estaque",
+      "date": "c. 1885",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16487",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hokusai-grande-vague",
+    "category": "japon",
+    "title": {
+      "fr": "La Grande Vague",
+      "en": "The Great Wave"
+    },
+    "museum": "aic",
+    "objectId": 24645,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "Under the Wave off Kanagawa (Kanagawa oki nami ura), also known as The Great Wave, from the series \"Thirty-Six Views of Mount Fuji (Fugaku sanjūrokkei)\"",
+      "date": "1830/33",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/24645",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hokusai-fuji-rouge",
+    "category": "japon",
+    "title": {
+      "fr": "Le Fuji rouge",
+      "en": "Red Fuji"
+    },
+    "museum": "aic",
+    "objectId": 87005,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "A Mild Breeze on a Fine Day (Gaifu kaisei), from the series \"Thirty-six Views of Mount Fuji (Fugaku sanjurokkei)\"",
+      "date": "c. 1830/33",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/87005",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hokusai-orage-sous-le-sommet",
+    "category": "japon",
+    "title": {
+      "fr": "Orage sous le sommet",
+      "en": "Shower Below the Summit"
+    },
+    "museum": "aic",
+    "objectId": 87008,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "Shower Below the Summit (Sanka hakuu), from the series \"Thirty-Six Views of Mount Fuji (Fugaku sanjurokkei)\"",
+      "date": "c. 1830/33",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/87008",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hokusai-kajikazawa",
+    "category": "japon",
+    "title": {
+      "fr": "Le Pêcheur de Kajikazawa",
+      "en": "Kajikazawa in Kai Province"
+    },
+    "museum": "aic",
+    "objectId": 18969,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "Kajikazawa in Kai Province (Koshu Kajikazawa), from the series \"Thirty-six Views of Mount Fuji (Fugaku sanjurokkei)\"",
+      "date": "c. 1830/33",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/18969",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hiroshige-rizieres-asakusa",
+    "category": "japon",
+    "title": {
+      "fr": "Les Rizières d’Asakusa",
+      "en": "Asakusa Rice Fields"
+    },
+    "museum": "aic",
+    "objectId": 13192,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Asakusa Rice Fields and Torinomachi Festival (Asakusa tanbo Torinomachi mode), from the series \"One Hundred Famous Views of Edo (Meisho Edo hyakkei)\"",
+      "date": "1857",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/13192",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hiroshige-kuwana",
+    "category": "japon",
+    "title": {
+      "fr": "Le Bac de Kuwana",
+      "en": "Kuwana: Ferryboat at Shichiri Crossing"
+    },
+    "museum": "aic",
+    "objectId": 18329,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Kuwana: Ferryboat at Shichiri Crossing (Kuwana, Shichiri no watashibune)—No. 43, from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi),\" also known as the Reisho Tokaido",
+      "date": "c. 1847/52",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/18329",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hokusai-chrysantheme-taon",
+    "category": "japon",
+    "title": {
+      "fr": "Chrysanthème et taon",
+      "en": "Chrysanthemum and Horsefly"
+    },
+    "museum": "aic",
+    "objectId": 25110,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "Chrysanthemum and Horsefly, from an untitled series of Large Flowers",
+      "date": "c. 1831–33",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/25110",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "japon/hiroshige-shirasuka",
+    "category": "japon",
+    "title": {
+      "fr": "La Côte de Shiomi à Shirasuka",
+      "en": "Shirasuka: Shiomi Slope"
+    },
+    "museum": "aic",
+    "objectId": 18307,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Shirasuka: Shiomi Slope,no. 33 from the series Fifty-Three Stations of the Tokaido (Tōkaidō gojūsan tsugi)",
+      "date": "1847-52",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/18307",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "fleurs/renoir-chrysanthemes",
+    "category": "fleurs",
+    "title": {
+      "fr": "Chrysanthèmes",
+      "en": "Chrysanthemums"
+    },
+    "museum": "aic",
+    "objectId": 16617,
+    "credit": {
+      "artist": "Pierre-Auguste Renoir",
+      "title": "Chrysanthemums",
+      "date": "1881–82",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16617",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "fleurs/van-gogh-lauriers-roses",
+    "category": "fleurs",
+    "title": {
+      "fr": "Lauriers-roses",
+      "en": "Oleanders"
+    },
+    "museum": "met",
+    "objectId": 436530,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "Oleanders",
+      "date": "1888",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/436530",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "fleurs/redoute-couronne-imperiale",
+    "category": "fleurs",
+    "title": {
+      "fr": "La Couronne impériale",
+      "en": "Crown Imperial"
+    },
+    "museum": "met",
+    "objectId": 762064,
+    "credit": {
+      "artist": "Pierre Joseph Redouté",
+      "title": "Crown Imperial (Fritillaria imperialis), from \"Les Liliacées\"",
+      "date": "1802–16",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/762064",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "fleurs/redoute-rose",
+    "category": "fleurs",
+    "title": {
+      "fr": "La Rose de l’impératrice Joséphine",
+      "en": "Empress Josephine Rose"
+    },
+    "museum": "met",
+    "objectId": 762055,
+    "credit": {
+      "artist": "Pierre Joseph Redouté",
+      "title": "‘Empress Josephine’ or Frankfort Rose (Rosa turbinata), from \"Les Roses\" by Claude-Antoine Thory",
+      "date": "1817–24",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/762055",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "oiseaux/hiroshige-geai-hibiscus",
+    "category": "oiseaux",
+    "title": {
+      "fr": "Hibiscus et geai",
+      "en": "Hibiscus and Jay"
+    },
+    "museum": "met",
+    "objectId": 55235,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Hibiscus Mutabilis and Jay",
+      "date": "ca. 1840",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/55235",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "oiseaux/hiroshige-loriot-ketmie",
+    "category": "oiseaux",
+    "title": {
+      "fr": "Loriot sur une tige de ketmie",
+      "en": "Black-Naped Oriole on a Stem of Rose Mallow"
+    },
+    "museum": "met",
+    "objectId": 56796,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "A Black-Naped Oriole on a Stem of Rose Mallow",
+      "date": "ca. 1834",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/56796",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "oiseaux/hiroshige-huitriers",
+    "category": "oiseaux",
+    "title": {
+      "fr": "Les Huîtriers",
+      "en": "Oystercatchers"
+    },
+    "museum": "aic",
+    "objectId": 19026,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Oystercatchers",
+      "date": "c. 1833/34",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/19026",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "oiseaux/hiroshige-faisan-pins",
+    "category": "oiseaux",
+    "title": {
+      "fr": "Faisan et pins sur une colline enneigée",
+      "en": "Pheasant and Pine-trees on Snowy Hillside"
+    },
+    "museum": "met",
+    "objectId": 56592,
+    "credit": {
+      "artist": "Utagawa Hiroshige",
+      "title": "Pheasant and Pine-trees on Snowy Hillside",
+      "date": "n.d.",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/56592",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "paysages/van-gogh-cypres",
+    "category": "paysages",
+    "title": {
+      "fr": "Les Cyprès",
+      "en": "Cypresses"
+    },
+    "museum": "met",
+    "objectId": 437980,
+    "credit": {
+      "artist": "Vincent van Gogh",
+      "title": "Cypresses",
+      "date": "1889",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/437980",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "paysages/inness-apres-averse",
+    "category": "paysages",
+    "title": {
+      "fr": "Après l’averse d’été",
+      "en": "After a Summer Shower"
+    },
+    "museum": "aic",
+    "objectId": 64715,
+    "credit": {
+      "artist": "George Inness",
+      "title": "After a Summer Shower",
+      "date": "1894",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/64715",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "paysages/sisley-seine-port-marly",
+    "category": "paysages",
+    "title": {
+      "fr": "La Seine à Port-Marly, tas de sable",
+      "en": "The Seine at Port-Marly, Piles of Sand"
+    },
+    "museum": "aic",
+    "objectId": 16633,
+    "credit": {
+      "artist": "Alfred Sisley",
+      "title": "The Seine at Port-Marly, Piles of Sand",
+      "date": "1875",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16633",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "paysages/signac-andelys",
+    "category": "paysages",
+    "title": {
+      "fr": "Les Andelys, côte d’Aval",
+      "en": "Les Andelys, Côte d’Aval"
+    },
+    "museum": "aic",
+    "objectId": 122130,
+    "credit": {
+      "artist": "Paul Signac",
+      "title": "Les Andelys, Côte d'Aval",
+      "date": "1886",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/122130",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "mer/monet-falaise-pourville",
+    "category": "mer",
+    "title": {
+      "fr": "La Promenade de la falaise à Pourville",
+      "en": "Cliff Walk at Pourville"
+    },
+    "museum": "aic",
+    "objectId": 14620,
+    "credit": {
+      "artist": "Claude Monet",
+      "title": "Cliff Walk at Pourville",
+      "date": "1882",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/14620",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "mer/homer-voile-ferlee",
+    "category": "mer",
+    "title": {
+      "fr": "Voile ferlée",
+      "en": "Stowing Sail"
+    },
+    "museum": "aic",
+    "objectId": 16831,
+    "credit": {
+      "artist": "Winslow Homer",
+      "title": "Stowing Sail",
+      "date": "1903",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16831",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "mer/hokusai-bateaux-choshi",
+    "category": "mer",
+    "title": {
+      "fr": "Bateaux de pêche à Choshi",
+      "en": "Fishing Boats at Choshi"
+    },
+    "museum": "aic",
+    "objectId": 100627,
+    "credit": {
+      "artist": "Katsushika Hokusai",
+      "title": "Fishing Boats at Choshi in Shimosa (Soshu Choshi) from the series \"One Thousand Pictures of the Ocean (Chie no umi)\"",
+      "date": "c. 1833/34",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/100627",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "insectes/henstenburgh-sauterelles",
+    "category": "insectes",
+    "title": {
+      "fr": "Deux sauterelles",
+      "en": "Two Grasshoppers"
+    },
+    "museum": "aic",
+    "objectId": 74103,
+    "credit": {
+      "artist": "Herman Henstenburgh",
+      "title": "Two Grasshoppers",
+      "date": "c. 1685",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/74103",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "architecture/cezanne-maison-fissuree",
+    "category": "architecture",
+    "title": {
+      "fr": "La Maison aux murs fissurés",
+      "en": "The House with the Cracked Walls"
+    },
+    "museum": "met",
+    "objectId": 435874,
+    "credit": {
+      "artist": "Paul Cézanne",
+      "title": "The House with the Cracked Walls",
+      "date": "1892–94",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/435874",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "architecture/monet-maison-argenteuil",
+    "category": "architecture",
+    "title": {
+      "fr": "La Maison de l’artiste à Argenteuil",
+      "en": "The Artist’s House at Argenteuil"
+    },
+    "museum": "aic",
+    "objectId": 16554,
+    "credit": {
+      "artist": "Claude Monet",
+      "title": "The Artist's House at Argenteuil",
+      "date": "1873",
+      "museum": "Art Institute of Chicago",
+      "url": "https://www.artic.edu/artworks/16554",
+      "license": "CC0"
+    }
+  },
+  {
+    "id": "architecture/sisley-marly-le-roi",
+    "category": "architecture",
+    "title": {
+      "fr": "Vue de Marly-le-Roi depuis Coeur-Volant",
+      "en": "View of Marly-le-Roi from Coeur-Volant"
+    },
+    "museum": "met",
+    "objectId": 437682,
+    "credit": {
+      "artist": "Alfred Sisley",
+      "title": "View of Marly-le-Roi from Coeur-Volant",
+      "date": "1876",
+      "museum": "The Metropolitan Museum of Art",
+      "url": "https://www.metmuseum.org/art/collection/search/437682",
+      "license": "CC0"
+    }
+  }
+]

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#26327a"/>
+  <circle cx="390" cy="90" r="40" fill="#ffe9a0"/>
+  <circle cx="410" cy="80" r="34" fill="#26327a"/>
+  <circle cx="70" cy="70" r="11" fill="#fff0b8"/>
+  <circle cx="160" cy="45" r="8" fill="#fff0b8"/>
+  <circle cx="230" cy="110" r="10" fill="#fff0b8"/>
+  <circle cx="310" cy="50" r="9" fill="#fff0b8"/>
+  <circle cx="120" cy="150" r="8" fill="#fff0b8"/>
+  <circle cx="440" cy="180" r="9" fill="#fff0b8"/>
+  <circle cx="30" cy="210" r="9" fill="#fff0b8"/>
+  <!-- collines et sapins -->
+  <path d="M0 300 Q120 240 240 290 T480 270 V480 H0 Z" fill="#33508a"/>
+  <polygon points="410,300 450,170 490,300" fill="#1b4a4a"/>
+  <polygon points="370,310 405,220 440,310" fill="#256060"/>
+  <polygon points="-10,300 30,190 70,300" fill="#1b4a4a"/>
+  <path d="M0 360 Q140 330 260 355 T480 345 V480 H0 Z" fill="#3f6b58"/>
+  <ellipse cx="330" cy="420" rx="130" ry="50" fill="#6f8f5f"/>
+  <!-- tente -->
+  <polygon points="40,410 150,225 260,410" fill="#e8874a"/>
+  <polygon points="150,225 260,410 195,410" fill="#d16a35"/>
+  <polygon points="150,300 118,410 182,410" fill="#7a3a2a"/>
+  <polygon points="150,330 136,410 164,410" fill="#ffd95a"/>
+  <rect x="146" y="188" width="8" height="42" fill="#7a5a3e"/>
+  <polygon points="154,188 186,198 154,210" fill="#e2463a"/>
+  <rect x="20" y="404" width="260" height="22" rx="10" fill="#3f6b58"/>
+  <!-- feu -->
+  <path d="M290 440 L380 412" stroke="#7a4a2e" stroke-width="26" stroke-linecap="round" fill="none"/>
+  <path d="M380 440 L290 412" stroke="#5a3a2e" stroke-width="26" stroke-linecap="round" fill="none"/>
+  <path d="M290 420 Q265 370 320 320 Q330 360 345 350 Q365 330 355 300 Q410 350 380 420 Z" fill="#e2463a"/>
+  <path d="M305 420 Q290 380 330 350 Q340 380 352 372 Q372 360 366 345 Q396 385 370 420 Z" fill="#f28a2e"/>
+  <path d="M322 420 Q315 395 337 378 Q347 400 358 392 Q366 410 352 420 Z" fill="#ffd95a"/>
+</svg>

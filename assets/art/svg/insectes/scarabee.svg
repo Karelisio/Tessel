@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#f8e7b8"/>
+  <path d="M-10 120 Q60 70 130 110 Q70 160 -10 120 Z" fill="#b8d9a0"/>
+  <path d="M490 380 Q420 330 350 370 Q410 430 490 380 Z" fill="#b8d9a0"/>
+  <circle cx="420" cy="80" r="40" fill="#f9c784"/>
+  <!-- antennes -->
+  <path d="M220 70 Q190 30 160 34 M260 70 Q290 30 320 34" stroke="#2e2230" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- pattes -->
+  <path d="M150 190 L90 160 L60 190 M145 270 L70 275 L50 320 M155 350 L100 400 L80 440 M330 190 L390 160 L420 190 M335 270 L410 275 L430 320 M325 350 L380 400 L400 440" stroke="#2e2230" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- élytres -->
+  <ellipse cx="240" cy="300" rx="122" ry="162" fill="#e6b23a"/>
+  <ellipse cx="240" cy="300" rx="110" ry="150" fill="#1fa084"/>
+  <g transform="rotate(4 180 300)"><ellipse cx="180" cy="300" rx="34" ry="110" fill="#55c7a4"/></g>
+  <g transform="rotate(-4 300 300)"><ellipse cx="300" cy="300" rx="34" ry="110" fill="#55c7a4"/></g>
+  <path d="M240 160 V450" stroke="#14705c" stroke-width="10"/>
+  <circle cx="200" cy="420" r="13" fill="#f4d878"/>
+  <circle cx="280" cy="420" r="13" fill="#f4d878"/>
+  <!-- thorax et tête -->
+  <ellipse cx="240" cy="160" rx="86" ry="52" fill="#e6b23a"/>
+  <ellipse cx="240" cy="160" rx="76" ry="42" fill="#178a70"/>
+  <ellipse cx="240" cy="100" rx="52" ry="40" fill="#2e2230"/>
+  <circle cx="212" cy="96" r="14" fill="#f4c542"/>
+  <circle cx="268" cy="96" r="14" fill="#f4c542"/>
+  <circle cx="212" cy="98" r="6" fill="#2e2230"/>
+  <circle cx="268" cy="98" r="6" fill="#2e2230"/>
+</svg>

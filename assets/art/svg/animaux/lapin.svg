@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#d8ecf8"/>
+  <circle cx="400" cy="80" r="46" fill="#fdf0b8"/>
+  <path d="M0 300 Q120 250 240 290 T480 270 V480 H0 Z" fill="#bfe0a8"/>
+  <path d="M0 380 Q160 340 300 372 T480 360 V480 H0 Z" fill="#9ccf86"/>
+  <!-- oreilles -->
+  <g transform="rotate(-10 185 90)"><ellipse cx="185" cy="90" rx="32" ry="82" fill="#f7f0e6"/></g>
+  <g transform="rotate(10 295 90)"><ellipse cx="295" cy="90" rx="32" ry="82" fill="#f7f0e6"/></g>
+  <g transform="rotate(-10 187 96)"><ellipse cx="187" cy="96" rx="16" ry="58" fill="#f4a6b4"/></g>
+  <g transform="rotate(10 293 96)"><ellipse cx="293" cy="96" rx="16" ry="58" fill="#f4a6b4"/></g>
+  <!-- corps -->
+  <ellipse cx="240" cy="345" rx="110" ry="112" fill="#f7f0e6"/>
+  <ellipse cx="240" cy="380" rx="66" ry="66" fill="#dccdb9"/>
+  <ellipse cx="160" cy="440" rx="52" ry="26" fill="#f7f0e6"/>
+  <ellipse cx="320" cy="440" rx="52" ry="26" fill="#f7f0e6"/>
+  <!-- tête -->
+  <circle cx="240" cy="215" r="84" fill="#f7f0e6"/>
+  <circle cx="190" cy="228" r="16" fill="#f4a6b4"/>
+  <circle cx="290" cy="228" r="16" fill="#f4a6b4"/>
+  <circle cx="200" cy="200" r="14" fill="#2e2230"/>
+  <circle cx="280" cy="200" r="14" fill="#2e2230"/>
+  <circle cx="204" cy="195" r="5" fill="#ffffff"/>
+  <circle cx="284" cy="195" r="5" fill="#ffffff"/>
+  <polygon points="222,222 258,222 240,244" fill="#e8768c"/>
+  <path d="M240 244 V254 M240 254 Q226 268 212 258 M240 254 Q254 268 268 258" stroke="#2e2230" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- carotte -->
+  <polygon points="200,330 280,330 240,420" fill="#f08a3a"/>
+  <path d="M240 330 L214 296 Q230 300 240 322 Q250 300 266 296 Z" fill="#5fa04a"/>
+  <circle cx="200" cy="350" r="24" fill="#f7f0e6"/>
+  <circle cx="280" cy="350" r="24" fill="#f7f0e6"/>
+  <!-- herbe -->
+  <path d="M20 480 L40 400 L62 480 Z M56 480 L84 380 L104 480 Z" fill="#6aa860"/>
+  <path d="M380 480 L404 390 L424 480 Z M418 480 L448 396 L466 480 Z" fill="#6aa860"/>
+  <circle cx="90" cy="430" r="16" fill="#ffffff"/>
+  <circle cx="90" cy="430" r="7" fill="#f4c542"/>
+  <circle cx="380" cy="436" r="16" fill="#ffffff"/>
+  <circle cx="380" cy="436" r="7" fill="#f4c542"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#fdf3d0"/>
+  <circle cx="400" cy="70" r="46" fill="#f9d98a"/>
+  <path d="M-10 470 Q-20 260 150 170 Q330 70 490 60 Q500 300 370 400 Q220 510 -10 470 Z" fill="#6fb383"/>
+  <path d="M0 470 Q200 330 480 70" stroke="#a9dc9c" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M170 380 L110 300 M290 290 L360 380 M330 220 L400 170 M130 430 L200 460" stroke="#a9dc9c" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <ellipse cx="360" cy="400" rx="20" ry="26" fill="#cfeaf6"/>
+  <ellipse cx="80" cy="200" rx="18" ry="24" fill="#cfeaf6"/>
+  <!-- antennes -->
+  <path d="M215 110 Q190 70 160 70 M265 110 Q290 70 320 70" stroke="#2e2230" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- pattes -->
+  <path d="M135 260 L92 232 M130 320 L80 330 M150 380 L112 420 M345 260 L388 232 M350 320 L400 330 M330 380 L368 420" stroke="#2e2230" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- corps -->
+  <circle cx="240" cy="150" r="58" fill="#2e2230"/>
+  <ellipse cx="216" cy="138" rx="17" ry="22" fill="#ffffff"/>
+  <ellipse cx="264" cy="138" rx="17" ry="22" fill="#ffffff"/>
+  <circle cx="220" cy="142" r="7" fill="#2e2230"/>
+  <circle cx="260" cy="142" r="7" fill="#2e2230"/>
+  <circle cx="240" cy="290" r="128" fill="#e2463a"/>
+  <path d="M240 170 V418" stroke="#2e2230" stroke-width="10"/>
+  <circle cx="182" cy="245" r="22" fill="#2e2230"/>
+  <circle cx="298" cy="245" r="22" fill="#2e2230"/>
+  <circle cx="165" cy="325" r="22" fill="#2e2230"/>
+  <circle cx="315" cy="325" r="22" fill="#2e2230"/>
+  <circle cx="205" cy="378" r="18" fill="#2e2230"/>
+  <circle cx="275" cy="378" r="18" fill="#2e2230"/>
+  <path d="M170 210 Q182 190 210 184" stroke="#f08a7a" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>
