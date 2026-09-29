@@ -206,7 +206,13 @@ export function PlayScreen() {
       if (!req) return;
       void start(req.ref, req.mode ?? usePlayStore.getState().mode)
         .then(() => {
-          if (useNav.getState().request === req) useNav.getState().setPlaying(true);
+          if (useNav.getState().request !== req) return;
+          useNav.getState().setPlaying(true);
+          const g = gameRef.current;
+          if (req.timelapse && g?.phase === 'finished')
+            setTimeout(() => {
+              g.playTimelapse();
+            }, 500);
         })
         .catch((err: unknown) => {
           console.error('Œuvre impossible à ouvrir', err);

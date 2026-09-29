@@ -64,3 +64,19 @@ tutoiement, ton doux et chaleureux.
 (captures dans les 4 thèmes, aux défilements donnés ; `window.__nav` pilote la navigation ;
 serveur de dev sur http://localhost:5173). Données de test dans la console du navigateur : `window.__meta`
 (`debugGrant([{ kind: 'xp', amount: 50000 }])`…).
+
+## Galerie et exports (`src/render/`)
+
+- `loadArtwork(projectId)` → `Artwork` (grille, cases posées, ordre de pose, cadre, titre).
+- `artworkThumb(projectId, { size?, frame? })` → URL d'une image **encadrée et détourée** (fond transparent,
+  ombre douce), rendue avec les shaders du jeu et mise en cache : à poser sur le mur de la galerie.
+- `renderArtwork(artwork, { size, framed?, frame?, transparent? })` → canvas ; `canvasBlob(canvas)` → PNG.
+- `renderWallpaper(artwork, { ...screenPixels(), frame? })` → canvas au format de l'écran.
+- `exportTimelapse(artwork, { format: 'mp4' | 'gif', onProgress, signal })` → Blob (annulable avec un
+  `AbortController`) ; `canExportMp4()` dit si l'appareil sait encoder la vidéo.
+- `shareFile(blob, fileName(title, ext), texte)`, `saveToDevice(blob, name)` (Images/Films › Tessel),
+  `setWallpaper(blob, 'home' | 'lock' | 'both')`.
+- Cadres : `FRAMES` (`src/content/frames.ts`), noms dans le catalogue (`catalogItem(key).name`), cadres
+  débloqués : `meta.unlocked('frame')`. Changer le cadre d'une œuvre : `store.setFrame(id, key)` puis
+  `useDataVersion.getState().bump()`.
+- Revoir la création : `useNav.getState().open(refForProject(project, index), { timelapse: true, origin })`.

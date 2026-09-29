@@ -62,6 +62,7 @@ export async function openSession(
     }));
   const loaded = await store.load(project.id);
   const game = engine.load(loaded.grid, getMode(mode));
+  engine.renderer?.setFrame(loaded.meta.frame);
   game.restore(loaded.filled, loaded.history);
 
   const saver = new AutoSaver(store, project.id, () => game.progress.filled);

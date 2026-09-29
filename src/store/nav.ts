@@ -14,6 +14,8 @@ export interface OpenRequest {
   mode?: ModeId;
   /** Vignette d'origine (transition partagée vers la grille). */
   origin?: { rect: DOMRect; image: string | null };
+  /** Rejoue la création dès l'ouverture (œuvre terminée, depuis la galerie). */
+  timelapse?: boolean;
 }
 
 interface NavState {
@@ -29,7 +31,10 @@ interface NavState {
   push: (page: SubPage) => void;
   pop: () => void;
   /** Ouvre une œuvre en plein écran (le moteur la charge, puis `playing` passe à vrai). */
-  open: (ref: ArtworkRef, opts?: { mode?: ModeId; origin?: OpenRequest['origin'] }) => void;
+  open: (
+    ref: ArtworkRef,
+    opts?: { mode?: ModeId; origin?: OpenRequest['origin']; timelapse?: boolean },
+  ) => void;
   setPlaying: (playing: boolean) => void;
   closePlay: () => void;
   /** Retour Android : jeu → sous-page → onglet Bibliothèque. Renvoie false s'il n'y a plus rien à fermer. */
@@ -78,6 +83,7 @@ export const useNav = create<NavState>((set, get) => ({
         ref,
         ...(opts.mode !== undefined && { mode: opts.mode }),
         ...(opts.origin !== undefined && { origin: opts.origin }),
+        ...(opts.timelapse === true && { timelapse: true }),
       },
     });
   },

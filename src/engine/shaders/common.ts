@@ -26,8 +26,10 @@ uniform float uDuration;     // durée de l'animation de pose (s)
 uniform float uNumbers;      // échelle des numéros (0 = masqués)
 uniform vec3 uPaper;
 uniform vec3 uBackdrop;
-uniform vec4 uFinish;        // fin d'œuvre : départ (s, < 0 = inactive), style de cadre
-uniform vec4 uAssist;        // aides : motifs daltoniens (0/1), aperçu des couleurs (0–2), contraste élevé (0/1)
+uniform vec4 uFinish;        // fin d'œuvre : départ (s, < 0 = inactive)
+uniform vec4 uFrameA;        // cadre : couleur de base, matière (voir content/frames.ts)
+uniform vec4 uFrameB;        // cadre : couleur d'accent, paramètre de la matière
+uniform vec4 uAssist;        // aides : motifs daltoniens, aperçu (0–2), contraste élevé ; w = fond transparent
 `;
 
 export const HELPERS_GLSL = /* glsl */ `
@@ -224,7 +226,7 @@ vec4 frameLayer(vec2 w) {
   if (u > 1.0) {
     // ombre portée douce du cadre sur le fond
     float built = smoothstep(0.0, 0.03, lead);
-    float s = exp(-(dd - mat - fr) * uScale / 14.0) * 0.28 * built;
+    float s = exp(-(dd - mat - fr) / (fr * 0.3)) * 0.3 * built;
     return vec4(vec3(0.0), s);
   }
   if (lead <= 0.0) return vec4(0.0);
@@ -236,24 +238,80 @@ vec4 frameLayer(vec2 w) {
   float shade = 1.0 - slope * facing * 0.35;
   float along = horizontal ? w.x : w.y;
 
-  int style = int(uFinish.y + 0.5);
+  vec3 base = uFrameA.rgb;
+  vec3 acc = uFrameB.rgb;
+  int fm = int(uFrameA.w + 0.5);
+  float prm = uFrameB.w;
+  float glint = pow(max(shade - 0.92, 0.0) * 4.0, 2.0);
   vec3 c;
-  if (style == 1) {
-    // or : métal, reflets marqués
-    vec3 gold = vec3(0.86, 0.68, 0.34);
-    c = gold * (0.55 + 0.5 * shade) + vec3(1.0, 0.92, 0.7) * pow(max(shade - 0.95, 0.0) * 3.0, 2.0);
-    c *= 1.0 + (vnoise(vec2(along * 0.6, u * 4.0)) - 0.5) * 0.08;
-  } else if (style == 2) {
-    // chêne clair : veinage le long des baguettes
+  if (fm == 1 || fm == 7) {
+    // métal : reflets marqués, brossé ou poli
+    c = base * (0.55 + 0.5 * shade) + acc * glint * (0.6 + 0.4 * min(prm, 1.0));
+    c *= 1.0 + (vnoise(vec2(along * 0.6, u * 4.0)) - 0.5) * mix(0.14, 0.05, min(prm, 1.0));
+    if (fm == 7) {
+      // perles le long de la moulure
+      float sp = fr * 12.0 / max(prm, 4.0);
+      vec2 q = vec2(fract(along / sp) - 0.5, (u - 0.44) * fr / sp);
+      float bd = length(q);
+      float bead = 1.0 - smoothstep(0.26, 0.26 + px / sp * 1.5, bd);
+      float hl = pow(max(0.0, 1.0 - length(q + vec2(0.1, 0.1)) * 3.2), 3.0);
+      vec3 bc = base * (0.7 + 0.5 * (0.5 - q.y - q.x * 0.4)) + acc * hl;
+      c = mix(c * (1.0 - 0.25 * (1.0 - smoothstep(0.26, 0.34, bd))), bc, bead);
+    }
+  } else if (fm == 2) {
+    // bois : veinage le long des baguettes (nœuds de bambou si param > 0.5)
     float grain = vnoise(vec2(along * 0.25, u * 18.0 + vnoise(vec2(along * 0.05, u)) * 6.0));
-    c = mix(vec3(0.66, 0.5, 0.33), vec3(0.8, 0.64, 0.45), grain) * (0.7 + 0.35 * shade);
-  } else if (style == 3) {
-    // ardoise
+    c = mix(base, acc, grain) * (0.7 + 0.35 * shade);
+    if (prm > 0.5) {
+      float node = smoothstep(0.93, 0.99, abs(fract(along / (fr * 2.4)) - 0.5) * 2.0);
+      c *= 1.0 - node * 0.28;
+    }
+  } else if (fm == 3) {
+    // pierre : veines sinueuses, brillance réglable
     float n = vnoise(vec2(along * 0.9, u * 7.0));
-    c = vec3(0.27, 0.285, 0.31) * (0.7 + 0.4 * shade) * (0.92 + 0.16 * n);
+    float v = abs(sin((along * 0.35 + u * 3.0 + vnoise(vec2(along * 0.15, u * 2.0)) * 4.0) * 3.0));
+    float vein = 1.0 - smoothstep(0.0, 0.14, v);
+    c = mix(base * (0.92 + 0.16 * n), acc, vein * 0.7) * (0.72 + 0.38 * shade);
+    c += glint * prm * 0.6;
+  } else if (fm == 4) {
+    // laque : couleur profonde, reflet net
+    c = base * (0.7 + 0.35 * shade) + acc * pow(max(shade - 0.97, 0.0) * 9.0, 2.0) * 0.55;
+  } else if (fm == 5) {
+    // nacre : irisation qui change avec le relief
+    float ir = sin(along * 0.4 + u * 5.0 + shade * 6.0);
+    c = mix(base, acc, 0.5 + 0.5 * ir) * (0.82 + 0.25 * shade) + glint * 0.5;
+  } else if (fm == 6) {
+    // dégradé qui fait le tour du cadre
+    vec3 hue = 0.5 + 0.5 * cos(6.28318 * (ang + vec3(0.0, 0.33, 0.67)));
+    c = mix(base, acc, 0.5 + 0.5 * sin(ang * 12.566));
+    c = mix(c, hue, prm * 0.5) * (0.75 + 0.3 * shade) + glint * 0.35;
+  } else if (fm == 8) {
+    // cadre peint orné d'un motif répété
+    c = base * (0.8 + 0.22 * shade);
+    float sp = fr * 0.8;
+    vec2 q = vec2(fract(along / sp) - 0.5, (u - 0.46) * fr / sp);
+    float r = length(q);
+    float a = atan(q.y, q.x);
+    int motif = int(prm + 0.5);
+    float md;
+    if (motif == 1) {
+      vec2 h = vec2(abs(q.x) * 1.15, 0.14 - q.y * 1.1);
+      md = length(h - vec2(0.09, 0.09)) - 0.1;
+      md = min(md, max(h.x + h.y - 0.26, -h.y));
+    } else if (motif == 2) md = r - (0.15 + 0.06 * cos(5.0 * a));
+    else if (motif == 3) {
+      md = max(length(q - vec2(0.0, 0.08)) - 0.2, q.y - 0.08);
+      md = max(md, -abs(sin(atan(q.y - 0.08, q.x) * 7.0)) * 0.02);
+    } else if (motif == 4) md = r - mix(0.07, 0.2, pow(0.5 + 0.5 * cos(5.0 * a - 1.5708), 3.0));
+    else if (motif == 5) {
+      vec2 l = mat2(0.7071, 0.7071, -0.7071, 0.7071) * q;
+      md = length(vec2(l.x * 2.2, l.y)) - 0.2;
+    } else md = r - 0.12;
+    float m = 1.0 - smoothstep(-px / sp * 1.5, px / sp * 1.5, md);
+    c = mix(c, acc * (0.85 + 0.2 * shade), m);
   } else {
-    // bois peint blanc
-    c = vec3(0.95, 0.945, 0.935) * (0.8 + 0.22 * shade);
+    // bois peint
+    c = base * (0.8 + 0.22 * shade);
   }
   // onglets des coins
   float miter = 1.0 - smoothstep(0.0, px * 1.5, abs(outside.x - outside.y));
@@ -322,6 +380,12 @@ void main() {
     float shadow = exp(-d / 16.0) * 0.10 + exp(-d / 4.0) * 0.05;
     vec3 bg = uBackdrop * (1.0 - shadow * (1.0 - step(0.0, finaleT()) * 0.6));
     vec4 fl = frameLayer(w);
+    if (uAssist.w > 0.5) {
+      // rendu détouré (galerie) : seuls le cadre et son ombre couvrent le fond
+      vec3 lit = fl.rgb + finaleSweep(w) * 0.25;
+      finalColor = vec4(lit * fl.a, fl.a);
+      return;
+    }
     vec3 outc = mix(bg, fl.rgb, fl.a);
     outc += finaleSweep(w) * 0.25 * step(0.0, fl.a - 0.01);
     finalColor = vec4(outc, 1.0);
@@ -336,7 +400,7 @@ void main() {
   int idx = int(tgt.r * 255.0 + 0.5);
   if (idx == 255) {
     // case transparente : même fond qu'autour de l'œuvre, la silhouette se détache
-    finalColor = vec4(uBackdrop, 1.0);
+    finalColor = uAssist.w > 0.5 ? vec4(0.0) : vec4(uBackdrop, 1.0);
     return;
   }
   float seed = tgt.g;

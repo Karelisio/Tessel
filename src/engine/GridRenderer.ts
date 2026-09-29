@@ -11,6 +11,7 @@ import {
 } from 'pixi.js';
 import { TRANSPARENT, type Grid } from '@/content/grid';
 import { hash2 } from '@/content/random';
+import { frameSpec, type FrameSpec } from '@/content/frames';
 import type { ModeDefinition } from '@/modes/types';
 import type { Camera } from './Camera';
 import { GRID_VERTEX, animFragment, animVertex, gridFragment } from './shaders/common';
@@ -64,6 +65,8 @@ export class GridRenderer {
   private mode: ModeDefinition;
   private readonly pendingFill: { index: number; at: number }[] = [];
   /** Fond autour de l'œuvre imposé par le thème (sinon celui du mode). */
+  /** Cadre choisi pour cette œuvre (sinon celui du mode). */
+  private frameKey: string | null = null;
   private backdropOverride: readonly [number, number, number] | null = null;
   private ghost = 1;
 
@@ -107,9 +110,13 @@ export class GridRenderer {
       uNumbers: { value: 1, type: 'f32' },
       uPaper: { value: new Float32Array(mode.paper), type: 'vec3<f32>' },
       uBackdrop: { value: new Float32Array(mode.backdrop), type: 'vec3<f32>' },
-      uFinish: { value: new Float32Array([-1, mode.frame, 0, 0]), type: 'vec4<f32>' },
+      uFinish: { value: new Float32Array([-1, 0, 0, 0]), type: 'vec4<f32>' },
       uAssist: { value: new Float32Array([0, 1, 0, 0]), type: 'vec4<f32>' },
+      uFrameA: { value: new Float32Array(4), type: 'vec4<f32>' },
+      uFrameB: { value: new Float32Array(4), type: 'vec4<f32>' },
     });
+
+    this.writeFrame();
 
     this.quad = new Geometry({
       attributes: { aPosition: new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]) },
@@ -163,8 +170,8 @@ export class GridRenderer {
     u.uDuration = mode.placeDuration / 1000;
     (u.uPaper as Float32Array).set(mode.paper);
     (u.uBackdrop as Float32Array).set(this.backdrop);
-    (u.uFinish as Float32Array)[1] = mode.frame;
     this.uniforms.update();
+    this.writeFrame();
     const oldGrid = this.gridMesh.shader;
     const oldAnim = this.animMesh.shader;
     this.gridMesh.shader = this.buildGridShader();
@@ -188,7 +195,7 @@ export class GridRenderer {
     this.uniforms.update();
   }
 
-  syncCamera(camera: Camera): void {
+  syncCamera(camera: Pick<Camera, 'tx' | 'ty' | 'scale'>): void {
     const u = this.uniforms.uniforms as Record<string, unknown>;
     const t = u.uTranslate as Float32Array;
     t[0] = camera.tx;
@@ -221,6 +228,24 @@ export class GridRenderer {
     return this.backdropOverride ?? this.mode.backdrop;
   }
 
+  /** Cadre construit à la fin de l'œuvre (clé `frame:…` du catalogue ; null = celui du mode). */
+  setFrame(key: string | null): void {
+    this.frameKey = key;
+    this.writeFrame();
+  }
+
+  get frame(): FrameSpec {
+    return frameSpec(this.frameKey, this.mode.frame);
+  }
+
+  private writeFrame(): void {
+    const f = this.frame;
+    const u = this.uniforms.uniforms as Record<string, unknown>;
+    (u.uFrameA as Float32Array).set([...f.base, f.material]);
+    (u.uFrameB as Float32Array).set([...f.accent, f.param]);
+    this.uniforms.update();
+  }
+
   /** Fond autour de l'œuvre (et des cases transparentes) ; null = celui du mode. */
   setBackdrop(rgb: readonly [number, number, number] | null): void {
     this.backdropOverride = rgb;
@@ -234,17 +259,18 @@ export class GridRenderer {
    * contraste élevé (numéros et grille plus marqués).
    */
   setAssist(colorblind: boolean, ghost: number, highContrast: boolean): void {
-    (this.uniforms.uniforms.uAssist as Float32Array).set([
-      colorblind ? 1 : 0,
-      ghost,
-      highContrast ? 1 : 0,
-      0,
-    ]);
+    (this.uniforms.uniforms.uAssist as Float32Array).set([colorblind ? 1 : 0, ghost, highContrast ? 1 : 0]);
     this.uniforms.update();
     if (ghost !== this.ghost) {
       this.ghost = ghost;
       this.rewriteCells();
     }
+  }
+
+  /** Hors de l'œuvre : transparent (cadre et ombre gardent leur couverture) au lieu du fond. */
+  setTransparentOutside(on: boolean): void {
+    (this.uniforms.uniforms.uAssist as Float32Array)[3] = on ? 1 : 0;
+    this.uniforms.update();
   }
 
   private rewriteCells(): void {

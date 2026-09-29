@@ -112,6 +112,13 @@ ALTER TABLE projects ADD COLUMN errors INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE projects ADD COLUMN tools INTEGER NOT NULL DEFAULT 0;
 `,
   },
+  {
+    version: 3,
+    description: 'cadre choisi par œuvre (galerie, exports)',
+    sql: /* sql */ `
+ALTER TABLE projects ADD COLUMN frame TEXT;
+`,
+  },
 ];
 
 export const SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1]?.version ?? 0;

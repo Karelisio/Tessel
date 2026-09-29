@@ -38,6 +38,8 @@ export interface ProjectMeta {
   undos: number;
   errors: number;
   tools: number;
+  /** Cadre choisi dans la galerie (`frame:…`), null = celui du mode. */
+  frame: string | null;
 }
 
 export type ProjectCounter = 'undos' | 'errors' | 'tools';
@@ -70,10 +72,11 @@ interface ProjectRow {
   undos: number;
   errors: number;
   tools: number;
+  frame: string | null;
 }
 
 const META_COLUMNS =
-  'id, artwork_id, source, mode, title, category, width, height, colors, filled, total, time_ms, created_at, updated_at, completed_at, thumbnail, undos, errors, tools';
+  'id, artwork_id, source, mode, title, category, width, height, colors, filled, total, time_ms, created_at, updated_at, completed_at, thumbnail, undos, errors, tools, frame';
 
 function toMeta(r: ProjectRow): ProjectMeta {
   return {
@@ -96,6 +99,7 @@ function toMeta(r: ProjectRow): ProjectMeta {
     undos: r.undos,
     errors: r.errors,
     tools: r.tools,
+    frame: r.frame,
   };
 }
 
@@ -264,6 +268,11 @@ export class ProgressStore {
         [this.now(), id],
       );
     });
+  }
+
+  /** Cadre de l'œuvre (galerie, exports, fin d'œuvre) ; null = celui du mode. */
+  async setFrame(id: string, frame: string | null): Promise<void> {
+    await this.db.run('UPDATE projects SET frame = ? WHERE id = ?', [frame, id]);
   }
 
   /** Incrémente un compteur de la partie (annulations, erreurs, outils). */
