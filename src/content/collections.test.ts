@@ -34,7 +34,7 @@ describe('collections', () => {
 describe('bibliothèque', () => {
   it('150 œuvres ou plus, toutes les catégories représentées, grilles cohérentes', () => {
     const regular = library.artworks.filter((a) => a.event === undefined);
-    expect(regular.length).toBeGreaterThanOrEqual(130);
+    expect(regular.length).toBeGreaterThanOrEqual(150);
     const cats = new Set(regular.map((a) => a.category));
     expect(cats.size).toBeGreaterThanOrEqual(15);
     for (const a of library.artworks) {

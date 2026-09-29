@@ -14,3 +14,4 @@ android/local.properties
 android/capacitor-cordova-android-plugins/build
 dist-release
 .claude/worktrees
+assets/art/sources/cache/
