@@ -5,3 +5,8 @@
   image-rendering: pixelated;
   box-shadow: var(--shadow-soft);
 }
+
+/* œuvre pas encore terminée : taches de couleur douces, sans le dessin */
+.thumb[data-veiled] {
+  image-rendering: auto;
+}

@@ -40,11 +40,26 @@ export function useProjects(opts: { completed?: boolean; limit?: number } = {}):
   return useQuery(async () => (await getServices()).store.list(opts), [opts.completed, opts.limit]);
 }
 
-/** Œuvres de la bibliothèque terminées au moins une fois (identifiants sans difficulté). */
+let completedCache: { version: number; ids: Promise<Set<string>> } | null = null;
+
+/** Une seule requête par version des données, partagée par toutes les vignettes. */
+function completedIds(): Promise<Set<string>> {
+  const version = useDataVersion.getState().version;
+  if (completedCache?.version !== version) {
+    const ids = getServices().then(
+      async (s) => new Set((await s.store.completedArtworkIds()).map(libraryId)),
+    );
+    completedCache = { version, ids };
+    ids.catch(() => {
+      if (completedCache?.ids === ids) completedCache = null;
+    });
+  }
+  return completedCache.ids;
+}
+
+/** Œuvres (bibliothèque ou du jour) terminées au moins une fois (identifiants sans difficulté). */
 export function useCompletedArtworks(): Set<string> | undefined {
-  return useQuery(
-    async () => new Set((await (await getServices()).store.completedArtworkIds()).map(libraryId)),
-  );
+  return useQuery(completedIds);
 }
 
 /** Aperçu d'une partie pour sa miniature (grille + cases posées). */

@@ -210,6 +210,16 @@ export default function SettingsScreen() {
           hint={tr(t('Repères quand tu zoomes', 'Landmarks when you zoom in'))}
         />
         <Toggle
+          k="revealArt"
+          label={tr(t('Dévoiler les œuvres', 'Reveal artworks'))}
+          hint={tr(
+            t(
+              'Montrer nettes les œuvres pas encore terminées (floutées sinon)',
+              'Show unfinished artworks clearly (blurred otherwise)',
+            ),
+          )}
+        />
+        <Toggle
           k="keepAwake"
           label={tr(t('Garder l’écran allumé', 'Keep the screen on'))}
           hint={tr(t('Pendant que tu colories', 'While you color'))}
