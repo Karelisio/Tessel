@@ -266,10 +266,18 @@
   touch-action: pan-y;
 }
 
+/* zone de prise pour glisser la feuille vers le bas (le reste défile) */
+.kit-sheet__handle {
+  margin: -10px -18px 0;
+  padding: 10px 0 12px;
+  touch-action: none;
+  cursor: grab;
+}
+
 .kit-sheet__grip {
   width: 40px;
   height: 5px;
-  margin: 0 auto 12px;
+  margin: 0 auto;
   border-radius: 999px;
   background: var(--outline-strong);
 }
