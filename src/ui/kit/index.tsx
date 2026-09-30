@@ -1,4 +1,10 @@
-import { AnimatePresence, motion, useReducedMotion, type HTMLMotionProps } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useDragControls,
+  useReducedMotion,
+  type HTMLMotionProps,
+} from 'framer-motion';
 import { useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { spring, staggerDelay } from '@/theme/motion/tokens';
@@ -273,6 +279,8 @@ export function Sheet({
   children: ReactNode;
 }) {
   useBackClose(open, onClose);
+  // glisser pour fermer depuis la poignée seulement : le contenu garde son défilement tactile
+  const drag = useDragControls();
   // rendue dans <body> : au-dessus de la barre d'onglets et des sous-pages
   return createPortal(
     <AnimatePresence>
@@ -294,13 +302,22 @@ export function Sheet({
             exit={{ y: '100%' }}
             transition={{ type: 'spring', ...spring.sheet }}
             drag="y"
+            dragControls={drag}
+            dragListener={false}
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0, bottom: 0.6 }}
             onDragEnd={(_, info) => {
               if (info.offset.y > 110 || info.velocity.y > 600) onClose();
             }}
           >
-            <div className="kit-sheet__grip" />
+            <div
+              className="kit-sheet__handle"
+              onPointerDown={(e) => {
+                drag.start(e);
+              }}
+            >
+              <div className="kit-sheet__grip" />
+            </div>
             {children}
           </motion.section>
         </>

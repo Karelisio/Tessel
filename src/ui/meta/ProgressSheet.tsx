@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useDragControls } from 'framer-motion';
 import { useState } from 'react';
 import { locale, tr } from '@/i18n/locale';
 import { t } from '@/i18n/text';
@@ -138,6 +138,8 @@ export function ProgressSheet({ open, onClose }: { open: boolean; onClose: () =>
   const snap = useMetaStore((s) => s.snap);
   const service = useMetaStore((s) => s.service);
   const refresh = useMetaStore((s) => s.refresh);
+  // glisser pour fermer depuis la poignée seulement : le contenu garde son défilement tactile
+  const drag = useDragControls();
   if (!snap) return null;
   const { level, streak, quests, canReroll, chests, freezes } = snap;
   const weekLeft = snap.weekDaysLeft;
@@ -168,13 +170,22 @@ export function ProgressSheet({ open, onClose }: { open: boolean; onClose: () =>
             exit={{ y: '100%' }}
             transition={{ type: 'spring', ...spring.sheet }}
             drag="y"
+            dragControls={drag}
+            dragListener={false}
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0, bottom: 0.6 }}
             onDragEnd={(_, info) => {
               if (info.offset.y > 110 || info.velocity.y > 600) onClose();
             }}
           >
-            <div className="sheet-grip" />
+            <div
+              className="sheet-handle"
+              onPointerDown={(e) => {
+                drag.start(e);
+              }}
+            >
+              <div className="sheet-grip" />
+            </div>
             <header className="ps-level">
               <span className="ps-level__badge">{level.level}</span>
               <div className="ps-level__info">

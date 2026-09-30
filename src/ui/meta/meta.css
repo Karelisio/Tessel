@@ -264,6 +264,15 @@
   touch-action: pan-y;
 }
 
+/* zone de prise pour glisser la feuille vers le bas (le reste défile) */
+.sheet-handle {
+  display: grid;
+  margin: -10px -18px -8px;
+  padding: 10px 0 8px;
+  touch-action: none;
+  cursor: grab;
+}
+
 .sheet-grip {
   justify-self: center;
   width: 40px;
