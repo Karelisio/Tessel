@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react';
 import './library.css';
+import { useCompletedArtworks } from '@/app/queries';
 import { TRANSPARENT, type Grid } from '@/content/grid';
 import { loadGrid } from '@/content/library';
+import { useSettings } from '@/store/settings';
+import { drawVeil } from './veil';
 
 interface ThumbProps {
   /** Œuvre de la bibliothèque (grille facile), ou `load` pour une grille calculée (œuvre du jour). */
@@ -10,9 +13,15 @@ interface ThumbProps {
   size?: number;
 }
 
-/** Vignette d'une œuvre : sa grille dessinée case par case, chargée quand elle devient visible. */
+/**
+ * Vignette d'une œuvre : sa grille dessinée case par case, chargée quand elle devient visible.
+ * Tant qu'elle n'a jamais été terminée, elle reste floutée (sauf réglage « Dévoiler les œuvres »).
+ */
 export function Thumb({ id, load, size = 96 }: ThumbProps) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const reveal = useSettings((s) => s.revealArt);
+  const completed = useCompletedArtworks();
+  const veiled = !reveal && !completed?.has(id);
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
@@ -20,6 +29,10 @@ export function Thumb({ id, load, size = 96 }: ThumbProps) {
     const draw = () => {
       void (load ? load() : loadGrid(id, 'easy')).then((g) => {
         if (!alive) return;
+        if (veiled) {
+          drawVeil(el, g);
+          return;
+        }
         // format carré : les œuvres en paysage ou en portrait sont centrées
         const side = Math.max(g.width, g.height);
         el.width = side;
@@ -47,6 +60,14 @@ export function Thumb({ id, load, size = 96 }: ThumbProps) {
       alive = false;
       io.disconnect();
     };
-  }, [id, load]);
-  return <canvas ref={canvas} className="thumb" style={{ width: size, height: size }} aria-hidden />;
+  }, [id, load, veiled]);
+  return (
+    <canvas
+      ref={canvas}
+      className="thumb"
+      data-veiled={veiled || undefined}
+      style={{ width: size, height: size }}
+      aria-hidden
+    />
+  );
 }

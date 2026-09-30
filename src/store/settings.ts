@@ -30,6 +30,8 @@ export interface Settings {
   ghost: number;
   /** Minicarte et radar quand on zoome. */
   minimap: boolean;
+  /** Vignettes nettes des œuvres pas encore terminées (floutées sinon, pour garder la surprise). */
+  revealArt: boolean;
   /** Ambiance sonore en boucle (`ambience:…`), chaîne vide = aucune. */
   ambience: string;
   /** Matière choisie par mode (clé `texture:…`), la matière de base sinon. */
@@ -58,6 +60,7 @@ export const DEFAULT_SETTINGS: Settings = {
   colorblind: false,
   ghost: 1,
   minimap: true,
+  revealArt: false,
   textures: {},
   ambience: '',
   highContrast: false,
