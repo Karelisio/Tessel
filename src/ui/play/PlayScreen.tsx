@@ -35,6 +35,7 @@ import '@/ui/meta/meta.css';
 import { Minimap } from './Minimap';
 import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
+import { SoundControls } from './SoundControls';
 import { closeTo, openFrom } from './transition';
 
 /** Ambiances du catalogue (pluie, feu…). */
@@ -95,6 +96,8 @@ export function PlayScreen() {
   const [hint, setHint] = useState<string | null>(null);
   const [bonusXp, setBonusXp] = useState<number | null>(null);
   const [modesOpen, setModesOpen] = useState(false);
+  /** La fin d'œuvre revient d'une relecture (« Revoir la création ») : léger délai avant le panneau. */
+  const [replayed, setReplayed] = useState(false);
   const unlockedModes = useMetaStore((st) => st.snap?.modes) ?? MODE_IDS;
   const hasMeta = useMetaStore((st) => st.service !== null);
   const playing = useNav((s) => s.playing);
@@ -110,6 +113,7 @@ export function PlayScreen() {
   const bind = useCallback(
     (g: Game) => {
       setBonusXp(null);
+      setReplayed(false);
       g.onSnapshot = (s) => {
         setSnapshot(s, g.canUndo, g.canRedo);
       };
@@ -458,13 +462,18 @@ export function PlayScreen() {
       </div>
       {engine && showHud && playing && <PerfHud engine={engine} />}
       <AnimatePresence>
-        {(phase === 'finished' || phase === 'timelapse') && game && playing && (
+        {/* masqué pendant « Revoir la création » : l'œuvre se reconstruit sans rien devant */}
+        {phase === 'finished' && game && playing && (
           <motion.div
             className="finish-panel"
             initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 40, opacity: 0 }}
-            transition={{ type: 'spring', ...spring.sheet }}
+            animate={{
+              y: 0,
+              opacity: 1,
+              // au retour d'une relecture, l'œuvre finie reste seule un instant
+              transition: { type: 'spring', ...spring.sheet, delay: replayed ? 0.8 : 0 },
+            }}
+            exit={{ y: 40, opacity: 0, transition: { type: 'spring', ...spring.sheet } }}
           >
             <strong>{tr(t('Œuvre terminée', 'Artwork complete'))}</strong>
             {bonusXp !== null && bonusXp > 0 && (
@@ -481,8 +490,8 @@ export function PlayScreen() {
               <motion.button
                 className="btn btn--primary"
                 whileTap={{ scale: 0.94 }}
-                disabled={phase === 'timelapse'}
                 onClick={() => {
+                  setReplayed(true);
                   game.playTimelapse();
                   useMetaStore.getState().service?.record('timelapses');
                 }}
@@ -493,6 +502,7 @@ export function PlayScreen() {
                 className="btn"
                 whileTap={{ scale: 0.94 }}
                 onClick={() => {
+                  setReplayed(false);
                   game.restart();
                 }}
               >
@@ -666,6 +676,8 @@ export function PlayScreen() {
             );
           })}
         </div>
+        <h3 className="modes-title modes-title--sub">{tr(t('Volume', 'Volume'))}</h3>
+        <SoundControls />
       </Sheet>
     </div>
   );
