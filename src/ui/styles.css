@@ -589,6 +589,12 @@ button {
   margin-top: 18px;
 }
 
+.sound-controls {
+  display: grid;
+  gap: 4px;
+  margin: 2px -6px 0;
+}
+
 .texture-chips {
   display: flex;
   flex-wrap: wrap;
