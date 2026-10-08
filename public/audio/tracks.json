@@ -59,8 +59,10 @@
         "fr": "Atelier",
         "en": "Studio"
       },
-      "seconds": 130,
-      "samples": 6240000,
+      "seconds": 133.33,
+      "samples": 6400000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
