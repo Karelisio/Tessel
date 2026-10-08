@@ -1,3 +1,4 @@
+import { stitchLoop } from './loopStitch';
 import { Melody } from './melody';
 import { MusicDeck } from './MusicDeck';
 import { BANKS, renderBank, type BankSpec } from './synth';
@@ -213,6 +214,7 @@ export class AudioEngine {
     const data = await fetch(`audio/${entry.file}`).then((r) => r.arrayBuffer());
     const buffer = await ctx.decodeAudioData(data);
     if (this.ambienceWanted !== id || this.ambience) return;
+    stitchLoop(buffer, entry.offset ?? 0, entry.samples);
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     src.loop = true;

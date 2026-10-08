@@ -64,7 +64,14 @@ class FakeCtx {
   }
   decodeAudioData(data: ArrayBuffer) {
     const id = new TextDecoder().decode(data);
-    return Promise.resolve({ duration: 121, id });
+    const channel = new Float32Array(0);
+    return Promise.resolve({
+      duration: 121,
+      id,
+      length: 121 * 48000,
+      numberOfChannels: 2,
+      getChannelData: () => channel,
+    });
   }
 }
 

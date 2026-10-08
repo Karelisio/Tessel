@@ -1,7 +1,7 @@
 /**
  * Contrôle des boucles audio telles que le jeu les jouera : chaque fichier de public/audio est décodé
- * par Chromium, la boucle [offset, offset + samples) est refermée sur elle-même, et sa jonction est
- * comparée aux autres « coutures » du même son, qui sont naturelles :
+ * par Chromium et raccordé comme dans le jeu (stitchLoop), la boucle [offset, offset + samples) est
+ * refermée sur elle-même, et sa jonction est comparée aux autres « coutures » du même son, naturelles :
  *  - musique : les changements de mesure (une attaque d'accord au temps fort n'est pas un défaut) ;
  *  - ambiances : 64 points répartis dans la boucle.
  * Trois mesures à chaque coupure : le plus grand saut d'un échantillon au suivant (±8 échantillons,
@@ -44,6 +44,9 @@ const { browser, page } = await openPage('http://localhost:5173/scripts/audio/re
 const ANALYZE = `async ({ id, file, samples, offset }) => {
   const data = await fetch('/audio/' + file).then((x) => x.arrayBuffer());
   const b = await new OfflineAudioContext(2, 48000, 48000).decodeAudioData(data);
+  // comme le jeu : la jonction est raccordée à la suite décodée de la fin
+  const { stitchLoop } = await import('/src/audio/loopStitch.ts');
+  stitchLoop(b, offset, samples);
   const l = b.getChannelData(0);
   const rr = b.numberOfChannels > 1 ? b.getChannelData(1) : l;
   const at = (i) => {

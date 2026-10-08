@@ -1,3 +1,4 @@
+import { stitchLoop } from './loopStitch';
 import { lapEnd, nextQueue } from './playlist';
 
 /** Piste en boucle exacte (manifeste audio). */
@@ -154,7 +155,9 @@ export class MusicDeck {
         if (!r.ok) throw new Error(String(r.status));
         return r.arrayBuffer();
       });
-      return await ctx.decodeAudioData(data);
+      const buffer = await ctx.decodeAudioData(data);
+      stitchLoop(buffer, track.offset ?? 0, track.samples);
+      return buffer;
     } catch (e) {
       console.warn('Musique illisible', id, e);
       this.failed.add(id);
