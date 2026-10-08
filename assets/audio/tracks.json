@@ -18,8 +18,9 @@
         "fr": "Tesselles",
         "en": "Tesserae"
       },
-      "seconds": 132,
-      "samples": 6336000,
+      "seconds": 123.08,
+      "samples": 5907712,
+      "offset": 0,
       "lufs": -16
     },
     {
