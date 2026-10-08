@@ -112,8 +112,15 @@ export const CATALOG: readonly CatalogItem[] = [
   item('ambience:foret', t('Forêt', 'Forest')),
   item('ambience:vagues', t('Vagues', 'Waves')),
 
-  // pistes par numéro d'emplacement : tracks.json peut remplacer les fichiers sans toucher au code
-  ...[1, 2, 3, 4, 5, 6, 7, 8].map((n) => item(`music:${n}`, t(`Piste ${n}`, `Track ${n}`), n <= 4)),
+  // musiques (boucles de public/audio/tracks.json, mêmes titres)
+  item('music:1', t('Aube', 'Dawn'), true),
+  item('music:2', t('Tesselles', 'Tesserae'), true),
+  item('music:3', t('Jardin', 'Garden'), true),
+  item('music:4', t('Nuage', 'Cloud'), true),
+  item('music:5', t('Atelier', 'Studio')),
+  item('music:6', t('Rivière', 'River')),
+  item('music:7', t('Veillée', 'Evening')),
+  item('music:8', t('Constellation', 'Constellation')),
 
   // obtenus par les séries et les succès (voir streak.ts et achievements.data.ts)
   item('frame:flamme', t('Flamme', 'Flame')),

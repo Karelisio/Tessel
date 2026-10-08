@@ -34,6 +34,10 @@ export interface Settings {
   revealArt: boolean;
   /** Ambiance sonore en boucle (`ambience:…`), chaîne vide = aucune. */
   ambience: string;
+  /** Musiques décochées (`music:…`) ; les pistes débloquées plus tard sont cochées d'office. */
+  musicExcluded: string[];
+  /** Musiques cochées jouées dans un ordre aléatoire (sinon dans l'ordre). */
+  musicShuffle: boolean;
   /** Matière choisie par mode (clé `texture:…`), la matière de base sinon. */
   textures: Partial<Record<ModeId, string>>;
   highContrast: boolean;
@@ -63,6 +67,8 @@ export const DEFAULT_SETTINGS: Settings = {
   revealArt: false,
   textures: {},
   ambience: '',
+  musicExcluded: [],
+  musicShuffle: true,
   highContrast: false,
   notifications: false,
   autoUpdateCheck: true,

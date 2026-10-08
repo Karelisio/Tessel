@@ -1,0 +1,84 @@
+/* --- Choix des musiques (Réglages et menu en jeu) ------------------------------------------------- */
+
+.music-picker {
+  display: grid;
+  gap: 2px;
+}
+
+.texture-chip.music-chip[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.music-chip[data-playing='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--primary);
+}
+
+/* petit égaliseur : la piste qu'on entend */
+.music-chip__eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  color: var(--primary);
+}
+
+.music-chip__eq i {
+  width: 3px;
+  height: 40%;
+  border-radius: 2px;
+  background: currentColor;
+  animation: music-eq 0.9s ease-in-out infinite;
+}
+
+.music-chip__eq i:nth-child(2) {
+  animation-delay: -0.35s;
+}
+
+.music-chip__eq i:nth-child(3) {
+  animation-delay: -0.65s;
+}
+
+@keyframes music-eq {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-chip__eq i {
+    animation: none;
+    height: 70%;
+  }
+}
+
+[data-motion='reduced'] .music-chip__eq i {
+  animation: none;
+  height: 70%;
+}
+
+.music-picker__status {
+  min-height: 1.4em;
+  margin: 0 4px 4px;
+  color: var(--on-surface-muted);
+  font-size: 13px;
+}
+
+.music-picker__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.music-picker__row .imp-switch {
+  flex: 1;
+}
+
+.music-picker__skip {
+  flex: none;
+}

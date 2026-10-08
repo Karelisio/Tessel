@@ -35,6 +35,7 @@ import '@/ui/meta/meta.css';
 import { Minimap } from './Minimap';
 import { Palette } from './Palette';
 import { PerfHud } from './PerfHud';
+import { MusicPicker } from '@/ui/music/MusicPicker';
 import { SoundControls } from './SoundControls';
 import { closeTo, openFrom } from './transition';
 
@@ -676,6 +677,8 @@ export function PlayScreen() {
             );
           })}
         </div>
+        <h3 className="modes-title modes-title--sub">{tr(t('Musiques', 'Music'))}</h3>
+        <MusicPicker />
         <h3 className="modes-title modes-title--sub">{tr(t('Volume', 'Volume'))}</h3>
         <SoundControls />
       </Sheet>

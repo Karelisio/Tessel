@@ -60,16 +60,23 @@ Détails, secrets de signature et commande `keytool` : [docs/RELEASE.md](docs/RE
 
 ## Remplacer les musiques
 
-Les sons sont lus depuis des fichiers : `public/audio/tracks.json` (copié depuis `assets/audio/tracks.json`)
-et les fichiers `assets/audio/music/*.ogg`, `assets/audio/ambience/*.ogg`. Pour mettre de vraies musiques :
+Les musiques sont des boucles : le jeu les fait tourner à l'échantillon près, sans fondu, et enchaîne les
+pistes cochées par le joueur en fondu enchaîné. Les sons sont lus depuis `public/audio/tracks.json` (copié
+depuis `assets/audio/tracks.json`) et les fichiers `assets/audio/music/*.ogg`, `assets/audio/ambience/*.ogg`.
+Pour mettre de vraies musiques :
 
-1. déposer les fichiers (Ogg Opus ou MP3, 48 kHz conseillé, environ -16 LUFS) dans `assets/audio/music/` ;
-2. mettre à jour `assets/audio/tracks.json` (`id` = `music:1` … `music:8`, `file`, `title`, `seconds`) ;
-3. copier `assets/audio/` dans `public/audio/`.
+1. déposer des boucles sans couture (Ogg Opus ou MP3, 48 kHz, environ -16 LUFS) dans `assets/audio/music/` ;
+2. mettre à jour `assets/audio/tracks.json` (`id` = `music:1` … `music:8`, `file`, `title`, `seconds`,
+   `samples` = longueur exacte de la boucle en échantillons à 48 kHz, `offset` facultatif, sans `wrap`)
+   et les titres dans `src/meta/catalog.ts` ;
+3. copier `assets/audio/` dans `public/audio/`, puis vérifier les jonctions (serveur de dev lancé) :
+   `npx tsx scripts/audio/check-loops.ts`.
 
-Aucun code à modifier. Pour régénérer les pistes composées en code (Tone.js, rendu hors ligne dans Chromium,
-normalisation BS.1770 à -16 LUFS, encodage Opus) : serveur de dev lancé, puis
-`npx tsx --tsconfig tsconfig.app.json scripts/audio/prerender.ts [music:3 …]`.
+Pour régénérer les pistes composées en code (Tone.js, deux périodes rendues hors ligne dans Chromium pour
+une jonction parfaite, normalisation BS.1770 à -16 LUFS, encodage Opus) : serveur de dev lancé, puis
+`npx tsx --tsconfig tsconfig.app.json scripts/audio/prerender.ts [music:3 …]`. Ces fichiers se prolongent
+après la boucle par son début (`"wrap": true` dans le manifeste) : le jeu s'en sert pour raccorder la
+jonction, que l'encodage Opus aurait sinon marquée d'une infime marche.
 
 ## Architecture
 

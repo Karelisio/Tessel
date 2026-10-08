@@ -1,6 +1,11 @@
 /**
  * Les 8 pistes de Tessel, composées en code avec Tone.js (exécuté dans Chromium, rendu hors ligne).
  * Toutes calmes : lo-fi, piano électrique, nappes, cloches. Déterministes (graine par piste).
+ *
+ * Chaque piste est une vraie boucle : un nombre entier de mesures, sans fondu, rendu deux fois
+ * d'affilée à l'identique ; on garde la seconde période, dont le début contient déjà la queue
+ * (réverbération, notes tenues) de la fin. Tout ce qui oscille fait un nombre entier de cycles par
+ * période et le hasard est rejoué à l'identique : la jonction fin → début est continue.
  */
 import * as Tone from 'tone';
 
@@ -150,11 +155,23 @@ function mallet(out: Tone.InputNode, volume = -16): Tone.PolySynth<Tone.FMSynth>
   return s;
 }
 
-function pad(out: Tone.InputNode, volume = -24, cutoff = 900): Tone.PolySynth {
+/** Fréquence la plus proche de `f` qui fait un nombre entier de cycles sur la boucle. */
+function periodic(f: number, loop: number): number {
+  return Math.max(1, Math.round(f * loop)) / loop;
+}
+
+function pad(out: Tone.InputNode, loop: number, volume = -24, cutoff = 900): Tone.PolySynth {
   const filter = new Tone.Filter({ frequency: cutoff, type: 'lowpass', rolloff: -24, Q: 0.6 });
-  const lfo = new Tone.LFO({ frequency: 0.05, min: cutoff * 0.7, max: cutoff * 1.5 }).start(0);
+  const lfo = new Tone.LFO({ frequency: periodic(0.05, loop), min: cutoff * 0.7, max: cutoff * 1.5 }).start(
+    0,
+  );
   lfo.connect(filter.frequency);
-  const chorus = new Tone.Chorus({ frequency: 0.3, delayTime: 4, depth: 0.6, wet: 0.5 }).start();
+  const chorus = new Tone.Chorus({
+    frequency: periodic(0.3, loop),
+    delayTime: 4,
+    depth: 0.6,
+    wet: 0.5,
+  }).start(0);
   const s = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: 'fatsawtooth', count: 3, spread: 24 },
     envelope: { attack: 2.2, decay: 1, sustain: 0.85, release: 3.5 },
@@ -218,18 +235,38 @@ function drums(out: Tone.InputNode, volume = -16): Drums {
   return { kick, snare, hat };
 }
 
+/** Souffle brun d'une période entière (graine fixe) : identique à chaque période, donc sans couture. */
+const hissCache = new Map<number, Tone.ToneAudioBuffer>();
+
+function hissBuffer(samples: number): Tone.ToneAudioBuffer {
+  let b = hissCache.get(samples);
+  if (!b) {
+    const r = rng(0x5eed);
+    const d = new Float32Array(samples);
+    let last = 0;
+    for (let i = 0; i < samples; i++) {
+      last = (last + 0.02 * (r() * 2 - 1)) / 1.02;
+      d[i] = last * 3.5;
+    }
+    b = Tone.ToneAudioBuffer.fromArray(d);
+    hissCache.set(samples, b);
+  }
+  return b;
+}
+
 /** Craquements de vinyle discrets. */
-function vinyl(out: Tone.InputNode, duration: number, r: () => number): void {
-  const hiss = new Tone.Noise({ type: 'brown', volume: -46 }).connect(out);
-  hiss.start(0).stop(duration);
+function vinyl(out: Tone.InputNode, c: Ctx): void {
+  const hiss = new Tone.ToneBufferSource(hissBuffer(Math.round(c.loop * 48000)));
+  hiss.connect(new Tone.Gain(Tone.dbToGain(-46)).connect(out));
+  hiss.start(c.start).stop(c.start + c.loop);
   const f = new Tone.Filter({ frequency: 3000, type: 'highpass' }).connect(out);
   const click = new Tone.NoiseSynth({
     noise: { type: 'white' },
     envelope: { attack: 0.0005, decay: 0.004, sustain: 0 },
   }).connect(f);
   click.volume.value = -30;
-  for (let t = 0.2; t < duration; t += 0.05 + r() * 0.5)
-    click.triggerAttackRelease(0.004, t, 0.2 + r() * 0.8);
+  for (let t = 0.2; t < c.loop; t += 0.05 + c.r() * 0.5)
+    click.triggerAttackRelease(0.004, c.start + t, 0.2 + c.r() * 0.8);
 }
 
 // ---------------------------------------------------------------- mixage
@@ -241,7 +278,7 @@ interface Mix {
   wet: Tone.Gain;
 }
 
-async function mixBus(opts: { reverb: number; decay: number; lofi?: boolean }): Promise<Mix> {
+async function mixBus(opts: { reverb: number; decay: number; loop: number; lofi?: boolean }): Promise<Mix> {
   const master = new Tone.Gain(1);
   const comp = new Tone.Compressor({ threshold: -20, ratio: 2.5, attack: 0.03, release: 0.3 });
   const tone = new Tone.Filter({ frequency: opts.lofi ? 7500 : 16000, type: 'lowpass', rolloff: -12 });
@@ -249,7 +286,7 @@ async function mixBus(opts: { reverb: number; decay: number; lofi?: boolean }): 
   // lo-fi : léger pleurage de bande avant la chaîne
   if (opts.lofi)
     master.chain(
-      new Tone.Vibrato({ frequency: 0.4, depth: 0.04, wet: 1 }),
+      new Tone.Vibrato({ frequency: periodic(0.4, opts.loop), depth: 0.04, wet: 1 }),
       hp,
       tone,
       comp,
@@ -266,25 +303,34 @@ async function mixBus(opts: { reverb: number; decay: number; lofi?: boolean }): 
   return { dry, wet };
 }
 
+/** Une période (un tour de boucle) à composer. */
 interface Ctx {
-  duration: number;
+  /** Début de la période dans le rendu (s). */
+  start: number;
+  /** Longueur de la boucle (s), un nombre entier d'échantillons à 48 kHz. */
+  loop: number;
+  /** Mesures par période. */
+  bars: number;
+  /** Durée d'une mesure et d'un temps (s). */
+  bar: number;
+  beat: number;
   r: () => number;
   mix: Mix;
 }
 
-const human = (r: () => number, amount = 0.012) => (r() - 0.5) * 2 * amount;
+/**
+ * Petit retard « humain » (0 à `amount` s) : jamais en avance, sinon la première note d'une période
+ * déborderait sur la précédente et la boucle extraite perdrait son attaque (clic à la jonction).
+ */
+const human = (r: () => number, amount = 0.012) => r() * amount;
 
-/** Joue une grille d'accords (une mesure par accord, `beats` temps par mesure). */
+/** Joue une grille d'accords sur toute la période (une mesure par accord). */
 function chordsLoop(
   prog: readonly string[],
-  bpm: number,
-  beats: number,
-  duration: number,
+  c: Ctx,
   each: (chord: string, barStart: number, bar: number, beat: number) => void,
 ): void {
-  const beat = 60 / bpm;
-  const bar = beat * beats;
-  for (let i = 0, t = 0.5; t < duration - bar; i++, t += bar) each(prog[i % prog.length] ?? 'C', t, i, beat);
+  for (let i = 0; i < c.bars; i++) each(prog[i % prog.length] ?? 'C', c.start + i * c.bar, i, c.beat);
 }
 
 // ---------------------------------------------------------------- les pistes
@@ -292,27 +338,42 @@ function chordsLoop(
 export interface TrackDef {
   id: string;
   title: { fr: string; en: string };
-  seconds: number;
   seed: number;
+  /** Tempo, temps par mesure et mesures par boucle (un multiple de la grille d'accords). */
+  bpm: number;
+  beats: number;
+  bars: number;
   compose: (c: Ctx) => void | Promise<void>;
   reverb: number;
   decay: number;
   lofi?: boolean;
 }
 
+/**
+ * Longueur exacte de la boucle, en échantillons à 48 kHz : un multiple de 128 (tempo ajusté de
+ * quelques millionièmes). L'horloge de rendu de Tone avance par blocs de 128 échantillons et y cale le
+ * départ des notes différées : deux périodes ne sont identiques que si elles tombent pareil sur ces blocs.
+ */
+export function loopSamples(def: TrackDef): number {
+  return Math.round(((60 / def.bpm) * def.beats * def.bars * 48000) / 128) * 128;
+}
+
 export const TRACKS: TrackDef[] = [
   {
     id: 'music:1',
     title: { fr: 'Aube', en: 'Dawn' },
-    seconds: 136,
     seed: 11,
+    bpm: 70,
+    beats: 4,
+    bars: 36,
     reverb: 0.45,
     decay: 6,
-    compose: ({ duration, r, mix }) => {
-      const p = pad(mix.dry, -26, 800);
+    compose: (c) => {
+      const { r, mix } = c;
+      const p = pad(mix.dry, c.loop, -26, 800);
       const ep = epiano(mix.dry, -16);
       const prog = ['Dmaj9', 'Bm9', 'Gmaj9', 'A6'];
-      chordsLoop(prog, 70, 4, duration, (ch, t, i, b) => {
+      chordsLoop(prog, c, (ch, t, i, b) => {
         p.triggerAttackRelease(voicing(ch, 60).map(freq), b * 4.2, t, 0.5);
         // arpège doux, montant puis redescendant
         const v = voicing(ch, 67);
@@ -328,26 +389,29 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:2',
     title: { fr: 'Tesselles', en: 'Tesserae' },
-    seconds: 132,
     seed: 22,
+    bpm: 78,
+    beats: 4,
+    bars: 40,
     reverb: 0.25,
     decay: 2.8,
     lofi: true,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const ep = epiano(mix.dry, -13);
       const bs = bass(mix.dry, -11);
       const dr = drums(mix.dry, -15);
-      vinyl(mix.dry, duration, r);
+      vinyl(mix.dry, c);
       const prog = ['Fmaj9', 'Em7', 'Dm9', 'Cmaj7'];
       const swing = 0.06;
-      chordsLoop(prog, 78, 4, duration, (ch, t, i, b) => {
+      chordsLoop(prog, c, (ch, t, i, b) => {
         const v = voicing(ch, 62, true);
         // accords en « comping » syncopé
         ep.triggerAttackRelease(v.map(freq), b * 1.6, t + human(r, 0.02), 0.5);
         ep.triggerAttackRelease(v.slice(1).map(freq), b * 0.9, t + b * 2.5 + human(r, 0.02), 0.35);
         bs.triggerAttackRelease(freq(bassNote(ch, 38)), b * 1.5, t, 0.8);
         bs.triggerAttackRelease(freq(bassNote(ch, 38) + (r() < 0.5 ? 7 : 12)), b * 0.8, t + b * 2.5, 0.6);
-        if (i < 2 || t > duration - 12) return; // intro et fin sans batterie
+        if (i === 18 || i === 19) return; // respiration au milieu de la boucle
         for (let k = 0; k < 4; k++) {
           const at = t + k * b;
           if (k === 0 || (k === 2 && r() < 0.7))
@@ -362,11 +426,14 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:3',
     title: { fr: 'Jardin', en: 'Garden' },
-    seconds: 128,
     seed: 33,
+    bpm: 84,
+    beats: 4,
+    bars: 44,
     reverb: 0.4,
     decay: 4,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const m = mallet(mix.dry, -15);
       const sp = softPad(mix.dry, -25);
       const bs = bass(mix.dry, -16);
@@ -374,7 +441,7 @@ export const TRACKS: TrackDef[] = [
       const scale = scaleNotes(root, PENTA, 67, 86);
       const prog = ['Gadd9', 'Em7', 'Cmaj7', 'D6'];
       let idx = Math.floor(scale.length / 2);
-      chordsLoop(prog, 84, 4, duration, (ch, t, i, b) => {
+      chordsLoop(prog, c, (ch, t, i, b) => {
         sp.triggerAttackRelease(voicing(ch, 58).map(freq), b * 4.1, t, 0.45);
         bs.triggerAttackRelease(freq(bassNote(ch, 43)), b * 3.5, t, 0.5);
         // mélodie pentatonique en pas conjoints, avec respirations
@@ -391,15 +458,18 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:4',
     title: { fr: 'Nuage', en: 'Cloud' },
-    seconds: 140,
     seed: 44,
+    bpm: 48,
+    beats: 4,
+    bars: 24,
     reverb: 0.7,
     decay: 9,
-    compose: ({ duration, r, mix }) => {
-      const p = pad(mix.dry, -22, 1100);
+    compose: (c) => {
+      const { r, mix } = c;
+      const p = pad(mix.dry, c.loop, -22, 1100);
       const b2 = bell(mix.wet, -18);
       const prog = ['Ebmaj7s11', 'Cm9', 'Abmaj9', 'Bb6'];
-      chordsLoop(prog, 48, 4, duration, (ch, t, _i, b) => {
+      chordsLoop(prog, c, (ch, t, _i, b) => {
         p.triggerAttackRelease(voicing(ch, 60, true).map(freq), b * 4.4, t, 0.6);
         // quelques éclats aigus, comme de la lumière entre les nuages
         const v = voicing(ch, 79);
@@ -414,19 +484,22 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:5',
     title: { fr: 'Atelier', en: 'Studio' },
-    seconds: 130,
     seed: 55,
+    bpm: 72,
+    beats: 4,
+    bars: 40,
     reverb: 0.22,
     decay: 2.4,
     lofi: true,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const ep = epiano(mix.dry, -14);
       const bs = bass(mix.dry, -10);
       const dr = drums(mix.dry, -17);
-      vinyl(mix.dry, duration, r);
+      vinyl(mix.dry, c);
       const prog = ['Am9', 'Dm9', 'Gmaj7', 'Cmaj9', 'Fmaj7', 'Bm7', 'E7', 'Am9'];
       const scale = scaleNotes(9, PENTA_MINOR, 69, 84);
-      chordsLoop(prog, 72, 4, duration, (ch, t, i, b) => {
+      chordsLoop(prog, c, (ch, t, i, b) => {
         const v = voicing(ch, 60, true);
         ep.triggerAttackRelease(v.map(freq), b * 3.6, t + human(r, 0.015), 0.42);
         bs.triggerAttackRelease(freq(bassNote(ch, 40)), b * 2.8, t, 0.75);
@@ -437,7 +510,7 @@ export const TRACKS: TrackDef[] = [
             if (n !== undefined && r() > 0.3)
               ep.triggerAttackRelease(freq(n), b * 0.7, t + b * (1 + k * 0.5) + human(r), 0.3 + r() * 0.2);
           }
-        if (i < 2 || t > duration - 10) return;
+        if (i === 22 || i === 23) return; // respiration au milieu de la boucle
         for (let k = 0; k < 4; k++) {
           const at = t + k * b;
           if (k === 0 || (k === 2 && r() < 0.5)) dr.kick.triggerAttackRelease('C1', 0.3, at, 0.7);
@@ -450,17 +523,20 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:6',
     title: { fr: 'Rivière', en: 'River' },
-    seconds: 126,
     seed: 66,
+    bpm: 96,
+    beats: 6,
+    bars: 32,
     reverb: 0.35,
     decay: 3.5,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const m = mallet(mix.dry, -17);
       const sp = softPad(mix.dry, -26);
       const bs = bass(mix.dry, -17);
       const prog = ['Cmaj7', 'Am7', 'Fmaj9', 'G6'];
       // 6/8 : arpèges qui coulent en croches
-      chordsLoop(prog, 96, 6, duration, (ch, t, i, b) => {
+      chordsLoop(prog, c, (ch, t, i, b) => {
         sp.triggerAttackRelease(voicing(ch, 57).map(freq), b * 6.2, t, 0.4);
         bs.triggerAttackRelease(freq(bassNote(ch, 40)), b * 5, t, 0.5);
         const v = voicing(ch, 69);
@@ -481,16 +557,19 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:7',
     title: { fr: 'Veillée', en: 'Evening' },
-    seconds: 134,
     seed: 77,
+    bpm: 60,
+    beats: 4,
+    bars: 32,
     reverb: 0.45,
     decay: 5,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const ep = epiano(mix.dry, -13);
-      const sp = pad(mix.dry, -30, 700);
+      const sp = pad(mix.dry, c.loop, -30, 700);
       const prog = ['Abmaj7', 'Fm9', 'Dbmaj9', 'Eb6', 'Cm7', 'Fm9', 'Bbm7', 'Eb6'];
       const scale = scaleNotes(8, PENTA, 68, 84);
-      chordsLoop(prog, 60, 4, duration, (ch, t, _i, b) => {
+      chordsLoop(prog, c, (ch, t, _i, b) => {
         sp.triggerAttackRelease(voicing(ch, 55).map(freq), b * 4.2, t, 0.4);
         // main gauche : basse + accord brisé ; main droite : mélodie chantante
         const low = bassNote(ch, 44);
@@ -511,11 +590,14 @@ export const TRACKS: TrackDef[] = [
   {
     id: 'music:8',
     title: { fr: 'Constellation', en: 'Constellation' },
-    seconds: 138,
     seed: 88,
+    bpm: 50,
+    beats: 4,
+    bars: 28,
     reverb: 0.75,
     decay: 10,
-    compose: ({ duration, r, mix }) => {
+    compose: (c) => {
+      const { r, mix } = c;
       const b2 = bell(mix.dry, -17);
       const p = softPad(mix.dry, -21);
       const sub = new Tone.PolySynth(Tone.Synth, {
@@ -525,7 +607,7 @@ export const TRACKS: TrackDef[] = [
       sub.volume.value = -22;
       const prog = ['Emaj9', 'C#m9', 'Amaj7s11', 'B6'];
       const scale = scaleNotes(4, [0, 2, 4, 6, 7, 9, 11], 72, 91);
-      chordsLoop(prog, 50, 4, duration, (ch, t, _i, b) => {
+      chordsLoop(prog, c, (ch, t, _i, b) => {
         p.triggerAttackRelease(voicing(ch, 62).map(freq), b * 4.2, t, 0.5);
         sub.triggerAttackRelease(freq(bassNote(ch, 34)), b * 4, t, 0.6);
         // étoiles : notes isolées, loin les unes des autres
@@ -539,28 +621,86 @@ export const TRACKS: TrackDef[] = [
   },
 ];
 
-/** Rend une piste hors ligne (48 kHz stéréo), fondu d'entrée et de sortie compris. */
-export async function renderTrack(def: TrackDef): Promise<AudioBuffer> {
-  const buffer = await Tone.Offline(
+/**
+ * Avance du rendu avant la première période : 1 s et un quart d'échantillon. Ce quart écarte de la
+ * grille des échantillons les notes posées pile sur un temps (grosse caisse, basse) : sans lui, l'arrondi
+ * de leur départ à l'échantillon peut tomber d'un côté dans une période et de l'autre dans la suivante,
+ * et la jonction ne serait plus parfaite.
+ */
+const PRE_ROLL = 1 + 0.25 / 48000;
+
+/** Tire les tampons de bruit de Tone (paresseux) avant de rejouer le hasard des périodes. */
+function warmNoise(): void {
+  for (const type of ['white', 'pink', 'brown'] as const) {
+    const n = new Tone.Noise({ type });
+    n.start(0).stop(0.001);
+  }
+}
+
+/**
+ * Rend la boucle d'une piste (48 kHz stéréo) : deux périodes identiques jouées d'affilée, on garde la
+ * seconde. Son début contient la queue de la première (réverbération, notes tenues, compresseur en
+ * régime établi) : jouée en boucle, la fin s'enchaîne sur le début sans la moindre couture.
+ * Contrôle : la fin des deux périodes doit être identique (écart en dB, refusé au-delà de -50 dB),
+ * sinon un élément non périodique ferait claquer la jonction.
+ */
+export async function renderLoop(def: TrackDef): Promise<{ buffer: AudioBuffer; periodicityDb: number }> {
+  const samples = loopSamples(def);
+  const loop = samples / 48000;
+  const bar = loop / def.bars;
+  const realRandom = Math.random;
+  const rendered = await Tone.Offline(
     async () => {
-      const mix = await mixBus({ reverb: def.reverb, decay: def.decay, ...(def.lofi && { lofi: true }) });
-      await def.compose({ duration: def.seconds, r: rng(def.seed), mix });
+      const mix = await mixBus({
+        reverb: def.reverb,
+        decay: def.decay,
+        loop,
+        ...(def.lofi && { lofi: true }),
+      });
+      warmNoise();
+      try {
+        for (const period of [0, 1]) {
+          // même hasard à chaque période (notes de la piste et bruit des percussions de Tone)
+          const seeded = rng(def.seed * 7919 + 13);
+          Math.random = seeded;
+          await def.compose({
+            start: PRE_ROLL + period * loop,
+            loop,
+            bars: def.bars,
+            bar,
+            beat: bar / def.beats,
+            r: rng(def.seed),
+            mix,
+          });
+        }
+      } finally {
+        Math.random = realRandom;
+      }
     },
-    def.seconds,
+    PRE_ROLL + 2 * loop + 0.05,
     2,
     48000,
   );
-  const out = buffer.get();
-  if (!out) throw new Error('Rendu vide');
-  const fadeIn = 1.5 * 48000;
-  const fadeOut = 6 * 48000;
-  for (let c = 0; c < out.numberOfChannels; c++) {
-    const d = out.getChannelData(c);
-    for (let i = 0; i < fadeIn && i < d.length; i++) d[i] = (d[i] ?? 0) * (i / fadeIn);
-    for (let i = 0; i < fadeOut && i < d.length; i++) {
-      const k = d.length - 1 - i;
-      d[k] = (d[k] ?? 0) * Math.sin(((i / fadeOut) * Math.PI) / 2);
+  const full = rendered.get();
+  if (!full) throw new Error('Rendu vide');
+  const from = Math.round((PRE_ROLL + loop) * 48000);
+  // la dernière seconde de chaque période : identiques si tout est bien périodique
+  let diff = 0;
+  let ref = 0;
+  for (let ch = 0; ch < 2; ch++) {
+    const d = full.getChannelData(ch);
+    for (let i = from - 48000; i < from; i++) {
+      const a = d[i] ?? 0;
+      const b = d[i + samples] ?? 0;
+      diff += (a - b) ** 2;
+      ref += b * b;
     }
   }
-  return out;
+  const periodicityDb = 10 * Math.log10(Math.max(diff, 1e-30) / Math.max(ref, 1e-12));
+  if (periodicityDb > -50)
+    throw new Error(`${def.id} : périodes différentes (${periodicityDb.toFixed(1)} dB)`);
+  const buffer = new AudioBuffer({ length: samples, numberOfChannels: 2, sampleRate: 48000 });
+  for (let ch = 0; ch < 2; ch++)
+    buffer.copyToChannel(full.getChannelData(ch).subarray(from, from + samples), ch);
+  return { buffer, periodicityDb };
 }

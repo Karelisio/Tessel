@@ -5,6 +5,15 @@ import type { PluginListenerHandle } from '@capacitor/core';
 export type HapticPrimitive = 'tick' | 'lowTick' | 'click' | 'thud' | 'spin' | 'quickRise';
 
 /**
+ * Vibration en forme d'onde, comme `VibrationEffect.createWaveform` : segments de `timings[i]` ms,
+ * chacun à l'amplitude `amplitudes[i]` (0 à 255, 0 = pause).
+ */
+export interface Waveform {
+  timings: number[];
+  amplitudes: number[];
+}
+
+/**
  * 13 tons par palette (0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000),
  * en entiers ARGB non signés (0xAARRGGBB).
  */
@@ -53,6 +62,11 @@ export interface TesselNativePlugin {
   getBuildInfo(): Promise<BuildInfo>;
   getDynamicColors(): Promise<{ available: boolean; palettes?: TonalPalettes }>;
   haptic(options: { primitive: HapticPrimitive; scale?: number }): Promise<{ usedPrimitives: boolean }>;
+  /**
+   * Vibration du jeu, classée « média » (l'usage qu'Android prévoit pour un jeu) : elle n'est pas
+   * coupée avec la vibration au toucher du système. `played` : faux sans vibreur.
+   */
+  vibrate(options: Waveform): Promise<{ played: boolean }>;
   canInstallPackages(): Promise<{ allowed: boolean }>;
   openInstallSettings(): Promise<void>;
   downloadUpdate(options: DownloadUpdateOptions): Promise<{ path: string }>;

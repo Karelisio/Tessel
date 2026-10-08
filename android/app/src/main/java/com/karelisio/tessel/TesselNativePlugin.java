@@ -9,16 +9,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.webkit.MimeTypeMap;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.getcapacitor.JSArray;
@@ -35,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -147,6 +151,105 @@ public class TesselNativePlugin extends Plugin {
 
     // ---------------------------------------------------------------- haptique
 
+    /**
+     * Attributs d'une vibration de jeu jusqu'à Android 12 (l'usage « jeu » y devient l'usage « média »).
+     * Sans attributs, Android range toute vibration courte dans le retour tactile, que beaucoup de
+     * téléphones coupent (vibration au toucher désactivée dans les réglages du système).
+     */
+    private static final AudioAttributes GAME_ATTRIBUTES = new AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_GAME)
+        .build();
+
+    /** Vibration du jeu en forme d'onde : segments de `timings` ms, chacun à son amplitude (0 à 255). */
+    @PluginMethod
+    public void vibrate(PluginCall call) {
+        long[] timings = numbers(call.getArray("timings"), 0, 10_000);
+        long[] levels = numbers(call.getArray("amplitudes"), 0, 255);
+        if (timings == null || levels == null || timings.length == 0 || timings.length != levels.length) {
+            call.reject("Forme d'onde invalide");
+            return;
+        }
+        int[] amplitudes = new int[levels.length];
+        boolean audible = false;
+        for (int i = 0; i < levels.length; i++) {
+            amplitudes[i] = (int) levels[i];
+            audible |= amplitudes[i] > 0 && timings[i] > 0;
+        }
+        Vibrator vibrator = getVibrator();
+        boolean played = audible && vibrator != null && vibrator.hasVibrator();
+        if (played) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    play(vibrator, VibrationEffect.createWaveform(timings, amplitudes, -1));
+                } else {
+                    playLegacy(vibrator, onOffPattern(timings, amplitudes));
+                }
+            } catch (RuntimeException e) {
+                // une exception remontée par une méthode de plugin ferait planter l'app
+                call.reject("Vibration refusée par le système", e);
+                return;
+            }
+        }
+        JSObject result = new JSObject();
+        result.put("played", played);
+        call.resolve(result);
+    }
+
+    /** Entiers d'un tableau JS, bornés ; null s'il manque ou contient autre chose qu'un nombre. */
+    private static long[] numbers(JSArray array, long min, long max) {
+        if (array == null) {
+            return null;
+        }
+        long[] out = new long[array.length()];
+        for (int i = 0; i < out.length; i++) {
+            double value = array.optDouble(i, Double.NaN);
+            if (Double.isNaN(value)) {
+                return null;
+            }
+            out[i] = Math.max(min, Math.min(max, Math.round(value)));
+        }
+        return out;
+    }
+
+    /** Joue un effet avec les attributs d'un jeu (usage « média »). */
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressWarnings("deprecation")
+    private static void play(Vibrator vibrator, VibrationEffect effect) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            vibrator.vibrate(effect, VibrationAttributes.createForUsage(VibrationAttributes.USAGE_MEDIA));
+        } else {
+            vibrator.vibrate(effect, GAME_ATTRIBUTES);
+        }
+    }
+
+    /** Android 7 : motif marche/arrêt (pause, vibration, pause…), sans réglage d'amplitude. */
+    @SuppressWarnings("deprecation")
+    private static void playLegacy(Vibrator vibrator, long[] pattern) {
+        vibrator.vibrate(pattern, -1, GAME_ATTRIBUTES);
+    }
+
+    /** Forme d'onde → motif marche/arrêt des anciens Android, qui commence toujours par une pause. */
+    private static long[] onOffPattern(long[] timings, int[] amplitudes) {
+        ArrayList<Long> runs = new ArrayList<>();
+        boolean on = false;
+        long run = 0;
+        for (int i = 0; i < timings.length; i++) {
+            boolean segment = amplitudes[i] > 0;
+            if (segment != on) {
+                runs.add(run);
+                run = 0;
+                on = segment;
+            }
+            run += timings[i];
+        }
+        runs.add(run);
+        long[] pattern = new long[runs.size()];
+        for (int i = 0; i < pattern.length; i++) {
+            pattern[i] = runs.get(i);
+        }
+        return pattern;
+    }
+
     @PluginMethod
     public void haptic(PluginCall call) {
         String primitive = call.getString("primitive");
@@ -167,7 +270,7 @@ public class TesselNativePlugin extends Plugin {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             int id = primitiveId(primitive);
             if (id != -1 && vibrator.arePrimitivesSupported(id)[0]) {
-                vibrator.vibrate(VibrationEffect.startComposition().addPrimitive(id, scale).compose());
+                play(vibrator, VibrationEffect.startComposition().addPrimitive(id, scale).compose());
                 usedPrimitives = true;
             }
         }
@@ -201,7 +304,6 @@ public class TesselNativePlugin extends Plugin {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static void fallbackVibration(Vibrator vibrator, String primitive, float scale) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             int effect;
@@ -217,15 +319,15 @@ public class TesselNativePlugin extends Plugin {
                     effect = VibrationEffect.EFFECT_CLICK;
                     break;
             }
-            vibrator.vibrate(VibrationEffect.createPredefined(effect));
+            play(vibrator, VibrationEffect.createPredefined(effect));
             return;
         }
         long duration = "tick".equals(primitive) || "lowTick".equals(primitive) ? 10 : "thud".equals(primitive) ? 20 : 15;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int amplitude = Math.max(1, Math.min(255, Math.round(255 * scale)));
-            vibrator.vibrate(VibrationEffect.createOneShot(duration, amplitude));
+            play(vibrator, VibrationEffect.createOneShot(duration, amplitude));
         } else {
-            vibrator.vibrate(duration);
+            playLegacy(vibrator, new long[] { 0, duration });
         }
     }
 
