@@ -18,6 +18,7 @@ interface Entry {
   file: string;
   samples: number;
   offset?: number;
+  wrap?: boolean;
 }
 
 interface Report {
@@ -41,12 +42,12 @@ const { browser, page } = await openPage('http://localhost:5173/scripts/audio/re
 });
 
 /** Exécuté dans Chromium (texte : tsx n'y injecte rien). */
-const ANALYZE = `async ({ id, file, samples, offset }) => {
+const ANALYZE = `async ({ id, file, samples, offset, wrap }) => {
   const data = await fetch('/audio/' + file).then((x) => x.arrayBuffer());
   const b = await new OfflineAudioContext(2, 48000, 48000).decodeAudioData(data);
   // comme le jeu : la jonction est raccordée à la suite décodée de la fin
   const { stitchLoop } = await import('/src/audio/loopStitch.ts');
-  stitchLoop(b, offset, samples);
+  if (wrap) stitchLoop(b, offset, samples);
   const l = b.getChannelData(0);
   const rr = b.numberOfChannels > 1 ? b.getChannelData(1) : l;
   const at = (i) => {
@@ -97,7 +98,7 @@ const ANALYZE = `async ({ id, file, samples, offset }) => {
 let failed = 0;
 for (const e of [...manifest.music, ...manifest.ambience]) {
   const r = await page.evaluate<Report>(
-    `(${ANALYZE})(${JSON.stringify({ id: e.id, file: e.file, samples: e.samples, offset: e.offset ?? 0 })})`,
+    `(${ANALYZE})(${JSON.stringify({ id: e.id, file: e.file, samples: e.samples, offset: e.offset ?? 0, wrap: e.wrap === true })})`,
   );
   const clickOk = r.seamClick <= r.maxClick * 1.05;
   const jumpOk = r.seamJump >= r.minJump - 1 && r.seamJump <= r.maxJump + 1;

@@ -30,6 +30,8 @@ interface Entry {
   samples: number;
   /** Début de la boucle dans le son décodé (échantillons à 48 kHz, 0 en général). */
   offset: number;
+  /** Le fichier se prolonge, après la boucle, par son début encodé d'un seul tenant : de quoi raccorder la jonction. */
+  wrap: boolean;
   lufs: number;
 }
 
@@ -76,6 +78,7 @@ for (const id of ids) {
     seconds: Math.round(r.seconds * 100) / 100,
     samples: r.samples,
     offset: r.offset,
+    wrap: true,
     lufs: Math.round(r.lufs * 10) / 10,
   });
   list.sort((a, b) => a.id.localeCompare(b.id, 'fr', { numeric: true }));

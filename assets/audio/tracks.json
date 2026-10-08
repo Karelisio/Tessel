@@ -10,6 +10,7 @@
       "seconds": 123.43,
       "samples": 5924608,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -22,6 +23,7 @@
       "seconds": 123.08,
       "samples": 5907712,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -34,6 +36,7 @@
       "seconds": 125.71,
       "samples": 6034304,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -46,6 +49,7 @@
       "seconds": 120,
       "samples": 5760000,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -69,6 +73,7 @@
       "seconds": 120,
       "samples": 5760000,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -81,6 +86,7 @@
       "seconds": 128,
       "samples": 6144000,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -93,6 +99,7 @@
       "seconds": 134.4,
       "samples": 6451200,
       "offset": 0,
+      "wrap": true,
       "lufs": -16
     }
   ],

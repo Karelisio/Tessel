@@ -67,14 +67,16 @@ Pour mettre de vraies musiques :
 
 1. déposer des boucles sans couture (Ogg Opus ou MP3, 48 kHz, environ -16 LUFS) dans `assets/audio/music/` ;
 2. mettre à jour `assets/audio/tracks.json` (`id` = `music:1` … `music:8`, `file`, `title`, `seconds`,
-   `samples` = longueur exacte de la boucle en échantillons à 48 kHz, `offset` facultatif) et les titres
-   dans `src/meta/catalog.ts` ;
+   `samples` = longueur exacte de la boucle en échantillons à 48 kHz, `offset` facultatif, sans `wrap`)
+   et les titres dans `src/meta/catalog.ts` ;
 3. copier `assets/audio/` dans `public/audio/`, puis vérifier les jonctions (serveur de dev lancé) :
    `npx tsx scripts/audio/check-loops.ts`.
 
 Pour régénérer les pistes composées en code (Tone.js, deux périodes rendues hors ligne dans Chromium pour
 une jonction parfaite, normalisation BS.1770 à -16 LUFS, encodage Opus) : serveur de dev lancé, puis
-`npx tsx --tsconfig tsconfig.app.json scripts/audio/prerender.ts [music:3 …]`.
+`npx tsx --tsconfig tsconfig.app.json scripts/audio/prerender.ts [music:3 …]`. Ces fichiers se prolongent
+après la boucle par son début (`"wrap": true` dans le manifeste) : le jeu s'en sert pour raccorder la
+jonction, que l'encodage Opus aurait sinon marquée d'une infime marche.
 
 ## Architecture
 

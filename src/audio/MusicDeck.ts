@@ -9,6 +9,8 @@ export interface LoopTrack {
   samples: number;
   /** Début de la boucle dans le son décodé (échantillons à 48 kHz). */
   offset?: number;
+  /** Le fichier se prolonge, après la boucle, par son début encodé d'un seul tenant : de quoi raccorder la jonction. */
+  wrap?: boolean;
 }
 
 interface DeckHost {
@@ -156,7 +158,7 @@ export class MusicDeck {
         return r.arrayBuffer();
       });
       const buffer = await ctx.decodeAudioData(data);
-      stitchLoop(buffer, track.offset ?? 0, track.samples);
+      if (track.wrap) stitchLoop(buffer, track.offset ?? 0, track.samples);
       return buffer;
     } catch (e) {
       console.warn('Musique illisible', id, e);

@@ -76,6 +76,8 @@ export interface MusicTrack {
   samples: number;
   /** Début de la boucle dans le son décodé (échantillons à 48 kHz, 0 en général). */
   offset?: number;
+  /** Le fichier se prolonge, après la boucle, par son début encodé d'un seul tenant : de quoi raccorder la jonction. */
+  wrap?: boolean;
 }
 
 interface AudioManifest {
@@ -214,7 +216,7 @@ export class AudioEngine {
     const data = await fetch(`audio/${entry.file}`).then((r) => r.arrayBuffer());
     const buffer = await ctx.decodeAudioData(data);
     if (this.ambienceWanted !== id || this.ambience) return;
-    stitchLoop(buffer, entry.offset ?? 0, entry.samples);
+    if (entry.wrap) stitchLoop(buffer, entry.offset ?? 0, entry.samples);
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     src.loop = true;
