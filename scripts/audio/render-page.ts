@@ -22,8 +22,9 @@ export interface Rendered {
 }
 
 /**
- * Décalage du son décodé par rapport à l'original (corrélation sur une fenêtre au milieu),
- * et erreur résiduelle une fois aligné.
+ * Décalage du son décodé par rapport à l'original (écart minimal sur une fenêtre au milieu), et erreur
+ * résiduelle une fois aligné. L'écart et non la corrélation : une frappe plus forte un peu plus loin
+ * attirerait la corrélation à côté.
  */
 function alignment(decoded: AudioBuffer, original: AudioBuffer): { offset: number; errorDb: number } {
   const mono = (b: AudioBuffer) => {
@@ -38,12 +39,12 @@ function alignment(decoded: AudioBuffer, original: AudioBuffer): { offset: numbe
   const from = Math.min(96000, Math.floor(a.length / 3));
   const win = 8192;
   let best = 0;
-  let bestScore = -Infinity;
+  let bestErr = Infinity;
   for (let off = 0; off <= 30000 && from + off + win <= d.length; off++) {
     let s = 0;
-    for (let i = 0; i < win; i++) s += (a[from + i] ?? 0) * (d[from + off + i] ?? 0);
-    if (s > bestScore) {
-      bestScore = s;
+    for (let i = 0; i < win && s < bestErr; i++) s += ((a[from + i] ?? 0) - (d[from + off + i] ?? 0)) ** 2;
+    if (s < bestErr) {
+      bestErr = s;
       best = off;
     }
   }

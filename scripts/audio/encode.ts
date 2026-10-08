@@ -6,8 +6,9 @@ export const LOOP_CONTEXT = 24000;
 
 /**
  * Encode un son 48 kHz en Ogg Opus. Pour une boucle, l'encodeur reçoit aussi la fin avant le début
- * et le début après la fin ; ce voisinage est retiré au décodage (pre-skip et granule finale) : les
- * deux bords sont codés avec leur vrai entourage et la jonction reste propre.
+ * et le début après la fin : les deux bords sont codés avec leur vrai entourage. Le voisinage d'avant
+ * est retiré au décodage (pre-skip) ; celui d'après reste dans le fichier (granule finale), suite
+ * décodée d'un seul tenant avec la fin, dont le jeu se sert pour raccorder la jonction.
  */
 export async function encodeOggOpus(
   buffer: AudioBuffer,
@@ -66,5 +67,11 @@ export async function encodeOggOpus(
   await encoder.flush();
   encoder.close();
   if (status.failure) throw status.failure;
-  return muxOggOpus({ channels, preSkip: preSkip + context, packets, totalSamples: length, comments });
+  return muxOggOpus({
+    channels,
+    preSkip: preSkip + context,
+    packets,
+    totalSamples: length + context,
+    comments,
+  });
 }

@@ -38,7 +38,21 @@ interface Entry {
 const only = process.argv.slice(2);
 const PAGE = 'http://localhost:5173/scripts/audio/render.html';
 const { browser, page } = await openPage(PAGE, { width: 400, height: 400 });
-const ids = await page.evaluate<string[]>(`import('/scripts/audio/render-page.ts').then((m) => m.ALL_IDS)`);
+
+/** Évalue dans la page ; le serveur de dev peut la recharger (dépendances réoptimisées) : on reprend. */
+async function inPage<T>(code: string): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await page.evaluate<T>(code);
+    } catch (e) {
+      if (!String(e).includes('context was destroyed') || attempt === 3) throw e;
+      await page.waitForTimeout(3000);
+      await page.goto(PAGE);
+    }
+  }
+}
+
+const ids = await inPage<string[]>(`import('/scripts/audio/render-page.ts').then((m) => m.ALL_IDS)`);
 const manifestPath = 'assets/audio/tracks.json';
 /** Relu avant chaque écriture : plusieurs rendus peuvent tourner en parallèle. */
 const readManifest = (): { music: Entry[]; ambience: Entry[] } =>
@@ -49,20 +63,9 @@ const readManifest = (): { music: Entry[]; ambience: Entry[] } =>
 for (const id of ids) {
   if (only.length > 0 && !only.includes(id)) continue;
   const t0 = Date.now();
-  let r: Rendered | null = null;
-  // le serveur de dev peut recharger la page (dépendances réoptimisées) : on reprend
-  for (let attempt = 0; attempt < 4 && !r; attempt++) {
-    try {
-      r = await page.evaluate<Rendered>(
-        `import('/scripts/audio/render-page.ts').then((m) => m.renderOne(${JSON.stringify(id)}))`,
-      );
-    } catch (e) {
-      if (!String(e).includes('context was destroyed') || attempt === 3) throw e;
-      await page.waitForTimeout(3000);
-      await page.goto(PAGE);
-    }
-  }
-  if (!r) continue;
+  const r = await inPage<Rendered>(
+    `import('/scripts/audio/render-page.ts').then((m) => m.renderOne(${JSON.stringify(id)}))`,
+  );
   const name = id.split(':')[1] ?? id;
   const dir = `assets/audio/${r.kind}`;
   mkdirSync(dir, { recursive: true });
