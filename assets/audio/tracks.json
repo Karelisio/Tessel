@@ -66,8 +66,9 @@
         "fr": "Rivière",
         "en": "River"
       },
-      "seconds": 126,
-      "samples": 6048000,
+      "seconds": 120,
+      "samples": 5760000,
+      "offset": 0,
       "lufs": -16
     },
     {
