@@ -7,8 +7,9 @@
         "fr": "Aube",
         "en": "Dawn"
       },
-      "seconds": 136,
-      "samples": 6528000,
+      "seconds": 123.43,
+      "samples": 5924608,
+      "offset": 0,
       "lufs": -16
     },
     {
