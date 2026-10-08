@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { AudioEngine } from '@/audio/AudioEngine';
 import type { HapticsEngine } from '@/audio/haptics';
 import { createGrid, TRANSPARENT } from '@/content/grid';
+import { Bitset } from '@/content/progress';
 import type { ParticleFx } from '@/fx/Particles';
 import { MODES } from '@/modes';
 import { Camera } from './Camera';
@@ -168,5 +169,28 @@ describe('outils', () => {
     expect(game.selected).not.toBe(1);
     const i = Math.floor(cy) * 8 + Math.floor(cx);
     expect(game.progress.filled.get(i)).toBe(false);
+  });
+});
+
+describe('relecture de la création', () => {
+  it('rouverte depuis la galerie : la relecture dure, même avant la première frame de la partie', () => {
+    const { game, grid } = setup();
+    const filled = new Bitset(grid.cells.length);
+    const history: number[] = [];
+    grid.cells.forEach((c, i) => {
+      if (c === TRANSPARENT) return;
+      filled.set(i);
+      history.push(i);
+    });
+    game.restore(filled, history);
+    expect(game.phase).toBe('finished');
+    // partie tout juste chargée : aucune frame reçue, alors que le moteur tourne depuis 2 min
+    game.playTimelapse();
+    game.tick(120);
+    expect(game.phase).toBe('timelapse');
+    game.tick(122);
+    expect(game.phase).toBe('timelapse');
+    game.tick(133);
+    expect(game.phase).toBe('finished');
   });
 });

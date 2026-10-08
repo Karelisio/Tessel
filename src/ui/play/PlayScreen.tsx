@@ -186,7 +186,7 @@ export function PlayScreen() {
 
   /** Ouvre une partie dans le mode voulu (le pixel si le mode n'est pas débloqué). */
   const start = useCallback(
-    async (ref: ArtworkRef, wanted: ModeId) => {
+    async (ref: ArtworkRef, wanted: ModeId, projectId?: string) => {
       if (!engine) return;
       const { store, meta } = await getServices();
       const playable = meta.unlockedModes.includes(wanted) ? wanted : 'pixel';
@@ -195,7 +195,7 @@ export function PlayScreen() {
       await previous?.close();
       if (ref.source === 'daily' && !(await store.findLatest(ref.artworkId, playable)))
         meta.record('daily.opened');
-      const sess = await openSession(engine, store, ref, playable, meta);
+      const sess = await openSession(engine, store, ref, playable, meta, projectId);
       sess.onCompleted = (bonus) => {
         if (session.current === sess) setBonusXp(bonus);
       };
@@ -214,7 +214,7 @@ export function PlayScreen() {
     if (!engine) return;
     const handle = (req: OpenRequest | null) => {
       if (!req) return;
-      void start(req.ref, req.mode ?? usePlayStore.getState().mode)
+      void start(req.ref, req.mode ?? usePlayStore.getState().mode, req.projectId)
         .then(() => {
           if (useNav.getState().request !== req) return;
           useNav.getState().setPlaying(true);

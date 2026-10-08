@@ -13,6 +13,8 @@ export interface OpenRequest {
   id: number;
   ref: ArtworkRef;
   mode?: ModeId;
+  /** Partie précise à rouvrir (galerie) ; sinon, la plus récente de l'œuvre dans ce mode. */
+  projectId?: string;
   /** Vignette d'origine (transition partagée vers la grille). */
   origin?: { rect: DOMRect; image: string | null };
   /** Rejoue la création dès l'ouverture (œuvre terminée, depuis la galerie). */
@@ -37,7 +39,7 @@ interface NavState {
   /** Ouvre une œuvre en plein écran (le moteur la charge, puis `playing` passe à vrai). */
   open: (
     ref: ArtworkRef,
-    opts?: { mode?: ModeId; origin?: OpenRequest['origin']; timelapse?: boolean },
+    opts?: { mode?: ModeId; projectId?: string; origin?: OpenRequest['origin']; timelapse?: boolean },
   ) => void;
   setPlaying: (playing: boolean) => void;
   closePlay: () => void;
@@ -90,6 +92,7 @@ export const useNav = create<NavState>((set, get) => ({
         id: nextId++,
         ref,
         ...(opts.mode !== undefined && { mode: opts.mode }),
+        ...(opts.projectId !== undefined && { projectId: opts.projectId }),
         ...(opts.origin !== undefined && { origin: opts.origin }),
         ...(opts.timelapse === true && { timelapse: true }),
       },
