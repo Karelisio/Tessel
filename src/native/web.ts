@@ -9,6 +9,7 @@ import type {
   TesselNativePlugin,
   TonalPalettes,
   WallpaperTarget,
+  Waveform,
 } from './TesselNative';
 
 /** Durées (ms) de vibration navigateur approchant chaque primitive. */
@@ -20,6 +21,25 @@ const VIBRATION_MS: Record<HapticPrimitive, number> = {
   spin: 20,
   quickRise: 18,
 };
+
+/**
+ * Forme d'onde → motif de l'API Vibration du navigateur (vibration, pause, vibration…) : segments
+ * consécutifs de même état fusionnés, durées nulles ignorées. Vide s'il n'y a rien à faire vibrer.
+ */
+export function vibrationPattern({ timings, amplitudes }: Waveform): number[] {
+  const pattern: number[] = [];
+  timings.forEach((ms, i) => {
+    if (!(ms > 0)) return;
+    const on = (amplitudes[i] ?? 0) > 0;
+    if (pattern.length === 0 && !on) pattern.push(0);
+    // rangs pairs : vibration, rangs impairs : pause
+    const lastOn = pattern.length % 2 === 1;
+    if (pattern.length > 0 && lastOn === on) pattern[pattern.length - 1] = (pattern.at(-1) ?? 0) + ms;
+    else pattern.push(ms);
+  });
+  if (pattern.length % 2 === 0) pattern.pop();
+  return pattern.some((ms, i) => i % 2 === 0 && ms > 0) ? pattern : [];
+}
 
 /** Repli navigateur : valeurs neutres, fonctions purement natives indisponibles. */
 export class TesselNativeWeb extends WebPlugin implements TesselNativePlugin {
@@ -37,6 +57,13 @@ export class TesselNativeWeb extends WebPlugin implements TesselNativePlugin {
       navigator.vibrate(Math.max(5, Math.round(VIBRATION_MS[options.primitive] * scale)));
     }
     return Promise.resolve({ usedPrimitives: false });
+  }
+
+  vibrate(options: Waveform): Promise<{ played: boolean }> {
+    const pattern = vibrationPattern(options);
+    const played =
+      typeof navigator.vibrate === 'function' && pattern.length > 0 && navigator.vibrate(pattern);
+    return Promise.resolve({ played });
   }
 
   canInstallPackages(): Promise<{ allowed: boolean }> {
