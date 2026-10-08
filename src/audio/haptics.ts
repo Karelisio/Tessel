@@ -1,7 +1,7 @@
 import type { HapticKind } from '@/modes/types';
 import { TesselNative, type Waveform } from '@/native/TesselNative';
 
-/** Formes d'onde (ms, amplitude 0 à 255) : celles de @capacitor/haptics, gardées telles quelles. */
+/** Formes d'onde (ms, amplitude 0 à 255) : celles qu'utilisait @capacitor/haptics, gardées telles quelles. */
 const LIGHT: Waveform = { timings: [0, 50], amplitudes: [0, 110] };
 const MEDIUM: Waveform = { timings: [0, 43], amplitudes: [0, 180] };
 const SUCCESS: Waveform = { timings: [0, 35, 65, 21], amplitudes: [0, 250, 0, 180] };
