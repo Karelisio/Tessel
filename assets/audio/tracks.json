@@ -75,8 +75,9 @@
         "fr": "Veillée",
         "en": "Evening"
       },
-      "seconds": 134,
-      "samples": 6432000,
+      "seconds": 128,
+      "samples": 6144000,
+      "offset": 0,
       "lufs": -16
     },
     {
