@@ -16,6 +16,8 @@ export interface Rendered {
   offset: number;
   /** Écart entre la boucle décodée et l'original (dB, plus c'est bas mieux c'est). */
   errorDb: number;
+  /** Musique : écart entre les fins des deux périodes rendues (dB), la garantie de la jonction. */
+  periodicityDb?: number;
   base64: string;
 }
 
@@ -97,7 +99,10 @@ async function finish(
 
 export async function renderOne(id: string): Promise<Rendered> {
   const t = TRACKS.find((x) => x.id === id);
-  if (t) return finish(t.id, t.title, 'music', await renderLoop(t), -16, 64000);
+  if (t) {
+    const { buffer, periodicityDb } = await renderLoop(t);
+    return { ...(await finish(t.id, t.title, 'music', buffer, -16, 64000)), periodicityDb };
+  }
   const a = AMBIENCES.find((x) => x.id === id);
   if (a) return finish(a.id, a.title, 'ambience', await renderAmbience(a), -22, 48000);
   throw new Error(`Son inconnu : ${id}`);

@@ -17,6 +17,7 @@ interface Rendered {
   peak: number;
   offset: number;
   errorDb: number;
+  periodicityDb?: number;
   base64: string;
 }
 
@@ -81,7 +82,7 @@ for (const id of ids) {
   manifest[r.kind] = list;
   writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
   console.log(
-    `${id} : ${(bytes.length / 1024).toFixed(0)} Ko, ${r.seconds.toFixed(1)} s, ${r.lufs.toFixed(1)} LUFS, crête ${r.peak.toFixed(2)}, décalage ${String(r.offset)}, écart ${r.errorDb.toFixed(1)} dB (${String(Math.round((Date.now() - t0) / 1000))} s)`,
+    `${id} : ${(bytes.length / 1024).toFixed(0)} Ko, ${r.seconds.toFixed(1)} s, ${r.lufs.toFixed(1)} LUFS, crête ${r.peak.toFixed(2)}, décalage ${String(r.offset)}, écart ${r.errorDb.toFixed(1)} dB${r.periodicityDb === undefined ? '' : `, périodicité ${r.periodicityDb.toFixed(1)} dB`} (${String(Math.round((Date.now() - t0) / 1000))} s)`,
   );
 }
 mkdirSync('public/audio', { recursive: true });

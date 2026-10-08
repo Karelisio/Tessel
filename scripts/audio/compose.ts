@@ -318,7 +318,11 @@ interface Ctx {
   mix: Mix;
 }
 
-const human = (r: () => number, amount = 0.012) => (r() - 0.5) * 2 * amount;
+/**
+ * Petit retard « humain » (0 à `amount` s) : jamais en avance, sinon la première note d'une période
+ * déborderait sur la précédente et la boucle extraite perdrait son attaque (clic à la jonction).
+ */
+const human = (r: () => number, amount = 0.012) => r() * amount;
 
 /** Joue une grille d'accords sur toute la période (une mesure par accord). */
 function chordsLoop(
@@ -628,8 +632,10 @@ function warmNoise(): void {
  * Rend la boucle d'une piste (48 kHz stéréo) : deux périodes identiques jouées d'affilée, on garde la
  * seconde. Son début contient la queue de la première (réverbération, notes tenues, compresseur en
  * régime établi) : jouée en boucle, la fin s'enchaîne sur le début sans la moindre couture.
+ * Contrôle : la fin des deux périodes doit être identique (écart en dB, refusé au-delà de -50 dB),
+ * sinon un élément non périodique ferait claquer la jonction.
  */
-export async function renderLoop(def: TrackDef): Promise<AudioBuffer> {
+export async function renderLoop(def: TrackDef): Promise<{ buffer: AudioBuffer; periodicityDb: number }> {
   const samples = loopSamples(def);
   const loop = samples / 48000;
   const bar = loop / def.bars;
@@ -669,8 +675,23 @@ export async function renderLoop(def: TrackDef): Promise<AudioBuffer> {
   const full = rendered.get();
   if (!full) throw new Error('Rendu vide');
   const from = Math.round((PRE_ROLL + loop) * 48000);
-  const out = new AudioBuffer({ length: samples, numberOfChannels: 2, sampleRate: 48000 });
+  // la dernière seconde de chaque période : identiques si tout est bien périodique
+  let diff = 0;
+  let ref = 0;
+  for (let ch = 0; ch < 2; ch++) {
+    const d = full.getChannelData(ch);
+    for (let i = from - 48000; i < from; i++) {
+      const a = d[i] ?? 0;
+      const b = d[i + samples] ?? 0;
+      diff += (a - b) ** 2;
+      ref += b * b;
+    }
+  }
+  const periodicityDb = 10 * Math.log10(Math.max(diff, 1e-30) / Math.max(ref, 1e-12));
+  if (periodicityDb > -50)
+    throw new Error(`${def.id} : périodes différentes (${periodicityDb.toFixed(1)} dB)`);
+  const buffer = new AudioBuffer({ length: samples, numberOfChannels: 2, sampleRate: 48000 });
   for (let ch = 0; ch < 2; ch++)
-    out.copyToChannel(full.getChannelData(ch).subarray(from, from + samples), ch);
-  return out;
+    buffer.copyToChannel(full.getChannelData(ch).subarray(from, from + samples), ch);
+  return { buffer, periodicityDb };
 }
