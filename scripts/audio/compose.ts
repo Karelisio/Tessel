@@ -349,9 +349,13 @@ export interface TrackDef {
   lofi?: boolean;
 }
 
-/** Longueur exacte de la boucle, en échantillons à 48 kHz. */
+/**
+ * Longueur exacte de la boucle, en échantillons à 48 kHz : un multiple de 128 (tempo ajusté de
+ * quelques millionièmes). L'horloge de rendu de Tone avance par blocs de 128 échantillons et y cale le
+ * départ des notes différées : deux périodes ne sont identiques que si elles tombent pareil sur ces blocs.
+ */
 export function loopSamples(def: TrackDef): number {
-  return Math.round((60 / def.bpm) * def.beats * def.bars * 48000);
+  return Math.round(((60 / def.bpm) * def.beats * def.bars * 48000) / 128) * 128;
 }
 
 export const TRACKS: TrackDef[] = [
@@ -617,7 +621,7 @@ export const TRACKS: TrackDef[] = [
   },
 ];
 
-/** Avance du rendu avant la première période : les notes « humanisées » tombent avant le temps. */
+/** Avance du rendu avant la première période (1 s : un multiple de 128 échantillons, lui aussi). */
 const PRE_ROLL = 1;
 
 /** Tire les tampons de bruit de Tone (paresseux) avant de rejouer le hasard des périodes. */
