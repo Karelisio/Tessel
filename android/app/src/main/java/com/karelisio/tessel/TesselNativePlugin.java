@@ -170,16 +170,24 @@ public class TesselNativePlugin extends Plugin {
             return;
         }
         int[] amplitudes = new int[levels.length];
+        boolean audible = false;
         for (int i = 0; i < levels.length; i++) {
             amplitudes[i] = (int) levels[i];
+            audible |= amplitudes[i] > 0 && timings[i] > 0;
         }
         Vibrator vibrator = getVibrator();
-        boolean played = vibrator != null && vibrator.hasVibrator();
+        boolean played = audible && vibrator != null && vibrator.hasVibrator();
         if (played) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                play(vibrator, VibrationEffect.createWaveform(timings, amplitudes, -1));
-            } else {
-                playLegacy(vibrator, onOffPattern(timings, amplitudes));
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    play(vibrator, VibrationEffect.createWaveform(timings, amplitudes, -1));
+                } else {
+                    playLegacy(vibrator, onOffPattern(timings, amplitudes));
+                }
+            } catch (RuntimeException e) {
+                // une exception remontée par une méthode de plugin ferait planter l'app
+                call.reject("Vibration refusée par le système", e);
+                return;
             }
         }
         JSObject result = new JSObject();
