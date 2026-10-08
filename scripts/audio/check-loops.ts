@@ -1,11 +1,13 @@
 /**
  * Contrôle des boucles audio telles que le jeu les jouera : chaque fichier de public/audio est décodé
- * par Chromium, la boucle [offset, offset + samples) est refermée sur elle-même et la jonction est
- * comparée au reste du morceau :
- *  - clic : plus grand saut d'un échantillon au suivant autour de la jonction, rapporté au saut
- *    typique du morceau (centile 99,9) — au-delà de 1, la jonction claque plus fort que la musique ;
- *  - coupure : niveau (RMS) des 300 ms avant et après la jonction — un creux trahit une boucle qui
- *    s'éteint puis repart.
+ * par Chromium, la boucle [offset, offset + samples) est refermée sur elle-même, et sa jonction est
+ * comparée aux autres « coutures » du même son, qui sont naturelles :
+ *  - musique : les changements de mesure (une attaque d'accord au temps fort n'est pas un défaut) ;
+ *  - ambiances : 64 points répartis dans la boucle.
+ * Trois mesures à chaque coupure : le plus grand saut d'un échantillon au suivant (±8 échantillons,
+ * un clic), l'écart de niveau entre les 300 ms d'avant et d'après, et le niveau le plus faible des
+ * deux (un creux de silence, la coupure). La jonction passe si elle ne dépasse pas les coutures
+ * naturelles du son.
  * Usage : serveur de dev lancé, puis `npx tsx scripts/audio/check-loops.ts`
  */
 import { readFileSync } from 'node:fs';
@@ -18,6 +20,17 @@ interface Entry {
   offset?: number;
 }
 
+interface Report {
+  seamClick: number;
+  seamJump: number;
+  seamLevel: number;
+  maxClick: number;
+  minJump: number;
+  maxJump: number;
+  minLevel: number;
+  level: number;
+}
+
 const manifest = JSON.parse(readFileSync('public/audio/tracks.json', 'utf8')) as {
   music: Entry[];
   ambience: Entry[];
@@ -28,7 +41,7 @@ const { browser, page } = await openPage('http://localhost:5173/scripts/audio/re
 });
 
 /** Exécuté dans Chromium (texte : tsx n'y injecte rien). */
-const ANALYZE = `async ({ file, samples, offset }) => {
+const ANALYZE = `async ({ id, file, samples, offset }) => {
   const data = await fetch('/audio/' + file).then((x) => x.arrayBuffer());
   const b = await new OfflineAudioContext(2, 48000, 48000).decodeAudioData(data);
   const l = b.getChannelData(0);
@@ -37,33 +50,61 @@ const ANALYZE = `async ({ file, samples, offset }) => {
     const k = offset + (((i % samples) + samples) % samples);
     return ((l[k] ?? 0) + (rr[k] ?? 0)) / 2;
   };
-  // saut typique d'un échantillon au suivant, dans la boucle
-  const steps = new Float32Array(samples - 1);
-  for (let i = 1; i < samples; i++) steps[i - 1] = Math.abs(at(i) - at(i - 1));
-  steps.sort();
-  const p999 = steps[Math.floor(steps.length * 0.999)] || 1e-9;
-  let seam = 0;
-  for (let i = -32; i <= 32; i++) seam = Math.max(seam, Math.abs(at(i) - at(i - 1)));
-  const rms = (from, n) => {
-    let s = 0;
-    for (let i = from; i < from + n; i++) s += at(i) ** 2;
-    return Math.sqrt(s / n);
+  const click = (p) => {
+    let m = 0;
+    for (let i = -8; i <= 8; i++) m = Math.max(m, Math.abs(at(p + i) - at(p + i - 1)));
+    return m;
   };
   const w = 14400;
-  return { click: seam / p999, before: rms(-w, w), after: rms(0, w), length: b.length };
+  const rms = (from) => {
+    let s = 0;
+    for (let i = from; i < from + w; i++) s += at(i) ** 2;
+    return Math.sqrt(s / w);
+  };
+  const db = (x) => 20 * Math.log10(Math.max(1e-9, x));
+  const jump = (p) => db(rms(p)) - db(rms(p - w));
+  // niveau le plus faible de part et d'autre : un creux de silence trahit une coupure
+  const low = (p) => Math.min(db(rms(p)), db(rms(p - w)));
+  // coutures naturelles : lignes de mesure (musique) ou points réguliers (ambiances)
+  let cuts = [];
+  const music = id.startsWith('music:');
+  if (music) {
+    const { TRACKS } = await import('/scripts/audio/compose.ts');
+    const def = TRACKS.find((t) => t.id === id);
+    const bar = samples / def.bars;
+    for (let k = 1; k < def.bars; k++) cuts.push(Math.round(k * bar));
+  } else for (let k = 1; k < 64; k++) cuts.push(Math.round((k * samples) / 64));
+  const clicks = cuts.map(click);
+  const jumps = cuts.map(jump);
+  const lows = cuts.map(low);
+  let level = 0;
+  for (let i = 0; i < samples; i += 64) level += at(i) ** 2;
+  return {
+    seamClick: click(0),
+    seamJump: jump(0),
+    seamLevel: low(0),
+    maxClick: Math.max(...clicks),
+    minJump: Math.min(...jumps),
+    maxJump: Math.max(...jumps),
+    minLevel: Math.min(...lows),
+    level: db(Math.sqrt(level / (samples / 64))),
+  };
 }`;
 
 let failed = 0;
 for (const e of [...manifest.music, ...manifest.ambience]) {
-  const r = await page.evaluate<{ click: number; before: number; after: number; length: number }>(
-    `(${ANALYZE})(${JSON.stringify({ file: e.file, samples: e.samples, offset: e.offset ?? 0 })})`,
+  const r = await page.evaluate<Report>(
+    `(${ANALYZE})(${JSON.stringify({ id: e.id, file: e.file, samples: e.samples, offset: e.offset ?? 0 })})`,
   );
-  const db = (x: number) => 20 * Math.log10(Math.max(1e-9, x));
-  const jump = db(r.after) - db(r.before);
-  const ok = r.click <= 1 && Math.abs(jump) <= 3 && db(r.before) > -60;
+  const clickOk = r.seamClick <= r.maxClick * 1.05;
+  const jumpOk = r.seamJump >= r.minJump - 1 && r.seamJump <= r.maxJump + 1;
+  const levelOk = r.seamLevel >= r.minLevel - 3;
+  const ok = clickOk && jumpOk && levelOk && r.level > -50;
   if (!ok) failed++;
   console.log(
-    `${ok ? 'ok  ' : 'NON '} ${e.id.padEnd(16)} clic ${r.click.toFixed(2)}  avant ${db(r.before).toFixed(1)} dB  après ${db(r.after).toFixed(1)} dB  (écart ${jump.toFixed(1)} dB)`,
+    `${ok ? 'ok  ' : 'NON '} ${e.id.padEnd(16)} clic ${r.seamClick.toFixed(4)} (coutures ≤ ${r.maxClick.toFixed(4)})  ` +
+      `écart ${r.seamJump.toFixed(1)} dB (coutures ${r.minJump.toFixed(1)} à ${r.maxJump.toFixed(1)} dB)  ` +
+      `creux ${r.seamLevel.toFixed(1)} dB (coutures ≥ ${r.minLevel.toFixed(1)} dB)`,
   );
 }
 await browser.close();
