@@ -192,7 +192,10 @@ export function Detail({
 
   const replay = () => {
     const rect = stage.current?.querySelector('img')?.getBoundingClientRect();
+    // cette partie-là, dans son mode : pas la plus récente de l'œuvre dans le mode en cours
     useNav.getState().open(refForProject(project, library), {
+      mode: project.mode,
+      projectId: project.id,
       timelapse: true,
       ...(rect && { origin: { rect, image: url } }),
     });

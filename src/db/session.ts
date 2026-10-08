@@ -38,9 +38,10 @@ export interface PlaySession {
 }
 
 /**
- * Ouvre une partie : reprend la dernière partie de cette œuvre dans ce mode (une œuvre terminée
- * s'affiche encadrée), ou en crée une (grille figée en base), puis branche la sauvegarde continue
- * et la méta-progression (XP, quêtes, succès, outils).
+ * Ouvre une partie : `projectId` rouvre exactement celle-là (galerie), sinon reprend la dernière
+ * partie de cette œuvre dans ce mode (une œuvre terminée s'affiche encadrée), ou en crée une (grille
+ * figée en base), puis branche la sauvegarde continue et la méta-progression (XP, quêtes, succès,
+ * outils).
  */
 export async function openSession(
   engine: Engine,
@@ -48,8 +49,10 @@ export async function openSession(
   artwork: ArtworkRef,
   mode: ModeId,
   meta: MetaService | null = null,
+  projectId?: string,
 ): Promise<PlaySession> {
-  const existing = await store.findLatest(artwork.artworkId, mode);
+  const chosen = projectId === undefined ? undefined : await store.get(projectId);
+  const existing = chosen?.mode === mode ? chosen : await store.findLatest(artwork.artworkId, mode);
   const project =
     existing ??
     (await store.create({

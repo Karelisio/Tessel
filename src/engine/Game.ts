@@ -104,7 +104,7 @@ export class Game implements GestureHandlers {
   private phaseValue: GamePhase = 'playing';
   /** Ordre de pose (sans les poses annulées) : sert au timelapse. */
   private readonly history: number[] = [];
-  private replay: { start: number; duration: number; done: number } | null = null;
+  private replay: { start: number | null; duration: number; done: number } | null = null;
   private lastReplaySound = -Infinity;
   private reveal: Reveal | null = null;
 
@@ -547,7 +547,9 @@ export class Game implements GestureHandlers {
     if (this.phaseValue !== 'finished' || this.history.length === 0) return;
     this.renderer.clearAll();
     const duration = Math.min(12, Math.max(5, 4 + this.history.length / 2500));
-    this.replay = { start: this.time + 0.4, duration, done: 0 };
+    // départ fixé à la prochaine frame : une partie tout juste rouverte (galerie) n'a pas encore
+    // reçu l'heure du moteur, et partir de son heure périmée finirait la relecture aussitôt
+    this.replay = { start: null, duration, done: 0 };
     this.setPhase('timelapse');
   }
 
@@ -605,6 +607,7 @@ export class Game implements GestureHandlers {
   private stepReplay(): void {
     const r = this.replay;
     if (!r) return;
+    r.start ??= this.time + 0.4;
     const t = Math.min(1, Math.max(0, (this.time - r.start) / r.duration));
     // accélère doucement puis ralentit sur les dernières cases
     const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
