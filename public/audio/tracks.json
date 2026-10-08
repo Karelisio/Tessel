@@ -7,8 +7,10 @@
         "fr": "Aube",
         "en": "Dawn"
       },
-      "seconds": 136,
-      "samples": 6528000,
+      "seconds": 123.43,
+      "samples": 5924608,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -18,8 +20,10 @@
         "fr": "Tesselles",
         "en": "Tesserae"
       },
-      "seconds": 132,
-      "samples": 6336000,
+      "seconds": 123.08,
+      "samples": 5907712,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -29,8 +33,10 @@
         "fr": "Jardin",
         "en": "Garden"
       },
-      "seconds": 128,
-      "samples": 6144000,
+      "seconds": 125.71,
+      "samples": 6034304,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -40,8 +46,10 @@
         "fr": "Nuage",
         "en": "Cloud"
       },
-      "seconds": 140,
-      "samples": 6720000,
+      "seconds": 120,
+      "samples": 5760000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -62,8 +70,10 @@
         "fr": "Rivière",
         "en": "River"
       },
-      "seconds": 126,
-      "samples": 6048000,
+      "seconds": 120,
+      "samples": 5760000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -73,8 +83,10 @@
         "fr": "Veillée",
         "en": "Evening"
       },
-      "seconds": 134,
-      "samples": 6432000,
+      "seconds": 128,
+      "samples": 6144000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     },
     {
@@ -84,8 +96,10 @@
         "fr": "Constellation",
         "en": "Constellation"
       },
-      "seconds": 138,
-      "samples": 6624000,
+      "seconds": 134.4,
+      "samples": 6451200,
+      "offset": 0,
+      "wrap": true,
       "lufs": -16
     }
   ],
