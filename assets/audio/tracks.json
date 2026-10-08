@@ -29,8 +29,9 @@
         "fr": "Jardin",
         "en": "Garden"
       },
-      "seconds": 128,
-      "samples": 6144000,
+      "seconds": 125.71,
+      "samples": 6034286,
+      "offset": 0,
       "lufs": -16
     },
     {
@@ -40,8 +41,9 @@
         "fr": "Nuage",
         "en": "Cloud"
       },
-      "seconds": 140,
-      "samples": 6720000,
+      "seconds": 120,
+      "samples": 5760000,
+      "offset": 0,
       "lufs": -16
     },
     {
