@@ -86,8 +86,9 @@
         "fr": "Constellation",
         "en": "Constellation"
       },
-      "seconds": 138,
-      "samples": 6624000,
+      "seconds": 134.4,
+      "samples": 6451200,
+      "offset": 0,
       "lufs": -16
     }
   ],
