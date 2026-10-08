@@ -1,4 +1,5 @@
 import { Melody } from './melody';
+import { MusicDeck } from './MusicDeck';
 import { BANKS, renderBank, type BankSpec } from './synth';
 
 export type Bus = 'music' | 'ambience' | 'sfx';
@@ -70,7 +71,10 @@ export interface MusicTrack {
   file: string;
   title: { fr: string; en: string };
   seconds: number;
+  /** Longueur exacte de la boucle (échantillons à 48 kHz). */
   samples: number;
+  /** Début de la boucle dans le son décodé (échantillons à 48 kHz, 0 en général). */
+  offset?: number;
 }
 
 interface AudioManifest {
@@ -126,6 +130,7 @@ export class AudioEngine {
     this.volumes[bus] = value;
     const g = this.buses.get(bus);
     if (g && this.ctx) g.gain.setTargetAtTime(value, this.ctx.currentTime, 0.05);
+    if (bus === 'music') this.deck.setEnabled(value > 0);
     if (bus !== 'sfx') this.refreshBeds();
   }
 
@@ -139,77 +144,53 @@ export class AudioEngine {
 
   // ------------------------------------------------------------ musique et ambiances
 
-  private music: { el: HTMLAudioElement; gain: GainNode; id: string } | null = null;
-  private playlist: MusicTrack[] = [];
-  private queue: string[] = [];
-  private musicWanted = false;
   private ambience: { src: AudioBufferSourceNode; gain: GainNode; id: string } | null = null;
   private ambienceWanted: string | null = null;
   private manifest: Promise<AudioManifest> | null = null;
+  private manifestData: AudioManifest | null = null;
+  private readonly deck = new MusicDeck({
+    ctx: () => this.ctx,
+    out: () => this.buses.get('music') ?? null,
+    track: (id) => this.manifestData?.music.find((t) => t.id === id),
+  });
 
   private loadManifest(): Promise<AudioManifest> {
     this.manifest ??= fetch('audio/tracks.json')
       .then((r) => (r.ok ? (r.json() as Promise<AudioManifest>) : { music: [], ambience: [] }))
-      .catch(() => ({ music: [], ambience: [] }));
+      .catch(() => ({ music: [], ambience: [] }))
+      .then((m) => {
+        this.manifestData = m;
+        return m;
+      });
     return this.manifest;
   }
 
+  /** Les musiques du jeu (titres, durées). */
+  async musicTracks(): Promise<MusicTrack[]> {
+    return (await this.loadManifest()).music;
+  }
+
   /**
-   * Musique de fond : lecture en continu (fichiers, sans tout décoder en mémoire) des pistes données,
-   * mélangées, avec fondu enchaîné. Liste vide ou volume nul : silence.
+   * Musique de fond : les pistes cochées, chacune en boucle exacte ; à plusieurs, elles s'enchaînent
+   * en fondu enchaîné en fin de tour (ordre du catalogue ou aléatoire). Liste vide : silence.
    */
-  async setMusic(trackIds: readonly string[]): Promise<void> {
-    const m = await this.loadManifest();
-    this.playlist = m.music.filter((t) => trackIds.includes(t.id));
-    this.musicWanted = this.playlist.length > 0;
-    if (!this.musicWanted) this.fadeOutMusic();
-    else if (!this.music) this.nextTrack();
-    else if (!this.playlist.some((t) => t.id === this.music?.id)) this.nextTrack();
+  async setMusic(trackIds: readonly string[], opts: { shuffle?: boolean } = {}): Promise<void> {
+    await this.loadManifest();
+    this.deck.set(trackIds, opts.shuffle ?? true);
   }
 
-  private nextTrack(): void {
-    const ctx = this.ctx;
-    const out = this.buses.get('music');
-    if (!ctx || !out || !this.musicWanted || this.playlist.length === 0 || this.volumes.music <= 0) return;
-    if (this.queue.length === 0) {
-      this.queue = this.playlist.map((t) => t.id).sort(() => Math.random() - 0.5);
-      // pas deux fois la même piste d'affilée
-      if (this.queue[0] === this.music?.id && this.queue.length > 1)
-        this.queue.push(this.queue.shift() ?? '');
-    }
-    const id = this.queue.shift();
-    const track = this.playlist.find((t) => t.id === id);
-    if (!track) return;
-    this.fadeOutMusic();
-    const el = new Audio(`audio/${track.file}`);
-    el.crossOrigin = 'anonymous';
-    el.preload = 'auto';
-    const gain = ctx.createGain();
-    gain.gain.value = 0;
-    ctx.createMediaElementSource(el).connect(gain).connect(out);
-    gain.gain.setTargetAtTime(1, ctx.currentTime, 1.2);
-    const current = { el, gain, id: track.id };
-    this.music = current;
-    // enchaîne quelques secondes avant la fin
-    el.addEventListener('timeupdate', () => {
-      if (this.music === current && el.duration - el.currentTime < 4) this.nextTrack();
-    });
-    el.addEventListener('error', () => {
-      if (this.music === current) this.music = null;
-    });
-    void el.play().catch(() => undefined);
+  /** Passe à la piste suivante (fondu court). */
+  skipMusic(): void {
+    this.deck.skip();
   }
 
-  private fadeOutMusic(): void {
-    const m = this.music;
-    const ctx = this.ctx;
-    this.music = null;
-    if (!m || !ctx) return;
-    m.gain.gain.setTargetAtTime(0, ctx.currentTime, 1.2);
-    setTimeout(() => {
-      m.el.pause();
-      m.el.src = '';
-    }, 6000);
+  /** Piste qu'on entend en ce moment (null : aucune). */
+  currentMusic(): string | null {
+    return this.deck.current();
+  }
+
+  onMusicChange(fn: (id: string | null) => void): () => void {
+    return this.deck.subscribe(fn);
   }
 
   /** Ambiance en boucle sans couture (pluie, feu…), null pour aucune. */
@@ -235,21 +216,21 @@ export class AudioEngine {
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     src.loop = true;
-    src.loopStart = 0;
     // longueur exacte : le bourrage de fin d'encodage ne crée pas de trou dans la boucle
-    src.loopEnd = Math.min(buffer.duration, entry.samples / 48000);
+    const offset = (entry.offset ?? 0) / 48000;
+    src.loopStart = offset;
+    src.loopEnd = Math.min(buffer.duration, offset + entry.samples / 48000);
     const gain = ctx.createGain();
     gain.gain.value = 0;
     src.connect(gain).connect(out);
     gain.gain.setTargetAtTime(1, ctx.currentTime, 1.5);
-    src.start();
+    src.start(0, offset);
     this.ambience = { src, gain, id };
   }
 
   /** Réveille la musique et l'ambiance après un changement de volume (0 → audible). */
   private refreshBeds(): void {
-    if (this.volumes.music <= 0) this.fadeOutMusic();
-    else if (!this.music && this.musicWanted) this.nextTrack();
+    this.deck.sync();
     if (this.volumes.ambience > 0 && this.ambienceWanted && !this.ambience)
       void this.setAmbience(this.ambienceWanted);
   }

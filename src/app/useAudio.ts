@@ -3,15 +3,23 @@ import { sharedAudio } from '@/audio/AudioEngine';
 import { useMetaStore } from '@/store/meta';
 import { useSettings } from '@/store/settings';
 
-/** Pistes débloquées (les 4 premières sont offertes, les autres viennent avec les niveaux). */
+const trackNumber = (id: string) => Number(id.split(':')[1] ?? 0);
+
+/** Pistes débloquées, dans l'ordre (les 4 premières sont offertes, les autres viennent avec les niveaux). */
 function unlockedMusic(): string[] {
   const service = useMetaStore.getState().service;
   const keys: string[] = service ? service.unlocked('music') : [];
-  return keys.length > 0 ? keys : ['music:1', 'music:2', 'music:3', 'music:4'];
+  const list = keys.length > 0 ? keys : ['music:1', 'music:2', 'music:3', 'music:4'];
+  return [...list].sort((a, b) => trackNumber(a) - trackNumber(b));
+}
+
+/** Pistes à jouer : débloquées et cochées. */
+function playlist(excluded: readonly string[]): string[] {
+  return unlockedMusic().filter((id) => !excluded.includes(id));
 }
 
 /**
- * Son de toute l'application : volumes, musique de fond (pistes débloquées), ambiance choisie.
+ * Son de toute l'application : volumes, musique de fond (pistes débloquées et cochées), ambiance choisie.
  * Le contexte audio s'ouvre au premier geste (politique d'autoplay).
  */
 export function useAudio(): void {
@@ -21,7 +29,7 @@ export function useAudio(): void {
       sharedAudio.setVolume('music', s.musicVolume);
       sharedAudio.setVolume('ambience', s.ambienceVolume);
       sharedAudio.setVolume('sfx', s.effectsVolume);
-      void sharedAudio.setMusic(s.musicVolume > 0 ? unlockedMusic() : []);
+      void sharedAudio.setMusic(playlist(s.musicExcluded), { shuffle: s.musicShuffle });
       const service = useMetaStore.getState().service;
       const amb =
         s.ambience && (service?.isUnlocked(s.ambience as `ambience:${string}`) ?? true) ? s.ambience : null;

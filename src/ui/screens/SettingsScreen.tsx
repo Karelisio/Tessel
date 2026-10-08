@@ -9,6 +9,7 @@ import { useSettings, type Quality, type Settings } from '@/store/settings';
 import { spring } from '@/theme/motion/tokens';
 import { UpdateRow } from '@/update/UpdateRow';
 import { Button, Card, ListRow, Screen, SectionHeader, Segmented, Sheet, Slider, Switch } from '@/ui/kit';
+import { MusicPicker } from '@/ui/music/MusicPicker';
 import { BackupRows } from './profile/BackupRows';
 import { IconInfo, IconReplay } from './profile/icons';
 import { ThemePicker } from './profile/ThemePicker';
@@ -228,6 +229,9 @@ export default function SettingsScreen() {
 
       <Group title={tr(t('Son', 'Sound'))} index={2}>
         <Range k="musicVolume" label={tr(t('Musique', 'Music'))} text={percent} />
+        <Block label={tr(t('Musiques', 'Tracks'))}>
+          <MusicPicker />
+        </Block>
         <Range k="ambienceVolume" label={tr(t('Ambiance', 'Ambience'))} text={percent} />
         <Range k="effectsVolume" label={tr(t('Effets', 'Effects'))} text={percent} />
         <Toggle
