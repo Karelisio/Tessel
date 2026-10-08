@@ -6,6 +6,7 @@ import { tr } from '@/i18n/locale';
 import { t } from '@/i18n/text';
 import { usePlayStore } from '@/store/play';
 import { themeColor } from '@/theme/applyTheme';
+import { placeArrow, type Box } from './radarPlacement';
 
 /** Plus grand côté de la minicarte (px CSS). */
 const SIDE = 104;
@@ -27,6 +28,19 @@ function visibleCells(engine: Engine): [number, number, number, number] {
   const [x0, y0] = cam.screenToCell(0, vp.insetTop);
   const [x1, y1] = cam.screenToCell(vp.width, vp.height - vp.insetBottom);
   return [x0, y0, x1, y1];
+}
+
+/** Éléments que la flèche du radar ne doit pas passer dessous : outils et minicarte affichée. */
+function obstacles(from: HTMLElement): Box[] {
+  const host = from.closest('.play');
+  if (!host) return [];
+  const o = host.getBoundingClientRect();
+  return Array.from(host.querySelectorAll<HTMLElement>('.tool-dock, .minimap[data-shown="true"]')).map(
+    (n) => {
+      const r = n.getBoundingClientRect();
+      return { left: r.left - o.left, top: r.top - o.top, right: r.right - o.left, bottom: r.bottom - o.top };
+    },
+  );
 }
 
 /**
@@ -106,18 +120,17 @@ export function Minimap({ engine, game, left }: { engine: Engine; game: Game; le
         }
       }
       if (!shown || visible > 0 || count === 0) return null;
-      // flèche posée sur le bord de la zone visible, dans la direction de la case
+      // flèche posée sur le bord de la zone visible, dans la direction de la case ; elle glisse le
+      // long du bord pour ne jamais passer sous les outils ou la minicarte
       const vp = engine.camera.viewport;
       const [sx, sy] = engine.camera.cellToScreen(bx, by);
       const [ox, oy] = engine.camera.viewCenter();
-      const angle = Math.atan2(sy - oy, sx - ox);
       const hw = vp.width / 2 - 34;
       const hh = (vp.height - vp.insetTop - vp.insetBottom) / 2 - 34;
-      const s = Math.min(
-        hw / Math.max(1e-6, Math.abs(Math.cos(angle))),
-        hh / Math.max(1e-6, Math.abs(Math.sin(angle))),
-      );
-      return { x: ox + Math.cos(angle) * s, y: oy + Math.sin(angle) * s, angle, count };
+      const area = { left: ox - hw, top: oy - hh, right: ox + hw, bottom: oy + hh };
+      const [x, y] = placeArrow(area, [ox, oy], Math.atan2(sy - oy, sx - ox), obstacles(el));
+      // pointe vers la case depuis sa place réelle
+      return { x, y, angle: Math.atan2(sy - y, sx - x), count };
     };
 
     const placeFrame = () => {
