@@ -78,11 +78,14 @@ async function finish(
   const bytes = await encodeOggOpus(buffer, bitrate, [`TITLE=${title.fr}`, 'ARTIST=Tessel', 'LICENSE=CC0'], {
     loop: true,
   });
-  // contrôle : le fichier se relit, assez long, et colle à l'original une fois aligné
+  // contrôle : le fichier se relit, assez long, et colle à l'original une fois aligné. Opus garde le
+  // timbre d'un bruit (pluie, feuillage) mais pas sa forme d'onde : pour les ambiances, il suffit que
+  // la relecture reste corrélée (une relecture décalée ou illisible donnerait 0 dB ou plus).
   const check = await new OfflineAudioContext(2, 48000, 48000).decodeAudioData(bytes.slice().buffer);
   const { offset, errorDb } = alignment(check, buffer);
   if (check.length < offset + buffer.length) throw new Error(`${id} : son relu trop court (${check.length})`);
-  if (errorDb > -12) throw new Error(`${id} : son relu trop différent (${errorDb.toFixed(1)} dB)`);
+  if (errorDb > (kind === 'music' ? -12 : -2))
+    throw new Error(`${id} : son relu trop différent (${errorDb.toFixed(1)} dB)`);
   return {
     id,
     title,

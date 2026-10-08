@@ -621,8 +621,13 @@ export const TRACKS: TrackDef[] = [
   },
 ];
 
-/** Avance du rendu avant la première période (1 s : un multiple de 128 échantillons, lui aussi). */
-const PRE_ROLL = 1;
+/**
+ * Avance du rendu avant la première période : 1 s et un quart d'échantillon. Ce quart écarte de la
+ * grille des échantillons les notes posées pile sur un temps (grosse caisse, basse) : sans lui, l'arrondi
+ * de leur départ à l'échantillon peut tomber d'un côté dans une période et de l'autre dans la suivante,
+ * et la jonction ne serait plus parfaite.
+ */
+const PRE_ROLL = 1 + 0.25 / 48000;
 
 /** Tire les tampons de bruit de Tone (paresseux) avant de rejouer le hasard des périodes. */
 function warmNoise(): void {
