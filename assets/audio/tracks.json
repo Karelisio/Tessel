@@ -113,6 +113,8 @@
       },
       "seconds": 40,
       "samples": 1920000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -22
     },
     {
@@ -124,6 +126,8 @@
       },
       "seconds": 40,
       "samples": 1920000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -22
     },
     {
@@ -135,6 +139,8 @@
       },
       "seconds": 40,
       "samples": 1920000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -22
     },
     {
@@ -146,6 +152,8 @@
       },
       "seconds": 40,
       "samples": 1920000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -22
     },
     {
@@ -157,6 +165,8 @@
       },
       "seconds": 40,
       "samples": 1920000,
+      "offset": 0,
+      "wrap": true,
       "lufs": -22
     }
   ]
